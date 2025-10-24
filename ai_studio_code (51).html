@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך למשתמש - הכלה חינוכית</title>
+    <style>
+        /* --- General Styling & New Pastel Color Palette --- */
+        :root {
+            --c1-muted-blue: #8EACCD;
+            --c2-sage-green: #DEE5D4;
+            --c3-light-yellow: #FEF9D9;
+            --c4-light-blue: #D2E0FB;
+
+            --bg-page: #ffffff; /* White background */
+            --content-bg: #ffffff;
+            --text-primary: #34495e; /* Dark blue-gray for text */
+            --text-secondary: #555555;
+            --border-color: #e0e0e0;
+            
+            --link-color: var(--c1-muted-blue);
+            
+            /* --- Updated Highlight Style (Previous Suggestion) --- */
+            --highlight-bg: rgba(142, 172, 205, 0.2); /* Subtle blue background */
+            --highlight-text: #34495e; /* Dark blue-gray text */
+
+            --important-border: var(--c2-sage-green);
+            --important-bg: #f9fafb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+        }
+
+        .header-logos {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+            background: var(--content-bg);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+        }
+
+        h1 {
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+        
+        .guide-intro {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--link-color);
+            background-color: #fdfdfd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Accordion Styling (Steps) --- */
+        .step-container {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: var(--content-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .step-container:hover {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+
+        .step-header {
+            padding: 15px 20px;
+            color: var(--text-primary); /* Dark text for all light headers */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: filter 0.3s ease;
+        }
+        
+        .step-header:hover {
+            filter: brightness(1.05);
+        }
+
+        /* --- Applying the New Palette to Step Headers --- */
+        .step-1 .step-header { background-color: var(--c1-muted-blue); color: white; } /* White text for better contrast */
+        .step-2 .step-header { background-color: var(--c2-sage-green); }
+        .step-3 .step-header { background-color: var(--c3-light-yellow); }
+        .step-4 .step-header { background-color: var(--c4-light-blue); }
+
+        .step-header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+        
+        .step-title {
+            flex-grow: 1;
+        }
+
+        .header-button {
+            background-color: transparent;
+            padding: 7px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            color: inherit;
+        }
+        
+        .header-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            text-decoration: none;
+        }
+        
+        /* Override for dark header */
+        .step-1 .header-button { border-color: rgba(255, 255, 255, 0.7); }
+        .step-1 .header-button:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+
+        .arrow {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow.open {
+            transform: rotate(90deg);
+        }
+
+        .step-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .step-content.expanded {
+            max-height: 1500px;
+            transition: max-height 0.6s ease-in;
+        }
+        
+        .content-wrapper {
+            padding: 25px;
+        }
+        
+        /* --- Content Elements Styling --- */
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: var(--link-color);
+            margin-bottom: 5px;
+            font-size: 1.05rem;
+        }
+
+        .content {
+            margin-right: 20px;
+            color: var(--text-secondary);
+        }
+        
+        ul, ol {
+            margin-right: 20px;
+            margin-top: 10px;
+            padding-right: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .important {
+            background-color: var(--important-bg);
+            border-right: 4px solid var(--important-border);
+            padding: 15px;
+            margin-top: 25px;
+            border-radius: 5px;
+            color: var(--text-secondary);
+        }
+
+        .highlight {
+            background-color: var(--highlight-bg);
+            color: var(--highlight-text);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .button-link {
+            display: inline-block;
+            background-color: var(--c1-muted-blue);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .button-link:hover {
+            background-color: #7c9ab8; /* A slightly darker shade of muted-blue */
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .subtitle { font-size: 1rem; }
+            .header-logos { flex-direction: column; gap: 15px; }
+            .logo-img { height: 50px; }
+            .step-header { font-size: 1rem; padding: 12px 15px; flex-wrap: wrap; }
+            .header-button { font-size: 0.75rem; padding: 6px 10px; }
+            .step-header-content { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- לוגואים -->
+    <div class="header-logos">
+        <img src="https://drive.google.com/uc?export=view&id=1pN4o0CTMQ4RXRuUj7rwXHO64FXzdT-6j" alt="לוגו יסודי עכשווי" class="logo-img">
+        <img src="https://drive.google.com/uc?export=view&id=18ldzy-hvzfgONCVeO613qiHF1sr2PPSe" alt="לוגו אבני ראשה" class="logo-img">
+        <img src="https://drive.google.com/uc?export=view&id=1cTT_Op7wn_mtzR71ArBvArR-N-sct5C_" alt="לוגו הכלה והשתלבות" class="logo-img">
+    </div>
+    
+    <h1>🎯 מדריך למשתמש</h1>
+    <h1 style="margin-top: 10px;">כלים לשיח וליווי מכוון תוצאות למדריכת הכלה והוגנות</h1>
+    <h2 class="subtitle">מתכנון השיח ועד בניית תוכנית ליווי בית ספרית בתחום ההכלה וההוגנות</h2>
+    
+    <p class="guide-intro">המדריך מחולק לשלבים. <strong>לחצו על כל שלב</strong> כדי לראות את הפירוט.</p>
+
+    <!-- שלב א' -->
+    <div class="step-container step-1">
+        <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-header-content">
+                <span class="step-title">שלב א' - היערכות לשיח - בחירת נושאי מיקוד</span>
+                <a href="https://drive.google.com/file/d/19alPjb4qb0EuWqImPczxspmMfO2ipZde/view" target="_blank" class="header-button" onclick="event.stopPropagation()">📄 דף בחירת נושאים</a>
+            </div>
+            <span class="arrow">▶</span>
+        </div>
+        <div class="step-content">
+            <div class="content-wrapper">
+                <div class="section">
+                    <div class="label">🎯 מטרה:</div>
+                    <div class="content">מיקוד שיח ההדרכה בנושאים בעלי העדיפות הגבוהה ביותר עבור בית הספר</div>
+                </div>
+                <div class="section">
+                    <div class="label">👥 אחריות:</div>
+                    <div class="content">מנהל/ת בית הספר ורכז/ת ההכלה</div>
+                </div>
+                <div class="section">
+                    <div class="label">🛠️ הכלי:</div>
+                    <div class="content">
+                        <a href="https://drive.google.com/file/d/19alPjb4qb0EuWqImPczxspmMfO2ipZde/view" target="_blank">"דף בחירת נושאים להדרכה"</a> (מסמך מודפס)
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="label">תהליך העבודה:</div>
+                    <ul>
+                        <li>עברו יחד על "דף בחירת הנושאים להדרכה". ניתן להיעזר גם ב"מפת ההכלה החינוכית" הכלולה בתוך <a href="https://meyda.education.gov.il/files/yesodi/hachala/alon17.pdf" target="_blank">העלון "הכלה למעשה", איגרת מס' 17</a>.</li>
+                        <li>נהלו דיון מבוסס נתונים, ובחרו <span class="highlight">עד 4 נושאים מרכזיים</span> להתמקדות בהדרכה הקרובה.</li>
+                        <li>הנושאים הנבחרים יהוו את הבסיס לשיח הממוקד שיתקיים בשלב הבא עם המדריכ/ה.</li>
+                    </ul>
+                </div>
+                <div class="important">
+                    <strong>⚠️ חשוב:</strong> שלב זה חיוני כדי להבטיח שהשיח עם המדריכה יהיה ממוקד, רלוונטי ויעיל.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- שלב ב' -->
+    <div class="step-container step-2">
+        <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-header-content">
+                <span class="step-title">שלב ב' - קיום שיח ממוקד באמצעות "כלי השיח"</span>
+                <a href="https://ilanit17.github.io/hachala/siach.html" target="_blank" class="header-button" onclick="event.stopPropagation()">🔗 כלי השיח המקוון</a>
+            </div>
+            <span class="arrow">▶</span>
+        </div>
+        <div class="step-content">
+            <div class="content-wrapper">
+                <div class="section">
+                    <div class="label">🎯 מטרה:</div>
+                    <div class="content">העמקה בנושאים שנבחרו, איתור חוזקות ואתגרים, ובחירת פרקטיקות להתערבות.</div>
+                </div>
+                <div class="section">
+                    <div class="label">👥 אחריות:</div>
+                    <div class="content">מדריכ/ה, מנהל/ת ורכז/ת הכלה.</div>
+                </div>
+                <div class="section">
+                    <div class="label">🛠️ הכלי:</div>
+                    <div class="content">🔗 <a href="https://ilanit17.github.io/hachala/siach.html" target="_blank">כלי השיח המקוון</a>.</div>
+                </div>
+                <div class="section">
+                    <div class="label">תהליך העבודה:</div>
+                    <ol>
+                        <li>המדריכ/ה פותח/ת את כלי השיח המקוון ומשתפ/ת מסך.</li>
+                        <li>השיח יתמקד <span class="highlight">אך ורק בנושאים שסומנו מראש</span> בשלב א'.</li>
+                        <li>עבור כל נושא, יש לנהל דיון בהתאם לשאלות המנחות ולסמן את האפשרויות הרלוונטיות בכלי.</li>
+                    </ol>
+                </div>
+                <div class="section">
+                    <div class="label">💾 שמירה וטעינה של השיח:</div>
+                    <div class="content">
+                        <p style="margin-bottom: 10px;">ניתן לנהל את השיח במספר פגישות:</p>
+                        <div style="margin-right: 20px;">
+                            <p style="margin-bottom: 8px;"><strong>📥 שמירת התקדמות:</strong> בסיום כל פגישה, לחצו על <span class="highlight">"שמור סיכום שיח"</span> להורדת קובץ JSON.</p>
+                            <p style="margin-bottom: 8px;"><strong>📤 המשך שיח:</strong> בפגישה הבאה, לחצו על <span class="highlight">"טען סיכום שיח"</span> ובחרו את הקובץ השמור.</p>
+                            <p><strong>🎁 תוצר סופי:</strong> קובץ JSON מסכם ומעודכן, המכיל את כל פרטי השיח הממוקד.</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://ilanit17.github.io/hachala/siach.html" target="_blank" class="button-link">
+                    כניסה לכלי השיח המקוון
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- שלב ג' -->
+    <div class="step-container step-3">
+        <div class="step-header" onclick="toggleStep(this)">
+            <div class="step-header-content">
+                <span class="step-title">שלב ג' - בניית תכנית ההדרכה</span>
+                <a href="https://ilanit17.github.io/hachala/tochnit.html" target="_blank" class="header-button" onclick="event.stopPropagation()">🔧 כלי בניית התכנית</a>
+            </div>
+            <span class="arrow">▶</span>
+        </div>
+        <div class="step-content">
+            <div class="content-wrapper">
+                <div class="section">
+                    <div class="label">🎯 מטרה:</div>
+                    <div class="content">תרגום התובנות מהשיח לתוכנית עבודה שנתית, מפורטת ומדידה.</div>
+                </div>
+                <div class="section">
+                    <div class="label">👥 אחריות:</div>
+                    <div class="content">מדריכ/ה (בשיתוף צוות בית הספר).</div>
+                </div>
+                <div class="section">
+                    <div class="label">🛠️ הכלי:</div>
+                    <div class="content">🔗 <a href="https://ilanit17.github.io/hachala/tochnit.html" target="_blank">כלי לבניית תוכנית ליווי בית ספרית</a>.</div>
+                </div>
+                <div class="section">
+                    <div class="label">תהליך העבודה:</div>
+                    <ol>
+                        <li>פתחו את כלי בניית התוכנית.</li>
+                        <li>לחצו על <span class="highlight">"טען נתונים מסיכום שיח..."</span> ובחרו את קובץ ה-JSON משלב ב'.</li>
+                        <li>הפעולה תטען אוטומטית את <span class="highlight">פרטי בית הספר</span> ותדגיש <span class="highlight">יעדים מומלצים</span>.</li>
+                        <li>בחרו את הרכיבים הרצויים (פעילויות, משימות, מדדים) והגדירו ערכים.</li>
+                        <li>לחצו על <span class="highlight">"צור טבלת תכנון"</span>.</li>
+                        <li>בטבלה הסופית, הגדירו <span class="highlight">שותפים, מסגרת זמן ותדירות</span>.</li>
+                        <li>בסיום, ניתן להדפיס את התוכנית או לצפות בה כתצוגת גאנט.</li>
+                    </ol>
+                </div>
+                <div class="section">
+                    <div class="label">💾 שמירה וטעינה של תוכנית עבודה:</div>
+                    <div class="content">
+                        <p style="margin-bottom: 10px;">ניתן לשמור ולעדכן את התוכנית לאורך זמן:</p>
+                        <div style="margin-right: 20px;">
+                            <p style="margin-bottom: 8px;"><strong>📥 שמירת תוכנית:</strong> לחצו על <span class="highlight">"שמור תוכנית"</span> כדי להוריד קובץ JSON של התכנון.</p>
+                            <p style="margin-bottom: 8px;"><strong>📤 טעינת תוכנית:</strong> לחצו על <span class="highlight">"טען תוכנית"</span> ובחרו את הקובץ השמור כדי לעדכן את התוכנית.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="important">
+                    <strong>✅ סיימתם!</strong> כעת יש בידיכם תוכנית עבודה שנתית מלאה ומפורטת.
+                </div>
+                <a href="https://ilanit17.github.io/hachala/tochnit.html" target="_blank" class="button-link">
+                    כניסה לכלי בניית התכנית
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- שלב ד' -->
+    <div class="step-container step-4">
+        <div class="step-header" onclick="toggleStep(this)">
+             <div class="step-header-content">
+                <span class="step-title">שלב ד' - יישום ומעקב</span>
+            </div>
+            <span class="arrow">▶</span>
+        </div>
+        <div class="step-content">
+            <div class="content-wrapper">
+                <div class="section">
+                    <div class="label">🎯 מטרה:</div>
+                    <div class="content">הוצאה לפועל של תכנית ההדרכה ומעקב אחר התקדמות.</div>
+                </div>
+                <div class="section">
+                    <div class="label">👥 אחריות:</div>
+                    <div class="content">כל הצוות - מנהל/ת, רכז/ת הכלה, מדריכ/ה וצוות המורים.</div>
+                </div>
+                <div class="section">
+                    <div class="label">🛠️ הכלים:</div>
+                    <div class="content">תכנית העבודה, סקרים, תצפיות ומשובים.</div>
+                </div>
+                <div class="section">
+                    <div class="label">תהליך העבודה:</div>
+                    <ul>
+                        <li>ביצוע מפגשי הדרכה על פי התכנית.</li>
+                        <li>תיעוד ורישום של כל מפגש.</li>
+                        <li>מעקב שוטף אחר השגת היעדים.</li>
+                        <li>עדכון והתאמה של התכנית לפי הצורך.</li>
+                        <li>קיום משובים תקופתיים.</li>
+                    </ul>
+                </div>
+                <div class="important">
+                    <strong>🔄 תהליך מעגלי:</strong> בסיום השנה, הפיקו תובנות מהתהליך, עדכנו את התוצאות בתכנית העבודה, וחזרו לשלב א' כדי לתכנן את השנה הבאה.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleStep(headerElement) {
+            const content = headerElement.nextElementSibling;
+            const arrow = headerElement.querySelector('.arrow');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                arrow.classList.remove('open');
+            } else {
+                content.classList.add('expanded');
+                arrow.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>
