@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>מרחב שיח — מנהל/ת ורכזת הכלה והוגנות</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --p:#1a4a7a;--pl:#2563a8;--t:#2a9d8f;--tl:#3fb5a7;
+  --mint:#d4f5ee;--sand:#fef3e2;--sand2:#f5d99a;
+  --pur:#7c6cf6;--pur2:#ede9fe;
+  --bg:#f4f6fa;--card:#fff;--bdr:#dde3ee;
+  --tx:#1a2540;--muted:#6b7a99;--light:#9ba8bf;
+  --ok:#2da56e;--ok2:#d1fae5;--warn:#e97316;--warn2:#fff3e0;--red:#e53e3e;
+  --r:14px;--rs:8px;--sh:0 2px 12px rgba(26,74,122,0.08);
+}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--tx);direction:rtl;}
+button,input,textarea,select{font-family:'Heebo',sans-serif;}
+input,textarea,select{direction:rtl;}
+button{cursor:pointer;}
+
+.shell{display:flex;min-height:100vh;}
+.sidebar{width:230px;background:var(--p);color:#fff;position:fixed;top:0;right:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:100;}
+.slogo{padding:18px 14px 12px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:9px;}
+.sico{width:34px;height:34px;background:var(--t);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.stit{font-size:12px;font-weight:700;line-height:1.3;}
+.ssub{font-size:11px;opacity:.6;margin-top:2px;}
+.snav{padding:12px 9px;flex:1;}
+.sstep{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:9px;margin-bottom:3px;cursor:pointer;transition:all .2s;font-size:13px;opacity:.6;}
+.sstep:hover{background:rgba(255,255,255,.1);opacity:.85;}
+.sstep.active{background:rgba(255,255,255,.15);opacity:1;font-weight:600;}
+.sstep.done{opacity:.85;}
+.snum{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.sstep.active .snum{background:var(--t);border-color:var(--t);}
+.sstep.done .snum{background:var(--ok);border-color:var(--ok);}
+.sbot{padding:12px 9px;border-top:1px solid rgba(255,255,255,.12);}
+.dbtn{width:100%;padding:8px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:5px;}
+.dbtn:hover{background:rgba(255,255,255,.18);}
+.main{margin-right:230px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{background:#fff;border-bottom:1px solid var(--bdr);padding:11px 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 8px rgba(0,0,0,.05);}
+.ttit{font-size:14px;font-weight:700;color:var(--p);}
+.tsch{font-size:12px;color:var(--muted);}
+.pwrap{flex:1;max-width:260px;margin:0 18px;}
+.ptrack{height:5px;background:var(--bdr);border-radius:99px;overflow:hidden;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--t),var(--p));border-radius:99px;transition:width .5s ease;}
+.plbl{font-size:11px;color:var(--muted);margin-top:3px;text-align:center;}
+
+.page{padding:26px;max-width:940px;margin:0 auto;width:100%;}
+.ph h1{font-size:22px;font-weight:800;color:var(--p);margin-bottom:5px;}
+.ph p{font-size:13px;color:var(--muted);line-height:1.6;max-width:600px;margin-bottom:22px;}
+
+.card{background:var(--card);border-radius:var(--r);border:1px solid var(--bdr);box-shadow:var(--sh);padding:20px;margin-bottom:16px;}
+.ch{display:flex;align-items:center;gap:11px;margin-bottom:16px;}
+.ci{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ct{font-size:15px;font-weight:700;color:var(--p);}
+.cs{font-size:12px;color:var(--muted);margin-top:2px;}
+
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.full{grid-column:1/-1;}
+.fgrp{display:flex;flex-direction:column;gap:5px;}
+.flbl{font-size:13px;font-weight:600;color:var(--tx);}
+.flbl-hint{font-size:11px;font-weight:400;color:var(--muted);margin-right:5px;}
+.opt{font-weight:400;color:var(--muted);}
+.finp{padding:9px 12px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:14px;color:var(--tx);background:#fff;transition:border .2s;direction:rtl;width:100%;}
+.finp:focus{outline:none;border-color:var(--t);box-shadow:0 0 0 3px rgba(42,157,143,.12);}
+.fta{resize:vertical;min-height:60px;line-height:1.6;}
+.divider{border:none;border-top:1px solid var(--bdr);margin:18px 0;}
+
+/* ── CheckSelect Dropdown ── */
+.dd-wrap{position:relative;margin-top:5px;}
+.dd-trigger{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:#fff;cursor:pointer;transition:border .2s;user-select:none;}
+.dd-trigger:hover{border-color:var(--t);}
+.dd-trigger.has-val{border-color:var(--t);background:#f7fffe;}
+.dd-trigger.open{border-color:var(--t);border-bottom-left-radius:0;border-bottom-right-radius:0;}
+.dd-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.dd-placeholder{font-size:13px;color:var(--muted);}
+.dd-tags{display:flex;flex-wrap:wrap;gap:4px;flex:1;}
+.dd-tag{padding:2px 9px;background:var(--mint);border-radius:99px;font-size:12px;color:#065f46;border:1px solid #6ee7b7;white-space:nowrap;}
+.dd-tag-other{background:var(--pur2);color:#5b21b6;border-color:#c4b5fd;}
+.dd-tag-x{margin-right:4px;opacity:.6;cursor:pointer;font-size:11px;}
+.dd-tag-x:hover{opacity:1;}
+.dd-arrow{font-size:11px;color:var(--muted);flex-shrink:0;margin-right:6px;transition:transform .2s;}
+.dd-trigger.open .dd-arrow{transform:rotate(180deg);}
+.dd-count{font-size:11px;color:var(--t);font-weight:700;background:var(--mint);padding:1px 7px;border-radius:99px;flex-shrink:0;}
+.dd-panel{display:none;position:absolute;top:100%;right:0;left:0;background:#fff;border:1.5px solid var(--t);border-top:none;border-bottom-left-radius:var(--rs);border-bottom-right-radius:var(--rs);z-index:200;box-shadow:0 6px 20px rgba(26,74,122,.12);max-height:280px;overflow-y:auto;}
+.dd-panel.open{display:block;}
+.dd-item{display:flex;align-items:center;gap:9px;padding:8px 13px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--bdr);font-size:13px;}
+.dd-item:last-child{border-bottom:none;}
+.dd-item:hover{background:#f0fdfa;}
+.dd-item.on{background:#e8f8f5;}
+.dd-box{width:16px;height:16px;border-radius:4px;border:2px solid var(--bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .15s;}
+.dd-item.on .dd-box{background:var(--t);border-color:var(--t);color:#fff;}
+.dd-other-item.on .dd-box{background:var(--pur);border-color:var(--pur);color:#fff;}
+.dd-inp{margin:8px 12px 10px;border:1.5px dashed var(--t);border-radius:var(--rs);padding:7px 11px;font-size:13px;direction:rtl;width:calc(100% - 24px);background:#fff;}
+.dd-inp:focus{outline:none;}
+.cs-count{font-size:11px;color:var(--muted);font-weight:400;}
+
+/* ── Goal name suggestions ── */
+.goal-sug{display:flex;flex-direction:column;gap:5px;margin-bottom:9px;}
+.gsug{padding:9px 13px;background:linear-gradient(135deg,#f0fdf4,#ecfeff);border:1px dashed var(--t);border-radius:var(--rs);font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;}
+.gsug:hover{background:var(--mint);border-style:solid;}
+.gsug.active{background:var(--mint);border-style:solid;border-color:var(--t);}
+.gsug-ico{font-size:11px;font-weight:700;color:var(--t);flex-shrink:0;}
+.gsug-free{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--sand);border:1.5px solid var(--sand2);border-radius:var(--rs);cursor:pointer;font-size:13px;color:#7c5c0e;font-weight:600;}
+
+.guidance{background:linear-gradient(135deg,var(--sand),var(--mint));border-radius:var(--r);padding:15px 19px;margin-bottom:16px;border-right:4px solid var(--t);}
+.guidance .gt{font-size:13px;font-weight:700;color:var(--p);margin-bottom:4px;}
+.guidance p{font-size:13px;color:var(--tx);line-height:1.6;}
+
+.zcard{background:var(--card);border-radius:var(--r);border:2px solid var(--bdr);padding:18px;margin-bottom:13px;transition:all .2s;}
+.zcard.sel{border-color:var(--t);box-shadow:0 0 0 3px rgba(42,157,143,.1);}
+.zh{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px;}
+.znum{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;}
+.ztit{font-size:14px;font-weight:700;color:var(--p);line-height:1.35;}
+.zdsc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5;}
+.zwhy{background:var(--pur2);border-radius:var(--rs);padding:9px 13px;margin-bottom:10px;font-size:12px;color:var(--tx);line-height:1.55;}
+.exlbl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px;}
+.echip{padding:3px 9px;background:var(--bg);border:1px solid var(--bdr);border-radius:99px;font-size:12px;color:var(--muted);}
+.focus-lbl{font-size:13px;font-weight:700;margin-bottom:7px;}
+.focus-row{display:flex;gap:6px;}
+.fbtn{flex:1;padding:8px 5px;border-radius:7px;border:2px solid var(--bdr);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);text-align:center;line-height:1.3;}
+.fbtn:hover{border-color:var(--p);color:var(--p);}
+.fbtn.fh{background:#fff0f0;border-color:#f87171;color:#c53030;}
+.fbtn.fm{background:#fffbf0;border-color:#f59e0b;color:#92400e;}
+.fbtn.fk{background:var(--ok2);border-color:#6ee7b7;color:#065f46;}
+.fsub{font-size:10px;font-weight:400;opacity:.7;display:block;margin-top:1px;}
+
+.cross-card{background:var(--pur2);border-radius:var(--r);padding:15px 19px;border:1px solid #c4b5fd;margin-bottom:13px;}
+.xitem{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:7px;border:2px solid var(--bdr);background:#fff;cursor:pointer;margin-bottom:6px;transition:all .2s;}
+.xitem.active{border-color:var(--pur);background:#f5f3ff;}
+
+.ztabs{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;}
+.ztab{padding:7px 13px;border-radius:7px;border:2px solid var(--bdr);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);}
+.ztab.active{color:#fff;border-color:transparent;}
+
+.gbadge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:700;margin-bottom:11px;}
+.gb-req{background:var(--p);color:#fff;}
+.gb-opt{background:var(--bdr);color:var(--muted);}
+.type-btns{display:flex;gap:6px;margin-bottom:11px;}
+.tbtn{padding:7px 14px;border-radius:7px;border:2px solid var(--bdr);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);}
+.tbtn.tnew{background:#eff6ff;border-color:var(--pl);color:var(--p);}
+.tbtn.tong{background:var(--sand);border-color:var(--sand2);color:#7c5c0e;}
+.ongoing-box{background:var(--sand);border-radius:var(--rs);padding:13px;margin-bottom:11px;}
+.scopes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px;}
+.schip{padding:6px 12px;border-radius:7px;border:2px solid var(--bdr);font-size:12px;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);font-weight:500;}
+.schip.active{background:var(--t);border-color:var(--t);color:#fff;font-weight:700;}
+
+.at-lbl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--p);margin-bottom:7px;padding-bottom:5px;border-bottom:2px solid var(--bdr);}
+.atdot{width:8px;height:8px;border-radius:50%;}
+.action-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--rs);border:1.5px solid var(--bdr);cursor:pointer;transition:all .2s;background:#fff;margin-bottom:5px;}
+.action-item:hover{border-color:var(--t);background:#f0fdfa;}
+.action-item.ac{border-color:var(--p);background:#eff6ff;}
+.action-item.as{border-color:var(--light);background:var(--bg);}
+.acheck{width:16px;height:16px;border-radius:4px;border:2px solid var(--bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s;}
+.ac .acheck{background:var(--p);border-color:var(--p);color:#fff;}
+.as .acheck{background:var(--light);border-color:var(--light);color:#fff;}
+.atag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--p);color:#fff;opacity:0;}
+.ac .atag{opacity:1;}
+.cin-row{display:flex;gap:6px;margin-top:7px;}
+.addbtn{padding:7px 13px;background:var(--t);color:#fff;border:none;border-radius:var(--rs);font-size:12px;font-weight:600;white-space:nowrap;}
+.addbtn:hover{background:var(--tl);}
+
+.mchips{display:flex;flex-wrap:wrap;gap:6px;}
+.mchip{padding:6px 12px;border-radius:99px;border:2px solid var(--bdr);font-size:12px;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);}
+.mchip.am{background:var(--pur);border-color:var(--pur);color:#fff;font-weight:600;}
+.mchip.ap{background:var(--t);border-color:var(--t);color:#fff;font-weight:600;}
+
+.metric-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--rs);border:1.5px solid var(--bdr);cursor:pointer;transition:all .2s;background:#fff;margin-bottom:5px;}
+.metric-item:hover{border-color:var(--t);}
+.metric-item.on{border-color:var(--t);background:#f0fdfa;}
+.mcheck{width:16px;height:16px;border-radius:4px;border:2px solid var(--bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s;}
+.on .mcheck{background:var(--t);border-color:var(--t);color:#fff;}
+.mnum{width:50px;padding:3px 6px;border:1.5px solid var(--bdr);border-radius:5px;font-size:13px;text-align:center;}
+
+.cpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;}
+.cpcard{background:var(--bg);border-radius:var(--rs);padding:13px;border:1.5px solid var(--bdr);}
+.cptit{font-size:12px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.cpdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+.alert{padding:10px 14px;border-radius:var(--rs);margin-bottom:11px;font-size:13px;display:flex;gap:7px;align-items:flex-start;}
+.alert.info{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;}
+
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 26px;background:#fff;border-top:1px solid var(--bdr);position:sticky;bottom:0;}
+.btn-back{padding:10px 20px;border-radius:var(--rs);border:2px solid var(--bdr);font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--muted);transition:all .2s;}
+.btn-back:hover{border-color:var(--p);color:var(--p);}
+.btn-back:disabled{opacity:.4;cursor:not-allowed;}
+.btn-next{padding:10px 24px;border-radius:var(--rs);border:none;font-size:14px;font-weight:700;cursor:pointer;background:var(--p);color:#fff;transition:all .2s;}
+.btn-next:hover{background:var(--pl);}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── SUMMARY ── */
+.shd{background:linear-gradient(135deg,var(--p) 0%,var(--t) 100%);color:#fff;border-radius:var(--r);padding:24px 28px;margin-bottom:20px;}
+.shd h2{font-size:21px;font-weight:800;margin-bottom:3px;}
+.shd p{opacity:.85;font-size:14px;}
+.smeta{display:flex;flex-wrap:wrap;gap:14px;margin-top:13px;}
+.smi{display:flex;align-items:center;gap:5px;font-size:13px;}
+.szone{background:var(--card);border-radius:var(--r);border:1px solid var(--bdr);margin-bottom:16px;overflow:hidden;}
+.szh{padding:13px 19px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bdr);}
+.szb{padding:17px 19px;}
+.sgoal{margin-bottom:16px;padding-bottom:13px;border-bottom:1px solid var(--bdr);}
+.sgoal:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.sgt{font-size:14px;font-weight:700;color:var(--p);margin-bottom:8px;}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
+.sf label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px;}
+.sf p{font-size:13px;color:var(--tx);line-height:1.5;}
+.stags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px;}
+.tag{padding:2px 8px;border-radius:99px;font-size:12px;}
+.tb{background:#dbeafe;color:var(--p);}
+.tt{background:var(--mint);color:#065f46;}
+.tpu{background:var(--pur2);color:#5b21b6;}
+.ts{background:var(--sand);color:#7c5c0e;}
+
+@media print{
+  .sidebar,.topbar,.navbar,.noprint{display:none!important;}
+  .main{margin-right:0;}
+  .page{padding:14px;max-width:100%;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+@media(max-width:700px){
+  .sidebar{display:none;}.main{margin-right:0;}
+  .fg,.cpgrid,.sgrid{grid-template-columns:1fr;}
+  .full{grid-column:1;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="slogo">
+      <div class="sico">🌿</div>
+      <div><div class="stit">מרחב שיח</div><div class="ssub">מנהל/ת ורכזת הכלה והוגנות</div></div>
+    </div>
+    <nav class="snav" id="snav"></nav>
+    <div class="sbot">
+      <button class="dbtn" onclick="loadDemo()">📋 טעינת דוגמה</button>
+      <button class="dbtn" onclick="resetAll()">🔄 איפוס</button>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div><div class="ttit" id="toptitle"></div><div class="tsch" id="topschool"></div></div>
+      <div class="pwrap"><div class="ptrack"><div class="pfill" id="pfill"></div></div><div class="plbl" id="plbl"></div></div>
+    </div>
+    <div id="content" style="flex:1;"></div>
+    <div class="navbar noprint">
+      <button class="btn-back" id="btnBack" onclick="prevStep()">→ הקודם</button>
+      <span style="font-size:13px;color:var(--muted)" id="navMsg"></span>
+      <button class="btn-next" id="btnNext" onclick="nextStep()">הבא ←</button>
+    </div>
+  </main>
+</div>
+
+<script>
+// ── ANSWER BANKS ──────────────────────────────────────────────────────────────
+const SHARED = {
+  desiredState: [
+    "תהליך עבודה סדור, ברור ועקבי",
+    "שימוש רחב יותר של הצוות בפרקטיקות הרלוונטיות",
+    "שיפור בדיוק המענים הניתנים לתלמידים",
+    "עלייה בתחושת המסוגלות של הצוות",
+    "שיפור במעורבות ובהשתתפות התלמידים",
+    "שפה מקצועית משותפת בצוות",
+    "הרחבת היישום לשכבות / כיתות נוספות",
+    "הטמעה של שגרות עבודה קבועות",
+    "שיפור במעקב אחר התקדמות תלמידים",
+    "ביסוס תהליך שניתן להמשיך גם בשנה הבאה"
+  ],
+  dataBase: [
+    "נתוני מיפוי בית ספריים",
+    "נתוני עוגן / עוגן-פלוס",
+    "תצפיות בכיתות",
+    "שיחות עם הנהלה",
+    "שיחות עם מחנכות ומורים",
+    "נתונים לימודיים",
+    "נתונים רגשיים / חברתיים / התנהגותיים",
+    "תוכניות התערבות קודמות",
+    "משוב מהצוות החינוכי",
+    "משוב מתלמידים",
+    "משוב מהורים",
+    "מסקנות מצוות רב-מקצועי",
+    "זיהוי פער בין מדיניות ליישום בפועל",
+    "צורך שעלה במהלך השנה הקודמת"
+  ],
+  currentState: [
+    "קיימים תהליכים התחלתיים, אך הם אינם מיושמים באופן עקבי",
+    "קיימות פרקטיקות טובות, אך הן אינן אחידות בין שכבות או כיתות",
+    "יש שונות גדולה בין אנשי הצוות באופן היישום",
+    "קיימים נתונים / תובנות, אך הם אינם מתורגמים מספיק לפעולה",
+    "יש רצון לקדם את התחום, אך חסרות שגרות עבודה ברורות",
+    "מתקיימת עבודה בתחום, אך המעקב אחריה חלקי",
+    "התחום מקודם בעיקר ביוזמות נקודתיות ולא כתהליך סדור",
+    "יש צורך בחיזוק השפה המשותפת של הצוות",
+    "יש צורך בהעמקת הידע והכלים של הצוות",
+    "קיימים תהליכים טובים, ונדרש כעת להרחיב או להעמיק אותם"
+  ],
+  targetResult: [
+    "כלל מחנכות בית הספר",
+    "מחנכות שכבה מסוימת",
+    "מורים מקצועיים",
+    "צוות חינוכי נבחר",
+    "תלמידים במיקוד",
+    "תלמידי שכבה מסוימת",
+    "מספר כיתות",
+    "צוות רב-מקצועי",
+    "הנהלת בית הספר",
+    "כלל הצוות החינוכי"
+  ],
+  ongoingDone: [
+    "בוצע פיילוט ראשוני",
+    "גובשה שפה מקצועית ראשונית",
+    "נבנו כלים / מחוונים / טפסים",
+    "התקיימו מפגשי למידה / ליווי ראשונים",
+    "היעד יושם במספר כיתות / שכבה אחת",
+    "נאספו נתונים ראשוניים",
+    "נבנו תוכניות התערבות ראשונות",
+    "נבנתה תשתית ארגונית / מערכתית",
+    "היעד הוטמע באופן חלקי ונדרש כעת להרחיב"
+  ],
+  ongoingAdd: [
+    "הרחבת היישום לשכבות נוספות",
+    "הרחבת היישום לכיתות נוספות",
+    "הגדלת מספר המורים המשתתפים",
+    "העמקת השימוש בפרקטיקות שנבחרו",
+    "חיזוק המעקב והבקרה",
+    "חיזוק הקשר בין נתונים למענים",
+    "דיוק הכלים הקיימים",
+    "שיתוף שותפים נוספים בתהליך",
+    "מעבר מפיילוט ליישום סדור",
+    "ביסוס רצף עבודה שנתי"
+  ]
+};
+
+const ZONE_BANKS = {
+  z1: {
+    currentState: [
+      "קיימים מיפויים, אך הם אינם משמשים באופן עקבי לבניית מענים",
+      "הנתונים נאספים אך אינם מנותחים באופן שיטתי",
+      "קיימים נתונים, אך הם מפוזרים בין גורמים שונים",
+      "יש שימוש חלקי בנתונים לצורך קבלת החלטות",
+      "קיימות תוכניות התערבות, אך אינן מבוססות תמיד על נתונים",
+      "המעקב אחר התקדמות תלמידים אינו סדור",
+      "אין שפה משותפת בצוות סביב עבודה מבוססת נתונים",
+      "יש שונות בין כיתות / שכבות בשימוש בנתונים",
+      "נעשה שימוש בכלי מיפוי, אך ללא רצף שנתי ברור",
+      "יש בסיס טוב, ונדרש כעת להעמיק או להרחיב את העבודה"
+    ],
+    dataBase: [
+      "ממצאי עוגן / עוגן-פלוס",
+      "נתוני מיפוי הוליסטי",
+      "פער בין נתוני מיפוי לבין המענים בפועל",
+      "נתונים לימודיים",
+      "נתונים רגשיים / התנהגותיים",
+      "קושי של הצוות לנתח ולהשתמש בנתונים",
+      "היעדר מפת מענים מסודרת",
+      "צורך בעדכון שוטף של תוכניות התערבות",
+      "פערים בין שכבות / כיתות",
+      "תובנות מישיבות פדגוגיות"
+    ],
+    goalNames: [
+      "הטמעת תהליך מיפוי הוליסטי סדור בבית הספר",
+      "חיזוק השימוש בנתוני מיפוי לבניית מענים",
+      "בניית שגרת עבודה פדגוגית מבוססת נתונים",
+      "פיתוח מפת מענים בית ספרית מרובדת (MTSS)",
+      "חיזוק הקשר בין נתונים לבין תוכניות התערבות",
+      "ביסוס מעקב רבעוני אחר תלמידים במיקוד",
+      "הרחבת השימוש בנתונים לצורך קבלת החלטות בשכבה"
+    ],
+    desiredOutcome: [
+      "מיפוי מלא ועדכני לכלל התלמידים / לקבוצת היעד",
+      "לכל תלמיד במיקוד קיימת תוכנית התערבות מבוססת נתונים",
+      "מתקיימות ישיבות פדגוגיות מבוססות נתונים באופן קבוע",
+      "קיים שימוש עקבי בנתונים לצורך בניית מענים",
+      "קיימת מפת מענים בית ספרית / שכבתית",
+      "הצוות יודע לקרוא נתונים ולתרגם אותם לפעולה",
+      "תוכניות ההתערבות מתעדכנות לאורך השנה",
+      "יש שיפור בדיוק ניצול המשאבים והמענים"
+    ]
+  },
+  z2: {
+    currentState: [
+      "הצוות מכיר חלק מהעקרונות אך היישום אינו עקבי",
+      "יש פרקטיקות טובות בכיתות מסוימות בלבד",
+      "אין שפה מקצועית משותפת סביב UDL",
+      "קיימת היכרות חלקית בלבד עם עקרונות UDL",
+      "המורים זקוקים לכלים פרקטיים ליישום בכיתה",
+      "יש צורך בגיוון דרכי הוראה, ייצוג וביטוי",
+      "קיימת שונות ביכולת להתאים הוראה לכיתה הטרוגנית",
+      "נעשה שימוש חלקי בהתאמות, אך ללא מסגרת סדורה",
+      "התחום החל להתפתח ונדרש כעת להעמיקו"
+    ],
+    dataBase: [
+      "תצפיות בכיתות",
+      "משוב מהמורים",
+      "קושי במענה לשונות בכיתה הטרוגנית",
+      "פערים במעורבות תלמידים",
+      "פערים בהשתתפות בלמידה",
+      "קושי בהתאמת דרכי הוראה והערכה",
+      "צורך בגיוון דרכי ייצוג / ביטוי / השתתפות",
+      "צורך בהנגשת הלמידה לקבוצות מגוונות",
+      "תובנות מישיבות צוות / הנהלה"
+    ],
+    goalNames: [
+      "הטמעת פרקטיקות UDL בשכבת יעד",
+      "חיזוק היכולת של הצוות לתכנן הוראה מותאמת פרט",
+      "ביסוס שפה מקצועית משותפת סביב UDL",
+      "פיתוח שימוש עקבי במחוון לשיעור מותאם",
+      "הרחבת הגיוון בדרכי הוראה, ייצוג וביטוי",
+      "חיזוק המענה לכיתה הטרוגנית באמצעות פרקטיקות UDL"
+    ],
+    desiredOutcome: [
+      "הצוות משלב פרקטיקות UDL באופן עקבי",
+      "המורים מתכננים שיעורים מותאמי פרט",
+      "קיים שימוש במחוון / כלי עזר לשיעור",
+      "יש עלייה במעורבות ובהשתתפות תלמידים",
+      "ניכרת התאמה טובה יותר לשונות בכיתה",
+      "הצוות משתמש בשפה מקצועית משותפת",
+      "היישום הורחב לשכבות / כיתות נוספות"
+    ]
+  },
+  z3: {
+    currentState: [
+      "תלמידים במיקוד מאותרים, אך לא לכולם יש תוכנית סדורה",
+      "קיימות תוכניות, אך הן אינן אחידות במבנה ובאיכות",
+      "המעקב אחר יישום התוכניות אינו עקבי",
+      "יש קושי בהגדרת מטרות מדויקות ומדידות",
+      "התוכניות אינן נשענות תמיד על מידע מלא",
+      "יש צורך בחיזוק שיתוף הפעולה בין אנשי הצוות",
+      "קיימת עבודה נקודתית, אך לא שגרה סדורה",
+      "יש פער בין האיתור לבין בניית המענה",
+      "התהליך קיים בחלק מהכיתות בלבד"
+    ],
+    dataBase: [
+      "נתוני מיפוי של תלמידים במיקוד",
+      "שיחות עם מחנכות ומורים",
+      "מידע רגשי / חברתי / התנהגותי",
+      "מידע לימודי",
+      "משוב מהורים",
+      "מסקנות של צוות רב-מקצועי",
+      "זיהוי קושי במעקב אחר יישום התוכניות",
+      "פערים באיכות התוכניות שנבנו",
+      "צורך בבניית פורמט אחיד"
+    ],
+    goalNames: [
+      "בניית שגרת עבודה סדורה לתלמידים במיקוד",
+      "פיתוח פורמט אחיד לתוכניות התערבות",
+      "חיזוק איכות התוכניות האישיות / הכיתתיות",
+      "חיזוק המעקב אחר יישום התוכניות",
+      "שיפור שיתוף הפעולה בין הצוותים סביב תלמידים במיקוד",
+      "הרחבת בניית התוכניות לשכבת יעד"
+    ],
+    desiredOutcome: [
+      "לכל תלמיד במיקוד קיימת תוכנית התערבות סדורה",
+      "התוכניות כוללות מטרות, יעדים, פעולות ומדדי הצלחה",
+      "מתקיים מעקב קבוע אחר יישום והתקדמות",
+      "הצוות עובד עם פורמט משותף ואחיד",
+      "יש שיפור בדיוק המענים לתלמידים במיקוד",
+      "קיים שיתוף פעולה רציף עם הורים / שותפים",
+      "התוכניות מתעדכנות לפי התקדמות התלמיד"
+    ]
+  },
+  z4: {
+    currentState: [
+      "המרחבים הקיימים אינם מנוצלים באופן גמיש",
+      "השימוש במרחבים מגוונים מתקיים באופן נקודתי בלבד",
+      "רוב הלמידה עדיין מתקיימת במבנה אחיד וקבוע",
+      "יש רצון לגוון את הלמידה אך חסר תכנון סדור",
+      "הצוות זקוק לרעיונות ולכלים לשימוש במרחבים",
+      "המרחבים קיימים אך אינם מותאמים דיים לצורכי תלמידים מגוונים",
+      "יש פער בין האפשרויות הפיזיות לבין השימוש בפועל",
+      "נעשה שימוש חלקי במרחבים חלופיים"
+    ],
+    dataBase: [
+      "תצפיות בכיתות ובמרחבים",
+      "משוב מהמורים",
+      "משוב מתלמידים",
+      "צורך בגיוון דרכי למידה והשתתפות",
+      "זיהוי קושי של תלמידים במרחב הקיים",
+      "רצון להגדיל מעורבות ושותפות בלמידה",
+      "פער בין פוטנציאל המרחבים לשימוש בפועל",
+      "תובנות מהנהלה / צוות"
+    ],
+    goalNames: [
+      "הרחבת השימוש במרחבי למידה מגוונים בשכבת יעד",
+      "פיתוח מודלים גמישים ללמידה במרחבים שונים",
+      "התאמת המרחב לצורכי תלמידים מגוונים",
+      "חיזוק הקשר בין מרחב למידה לפדגוגיה מכילה",
+      "קידום פיילוט של למידה במרחב חלופי"
+    ],
+    desiredOutcome: [
+      "נעשה שימוש מגוון ומתוכנן במרחבי למידה",
+      "המרחב תומך טוב יותר בהשתתפות תלמידים מגוונים",
+      "ניכרת עלייה במעורבות התלמידים",
+      "המורים משלבים מרחבים שונים כחלק מההוראה",
+      "פותחו מודלים גמישים ללמידה",
+      "בוצעו התאמות במרחב בהתאם לצרכים שעלו"
+    ]
+  }
+};
+
+// ── SETUP BANKS ──────────────────────────────────────────────────────────────
+const SETUP_BANKS = {
+  situation: [
+    "עד 100 תלמידים",
+    "101–200 תלמידים",
+    "201–350 תלמידים",
+    "מעל 350 תלמידים",
+    "עד 5% תלמידים עם צרכים מיוחדים",
+    "6–12% תלמידים עם צרכים מיוחדים",
+    "13–20% תלמידים עם צרכים מיוחדים",
+    "מעל 20% תלמידים עם צרכים מיוחדים",
+    "נתוני מיפוי קיימים ומעודכנים",
+    "נתוני מיפוי חלקיים או לא מעודכנים",
+    "אין נתוני מיפוי מסודרים",
+    "עד 10% תלמידים במיקוד",
+    "11–20% תלמידים במיקוד",
+    "מעל 20% תלמידים במיקוד",
+    "אחוזי הצלחה גבוהים (מעל 80%)",
+    "אחוזי הצלחה בינוניים (60–80%)",
+    "אחוזי הצלחה נמוכים (מתחת ל-60%)"
+  ],
+  processes: [
+    "מיפוי הוליסטי שנתי מתבצע באופן סדיר",
+    "ועדות השמה מתקיימות לפי לוח זמנים",
+    "ישיבות פדגוגיות מבוססות נתונים",
+    "צוות רב-מקצועי פעיל ומתכנס",
+    "תוכניות התערבות אישיות לתלמידים במיקוד",
+    "ליווי מורים בתהליכי הכלה",
+    "שיחות הורים / שיתוף הורים בתהליך",
+    "שימוש בכלי עוגן / עוגן-פלוס",
+    "קהילת היוועצות מתפקדת",
+    "תוכנית עבודה בית ספרית לקידום הכלה",
+    "שיתוף פעולה עם גורמים חיצוניים",
+    "תהליכי הכלה קיימים בחלקם אך אינם עקביים",
+    "אין תהליכים מסודרים כרגע"
+  ],
+  insights: [
+    "הצוות מוכן לשינוי ופתוח ללמידה",
+    "יש מוטיבציה גבוהה בקרב חלק מהצוות",
+    "קיים פער בין הידע לבין היישום בפועל",
+    "יש צורך בשפה מקצועית משותפת",
+    "ישנה שונות גדולה בין כיתות ושכבות",
+    "המנהל/ת מחויבת לתהליך",
+    "הצוות זקוק לכלים פרקטיים יותר מאשר לתיאוריה",
+    "ההורים שותפים חלקיים בלבד",
+    "יש הצלחות מקומיות שאפשר להרחיב",
+    "קיים קושי בשמירת רצף בין שנות לימוד",
+    "הנתונים קיימים אך אינם מנוצלים מספיק",
+    "השנה הקודמת הניחה תשתית טובה להמשך"
+  ],
+  challenges: [
+    "שחיקת הצוות החינוכי",
+    "מורים זוטרים רבים / תחלופה גבוהה",
+    "עומס מערכתי גבוה",
+    "חסך במשאבים ובשעות",
+    "קושי בשיתוף פעולה בין אנשי צוות",
+    "פערים גדולים בכיתה ההטרוגנית",
+    "מרחבי למידה לא גמישים",
+    "קושי בשילוב תלמידים עם צרכים מורכבים",
+    "אין מעקב עקבי אחר תוכניות ההתערבות",
+    "חוסר בהדרכה מקצועית עדכנית",
+    "הורים עם ציפיות מנוגדות",
+    "קושי בגיבוש שפה מקצועית אחידה",
+    "מדיניות בית ספרית לא ברורה בנושא הכלה",
+    "קושי בזמינות הצוות לשיחות ותכנון"
+  ],
+  strengths: [
+    "מנהל/ת מחויב/ת לקידום הכלה",
+    "יועצת בעלת ניסיון ומעורבות",
+    "צוות מורים מקצועי ומסור",
+    "תקציב להשתלמויות ולמידה מקצועית",
+    "תשתית נתונים קיימת (עוגן / מיפויים)",
+    "שיתוף פעולה טוב עם הורים",
+    "קשר חיובי עם מדריכת הכלה",
+    "ניסיון קודם בתהליכי שינוי",
+    "רוח גבוהה ומחויבות של חלק מהצוות",
+    "מרחב פיזי שניתן לעצב מחדש",
+    "רכזות שכבה פעילות ושותפות",
+    "פסיכולוגית / מורת שילוב שותפות בתהליך",
+    "מסורת של חדשנות פדגוגית בבית הספר"
+  ]
+};
+
+// ── CORE DATA ────────────────────────────────────────────────────────────────
+const ZONES = [
+  {id:"z1",num:1,color:"#e53e3e",bg:"#fff5f5",title:"עבודה מבוססת נתונים לקידום התלמידים",desc:"מיפוי הוליסטי, ניתוח נתונים, בניית תוכניות התערבות ומפות מענים",why:"נתונים הם הבסיס לכל תכנון מכיל. זיהוי מוקדם ומדויק מאפשר מענה רלוונטי ואפקטיבי לכל תלמיד.",examples:["מיפוי הוליסטי","ישיבות נתונים","MTSS","התערבות"],
+   actions:["מיפוי הוליסטי לכלל תלמידי בית הספר","מיפוי הוליסטי לשכבת יעד","ניתוח נתונים עם ההנהלה","הצגת נתונים לצוות החינוכי","קיום ישיבות פדגוגיות מבוססות נתונים","קיום ישיבות צוות רב-מקצועי","בניית מפת MTSS בית ספרית","בניית מפת MTSS כיתתית","בניית תוכניות התערבות כיתתיות","בניית תוכניות התערבות אישיות","מעקב אחר התקדמות ועדכון מענים"]},
+  {id:"z2",num:2,color:"#2563a8",bg:"#eff6ff",title:"הטמעת תפיסת UDL ותרגומה לפרקטיקות הוראה ולמידה מותאמי פרט",desc:"בחירת פרקטיקות, ליווי מורים, הדגמת שיעורים, קהילות היוועצות",why:"UDL מאפשרת גישה לתכנים ולמידה לכלל התלמידים. הטמעה מעשית בכיתה ההטרוגנית היא ליבת תפקיד הרכזת.",examples:["ליווי מורים","הדגמות שיעור","קהילת היוועצות","UDL"],
+   actions:["בחירת פרקטיקות עם המנהל/ת","הצגת עקרונות UDL במליאה","הדגמת שיעור מבוסס UDL","בניית מחוון / כלי עזר לשיעור","ליווי מורים בהטמעת פרקטיקות","קיום קהילת היוועצות / חקר פרקטיקה","צפיית עמיתים / תצפית ומשוב","איסוף ייצוגים ועדויות","התאמת פרקטיקות לצורכי בית הספר"]},
+  {id:"z3",num:3,color:"#d97706",bg:"#fffbf0",title:"ליווי צוותי החינוך בבניית תוכניות התערבות לתלמידים במיקוד",desc:"איתור תלמידים, בניית תוכניות אישיות, שיח עם הורים, מעקב התקדמות",why:"תלמידים במיקוד זקוקים לתוכנית ברורה, מוסכמת ומעקובת. הרכזת מחברת בין הצוות לתלמיד ולמשפחה.",examples:["תוכניות אישיות","שיח הורים","מעקב","רב מקצועי"],
+   actions:["איתור תלמידים במיקוד","איסוף מידע ממחנכים","איסוף מידע מהורים","בניית פורמט אחיד","בניית תוכנית עבודה לתלמיד","הגדרת מטרות ויעדים","קביעת תוצאות מצופות","שיח עם הורים","מפגש רב-מקצועי","מעקב אחר התקדמות","עדכון מענים לאורך השנה"]},
+  {id:"z4",num:4,color:"#2a9d8f",bg:"#f0fdfa",title:"שימוש במרחבי למידה מגוונים לקידום פדגוגיה מכילה",desc:"מיפוי מרחבים, תכנון שימוש גמיש, שילוב למידה מגוונת",why:"הסביבה הפיזית משפיעה על תחושת השייכות, ההשתתפות והמעורבות של כלל התלמידים.",examples:["מיפוי מרחבים","שימוש גמיש","חברותות","פיילוט"],
+   actions:["מיפוי מרחבי למידה קיימים","זיהוי חסמים במרחב הקיים","תכנון שימוש גמיש במרחבים","שילוב למידה בקבוצות ובחברותות","התאמת המרחב לצורכי תלמידים","תכנון פיילוט במרחב מסוים","תצפית על השפעת המרחב","איסוף משוב מהצוות ומהתלמידים"]}
+];
+const CROSS=[{id:"ca1",icon:"🤝",title:"קידום יחסי קרבה ואכפתיות",desc:"מרחב בטוח, הקשבה, שיח אישי"},{id:"ca2",icon:"💬",title:"ביסוס שפה מכילה",desc:"עדכון שפה, גיוון ייצוגים"},{id:"ca3",icon:"💪",title:"חיזוק תחושת המסוגלות של הצוות",desc:"הכשרות, ליווי, הצלחות קטנות"}];
+const SCOPES=["בית ספרי","שכבה","מספר כיתות","כיתה אחת","קבוצת תלמידים במיקוד","צוות מסוים"];
+const METHODS=["קהילת היוועצות","חקר פרקטיקה","חשיפה והדגמה במליאת חדר המורים","ליווי קבוע של מורות ומורים","מודלינג","ישיבת צוות","ישיבת הנהלה","תצפית ומשוב","צפיית עמיתים","מפגש רב-מקצועי","למידת עמיתים","אחר"];
+const PARTNERS=["מנהל/ת בית ספר","מדריכת הכלה","רכזת הערכה ומדידה","רכזת תקשוב","רכזת פדגוגית","יועצת","סגן/ית מנהל/ת","מחנכות ומחנכי כיתה","מורים מקצועיים","מורת שילוב","פסיכולוגית","הורים","צוות רב-מקצועי"];
+const OUT_M=[{id:"om1",t:"מפגשי עבודה"},{id:"om2",t:"מורים השתתפו"},{id:"om3",t:"תוכניות התערבות"},{id:"om4",t:"ישיבות מבוססות נתונים"},{id:"om5",t:"כיתות / שכבות"},{id:"om6",t:"פרקטיקות יושמו"}];
+const OUT_RES=["עלייה במסוגלות הצוות","עלייה בתחושת שייכות תלמידים","שיפור בתחושת ביטחון","שיפור בהיכרות התלמיד השלם","שיפור בהשתתפות","שיפור בשפה מכילה","שיפור בניהול כיתה הטרוגנית","שיפור בדיוק המענים"];
+const EVAL_M=["תצפיות","שאלוני מורים","שאלוני תלמידים","משוב מהורים","ניתוח מסמכים","מעקב נתוני מיפוי","בדיקת תוכניות עבודה / התערבות","בדיקת מערכי שיעור","איסוף ייצוגים ועדויות","שיחות משוב","דיון בצוות / הנהלה"];
+const CP_L=["תחילת שנה","אמצע שנה","סוף שנה"];
+const CP_C=["#10b981","#f59e0b","#6366f1"];
+const FOCUS_L={high:"גבוה",medium:"בינוני",maintain:"תחזוקה"};
+const STEPS=[{id:1,l:"פרטי מסגרת",i:"🏫"},{id:2,l:"ארבע הזירות",i:"🎯"},{id:3,l:"הגדרת יעדים",i:"📋"},{id:4,l:"פעולות ומתודות",i:"⚙️"},{id:5,l:"שותפים ומדדים",i:"📊"},{id:6,l:"תוכנית עבודה",i:"📄"}];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+function mkCS(){return{items:[],other:""};}
+function mkGoal(){return{
+  text:"",type:"new",scope:[],scopeDetail:"",
+  ongoingYear:"",
+  ongoingDone:mkCS(),ongoingAdd:mkCS(),
+  currentState:mkCS(),dataBase:mkCS(),
+  desiredState:mkCS(),targetResult:mkCS(),
+  coreActions:[],suppActions:[],customCore:[],customSupp:[],
+  methods:[],partners:[],outputMetrics:{},outcomeMetrics:[],evalMethods:[],
+  cp:[{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""}]
+};}
+function mkZone(){return{focus:"",g1:mkGoal(),g2:{...mkGoal(),enabled:false}};}
+
+let S={
+  step:1,tab:"z1",
+  setup:{school:"",year:'תשפ"ו',principal:"",coordinator:"",district:"",grades:"",date:new Date().toLocaleDateString("he-IL"),meetings:"",experience:"",
+    situation:mkCS(),processes:mkCS(),practices:"",insights:mkCS(),challenges:mkCS(),strengths:mkCS()},
+  zones:{z1:mkZone(),z2:mkZone(),z3:mkZone(),z4:mkZone()},cross:[]
+};
+
+const DEMO={
+  step:1,tab:"z1",
+  setup:{school:"בית ספר שוהם",year:'תשפ"ו',principal:"מירית כהן",coordinator:"תמר לוי",district:"מחוז מרכז – רמת גן",grades:"א'–ו'",date:"18/03/2026",meetings:"פגישה חודשית עם מנהלת + מעקב ב-Teams",experience:"3",
+    situation:{items:["167 — 101–200 תלמידים","6–12% תלמידים עם צרכים מיוחדים","11–20% תלמידים במיקוד","נתוני מיפוי קיימים ומעודכנים"],other:""},
+    processes:{items:["מיפוי הוליסטי שנתי מתבצע באופן סדיר","ועדות השמה מתקיימות לפי לוח זמנים","שימוש בכלי עוגן / עוגן-פלוס"],other:"למידה שיתופית חלקית"},
+    practices:"שיעורים בגישת 'פתיחה לכולם', ישיבות שכבה חודשיות",
+    insights:{items:["הצוות מוכן לשינוי ופתוח ללמידה","יש צורך בכלים פרקטיים יותר מאשר לתיאוריה","יש הצלחות מקומיות שאפשר להרחיב"],other:""},
+    challenges:{items:["שחיקת הצוות החינוכי","מורים זוטרים רבים / תחלופה גבוהה","מרחבי למידה לא גמישים"],other:""},
+    strengths:{items:["מנהל/ת מחויב/ת לקידום הכלה","יועצת בעלת ניסיון ומעורבות","תקציב להשתלמויות ולמידה מקצועית"],other:""}},
+  zones:{
+    z1:{focus:"high",
+      g1:{...mkGoal(),text:"הטמעת תהליך מיפוי הוליסטי סדור בבית הספר",type:"new",scope:["בית ספרי"],
+        currentState:{items:["קיימים מיפויים, אך הם אינם משמשים באופן עקבי לבניית מענים","יש שימוש חלקי בנתונים לצורך קבלת החלטות"],other:""},
+        dataBase:{items:["ממצאי עוגן / עוגן-פלוס","פער בין נתוני מיפוי לבין המענים בפועל"],other:""},
+        desiredState:{items:["קיים שימוש עקבי בנתונים לצורך בניית מענים","תוכניות ההתערבות מתעדכנות לאורך השנה"],other:""},
+        targetResult:{items:["כלל מחנכות בית הספר"],other:""},
+        coreActions:["מיפוי הוליסטי לכלל תלמידי בית הספר","בניית מפת MTSS בית ספרית"],
+        suppActions:["ניתוח נתונים עם ההנהלה"],
+        methods:["ישיבת הנהלה","ישיבת צוות"],
+        partners:["מנהל/ת בית ספר","יועצת","מחנכות ומחנכי כיתה"],
+        outputMetrics:{om1:6,om3:9},outcomeMetrics:["שיפור בדיוק המענים"],evalMethods:["מעקב נתוני מיפוי"],customCore:[],customSupp:[],
+        cp:[{w:"האם המיפוי הושלם",d:"רשימת תלמידים",who:"רכזת+מנהלת",dec:"עדכון סדרי עדיפויות"},{w:"מצב MTSS",d:"כמות תוכניות",who:"צוות מורים",dec:"הוספת מענים"},{w:"שיפור בזיהוי",d:"השוואה לתחילת שנה",who:"הנהלה+רכזת",dec:"תכנון שנה הבאה"}]},
+      g2:{...mkGoal(),enabled:true,text:"ביסוס מעקב רבעוני אחר תלמידים במיקוד",type:"ongoing",ongoingYear:"2",
+        ongoingDone:{items:["התקיימו מפגשי למידה / ליווי ראשונים","נאספו נתונים ראשוניים"],other:""},
+        ongoingAdd:{items:["חיזוק המעקב והבקרה","ביסוס רצף עבודה שנתי"],other:""},
+        scope:["שכבה"],coreActions:["קיום ישיבות פדגוגיות מבוססות נתונים"],
+        currentState:mkCS(),dataBase:mkCS(),desiredState:mkCS(),targetResult:mkCS(),
+        methods:["ישיבת צוות"],customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[],evalMethods:[]}},
+    z2:{focus:"medium",
+      g1:{...mkGoal(),text:"הטמעת פרקטיקות UDL מוסכמות בקרב מורי השכבות הבינוניות",type:"new",scope:["שכבה"],
+        currentState:{items:["הצוות מכיר חלק מהעקרונות אך היישום אינו עקבי","יש פרקטיקות טובות בכיתות מסוימות בלבד"],other:""},
+        dataBase:{items:["תצפיות בכיתות","קושי במענה לשונות בכיתה הטרוגנית"],other:""},
+        desiredState:{items:["הצוות משלב פרקטיקות UDL באופן עקבי"],other:""},
+        targetResult:{items:["מחנכות שכבה מסוימת","מורים מקצועיים"],other:""},
+        coreActions:["בחירת פרקטיקות עם המנהל/ת","קיום קהילת היוועצות / חקר פרקטיקה"],
+        suppActions:["איסוף ייצוגים ועדויות"],methods:["קהילת היוועצות","מודלינג"],
+        partners:["מנהל/ת בית ספר","רכזת פדגוגית"],evalMethods:["תצפיות"],
+        customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[]},
+      g2:{...mkGoal(),enabled:false}},
+    z3:{focus:"high",
+      g1:{...mkGoal(),text:"בניית שגרת עבודה סדורה לתלמידים במיקוד",type:"ongoing",ongoingYear:"2",
+        ongoingDone:{items:["בוצע פיילוט ראשוני","היעד יושם במספר כיתות / שכבה אחת"],other:""},
+        ongoingAdd:{items:["הרחבת היישום לשכבות נוספות","חיזוק המעקב והבקרה"],other:""},
+        scope:["בית ספרי"],
+        currentState:{items:["תלמידים במיקוד מאותרים, אך לא לכולם יש תוכנית סדורה"],other:""},
+        dataBase:{items:["נתוני מיפוי של תלמידים במיקוד","שיחות עם מחנכות ומורים"],other:""},
+        desiredState:{items:["לכל תלמיד במיקוד קיימת תוכנית התערבות סדורה","מתקיים מעקב קבוע אחר יישום והתקדמות"],other:""},
+        targetResult:{items:["תלמידים במיקוד"],other:""},
+        coreActions:["בניית תוכנית עבודה לתלמיד","מעקב אחר התקדמות"],
+        methods:["מפגש רב-מקצועי"],partners:["מורת שילוב","פסיכולוגית"],
+        evalMethods:["ניתוח מסמכים"],customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[]},
+      g2:{...mkGoal(),enabled:false}},
+    z4:{focus:"maintain",
+      g1:{...mkGoal(),text:"שמירה על שימוש גמיש במרחבי למידה קיימים",type:"ongoing",ongoingYear:"1",
+        ongoingDone:{items:["בוצע פיילוט ראשוני"],other:""},
+        ongoingAdd:{items:["דיוק הכלים הקיימים"],other:""},
+        scope:["בית ספרי"],
+        currentState:{items:["נעשה שימוש חלקי במרחבים חלופיים"],other:""},
+        dataBase:mkCS(),desiredState:mkCS(),targetResult:{items:["כלל מחנכות בית הספר"],other:""},
+        coreActions:["מיפוי מרחבי למידה קיימים"],methods:["תצפית ומשוב"],
+        partners:["מחנכות ומחנכי כיתה"],evalMethods:["תצפיות"],
+        customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[]},
+      g2:{...mkGoal(),enabled:false}}
+  },cross:["ca1","ca2"]
+};
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function h(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function csText(v){
+  if(!v) return "";
+  if(typeof v==="string") return v;
+  const parts=[...(v.items||[])];
+  if(v.other) parts.push(v.other);
+  return parts.join(" | ");
+}
+function csHasValue(v){if(!v) return false;if(typeof v==="string") return !!v;return (v.items&&v.items.length>0)||!!v.other;}
+
+// ── DROPDOWN CHECKSELECT ──────────────────────────────────────────────────────
+// Track open dropdowns by DOM ID — no re-render needed for open/close
+function ddId(prefix){return "dd_"+prefix.replace(/[^a-z0-9]/gi,"_");}
+
+function toggleDD(id){
+  const panel=document.getElementById(id+"_panel");
+  const trigger=document.getElementById(id+"_trigger");
+  if(!panel||!trigger)return;
+  const isOpen=panel.classList.contains("open");
+  // Close all other dropdowns first
+  document.querySelectorAll(".dd-panel.open").forEach(p=>{
+    p.classList.remove("open");
+    const t=document.getElementById(p.id.replace("_panel","_trigger"));
+    if(t)t.classList.remove("open");
+  });
+  if(!isOpen){panel.classList.add("open");trigger.classList.add("open");}
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener("click",function(e){
+  if(!e.target.closest(".dd-wrap")){
+    document.querySelectorAll(".dd-panel.open").forEach(p=>{
+      p.classList.remove("open");
+      const t=document.getElementById(p.id.replace("_panel","_trigger"));
+      if(t)t.classList.remove("open");
+    });
+  }
+});
+
+function renderDD(uid, items, other, options, label, full, onToggleItem, onSetOther){
+  const selected=items.filter(x=>x!=="__other__");
+  const showOther=items.includes("__other__");
+  const hasVal=selected.length>0||!!other;
+  const id=ddId(uid);
+  return `<div class="fgrp${full?" full":""}">
+    <label class="flbl">${label}</label>
+    <div class="dd-wrap" onclick="event.stopPropagation()">
+      <div class="dd-trigger ${hasVal?"has-val":""}" id="${id}_trigger" onclick="toggleDD('${id}')">
+        <div class="dd-left">
+          ${hasVal
+            ?`<div class="dd-tags">
+                ${selected.map(i=>`<span class="dd-tag">${h(i)}</span>`).join("")}
+                ${other?`<span class="dd-tag dd-tag-other">${h(other)}</span>`:""}
+              </div>`
+            :`<span class="dd-placeholder">בחרי אפשרויות...</span>`
+          }
+        </div>
+        ${hasVal?`<span class="dd-count">${selected.length+(other?1:0)}</span>`:""}
+        <span class="dd-arrow">▾</span>
+      </div>
+      <div class="dd-panel" id="${id}_panel">
+        ${options.map(opt=>`
+          <div class="dd-item ${items.includes(opt)?"on":""}" onclick="${onToggleItem}('${opt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
+            <span class="dd-box">${items.includes(opt)?"✓":""}</span>
+            <span>${h(opt)}</span>
+          </div>`).join("")}
+        <div class="dd-item dd-other-item ${showOther?"on":""}" onclick="${onToggleItem}('__other__')">
+          <span class="dd-box" style="${showOther?"background:var(--pur);border-color:var(--pur);color:#fff":""}">✎</span>
+          <span style="color:${showOther?"var(--pur)":"var(--muted)"}">אחר — ניסוח חופשי</span>
+        </div>
+        ${showOther?`<input class="dd-inp" placeholder="כתבי ניסוח קצר ומדויק..." value="${h(other)}" oninput="${onSetOther}(this.value)" onclick="event.stopPropagation()">`:""}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCS(zid,gk,field,options,label,full){
+  const val=S.zones[zid][gk][field]||{items:[],other:""};
+  const items=val.items||[];
+  const other=val.other||"";
+  const uid=`${zid}_${gk}_${field}`;
+  // Register inline handlers via global function map
+  window[`_tcs_${uid}`]=function(opt){
+    const g=S.zones[zid][gk];
+    const v=g[field]||{items:[],other:""};
+    const its=[...(v.items||[])];
+    if(its.includes(opt)){g[field]={...v,items:its.filter(x=>x!==opt),other:opt==="__other__"?"":v.other};}
+    else{g[field]={...v,items:[...its,opt]};}
+    // Re-render only the trigger+panel, not the whole page
+    const id=ddId(uid);
+    const newVal=g[field];
+    const newItems=newVal.items||[];
+    const newOther=newVal.other||"";
+    const newSelected=newItems.filter(x=>x!=="__other__");
+    const newShowOther=newItems.includes("__other__");
+    const hasVal=newSelected.length>0||!!newOther;
+    // Update trigger display
+    const trigger=document.getElementById(id+"_trigger");
+    if(trigger){
+      const left=trigger.querySelector(".dd-left");
+      if(left){left.innerHTML=hasVal
+        ?newSelected.map(i=>`<span class="dd-tag">${h(i)}</span>`).join("")+(newOther?`<span class="dd-tag dd-tag-other">${h(newOther)}</span>`:"")
+        :`<span class="dd-placeholder">בחרי אפשרויות...</span>`;}
+      trigger.className="dd-trigger "+(hasVal?"has-val ":"")+"open";
+      const countEl=trigger.querySelector(".dd-count");
+      const count=newSelected.length+(newOther?1:0);
+      if(countEl){countEl.textContent=count;countEl.style.display=count>0?"":"none";}
+      else if(count>0){const arrow=trigger.querySelector(".dd-arrow");if(arrow){const c=document.createElement("span");c.className="dd-count";c.textContent=count;trigger.insertBefore(c,arrow);}}
+    }
+    // Update panel items
+    const panel=document.getElementById(id+"_panel");
+    if(panel){
+      panel.querySelectorAll(".dd-item:not(.dd-other-item)").forEach((el,i)=>{
+        const isOn=newItems.includes(options[i]);
+        el.className="dd-item"+(isOn?" on":"");
+        const box=el.querySelector(".dd-box");
+        if(box)box.textContent=isOn?"✓":"";
+      });
+      const otherItem=panel.querySelector(".dd-other-item");
+      if(otherItem){
+        otherItem.className="dd-item dd-other-item"+(newShowOther?" on":"");
+        const ob=otherItem.querySelector(".dd-box");
+        if(ob){ob.textContent=newShowOther?"✓":"";ob.style=newShowOther?"background:var(--pur);border-color:var(--pur);color:#fff":"";}
+      }
+      let inp=panel.querySelector(".dd-inp");
+      if(newShowOther&&!inp){
+        inp=document.createElement("input");inp.className="dd-inp";
+        inp.placeholder="כתבי ניסוח קצר ומדויק...";inp.value=newOther;
+        inp.addEventListener("input",function(){window[`_scs_${uid}`](this.value);});
+        inp.addEventListener("click",function(e){e.stopPropagation();});
+        panel.appendChild(inp);
+      } else if(!newShowOther&&inp){inp.remove();}
+    }
+  };
+  window[`_scs_${uid}`]=function(val){
+    S.zones[zid][gk][field]={...(S.zones[zid][gk][field]||{items:[]})};
+    S.zones[zid][gk][field].other=val;
+  };
+  return renderDD(uid,items,other,options,label,full,`_tcs_${uid}`,`_scs_${uid}`);
+}
+function toggleCS(zid,gk,field,opt){window[`_tcs_${zid}_${gk}_${field}`]&&window[`_tcs_${zid}_${gk}_${field}`](opt);}
+function setCSother(zid,gk,field,val){window[`_scs_${zid}_${gk}_${field}`]&&window[`_scs_${zid}_${gk}_${field}`](val);}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render(){
+  renderSidebar();refreshTopBar();
+  const c=document.getElementById("content");
+  if(S.step===1)c.innerHTML=renderS1();
+  else if(S.step===2)c.innerHTML=renderS2();
+  else if(S.step===3)c.innerHTML=renderS3();
+  else if(S.step===4)c.innerHTML=renderS4();
+  else if(S.step===5)c.innerHTML=renderS5();
+  else c.innerHTML=renderS6();
+  updateNav();
+}
+function renderSidebar(){
+  document.getElementById("snav").innerHTML=STEPS.map(s=>`
+    <div class="sstep ${S.step===s.id?"active":""} ${S.step>s.id?"done":""}" onclick="gotoStep(${s.id})">
+      <div class="snum">${S.step>s.id?"✓":s.id}</div><span>${s.l}</span>
+    </div>`).join("");
+}
+function refreshTopBar(){
+  document.getElementById("toptitle").textContent=STEPS[S.step-1].i+" "+STEPS[S.step-1].l;
+  document.getElementById("topschool").textContent=S.setup.school?(S.setup.school+" · "+S.setup.year):"";
+  document.getElementById("pfill").style.width=((S.step-1)/5*100)+"%";
+  document.getElementById("plbl").textContent="שלב "+S.step+" מתוך 6";
+}
+function updateNav(){
+  document.getElementById("btnBack").disabled=S.step===1;
+  const ok=canProceed();
+  const next=document.getElementById("btnNext");
+  const msg=document.getElementById("navMsg");
+  if(S.step<6){next.textContent="הבא ←";next.disabled=!ok;msg.textContent=!ok?"⚠️ יש להשלים שדות חובה":"";}
+  else{next.textContent="🖨️ הדפסה";next.disabled=false;msg.textContent="";}
+}
+function canProceed(){
+  if(S.step===1)return S.setup.school&&S.setup.coordinator&&S.setup.principal;
+  if(S.step===2)return ZONES.every(z=>S.zones[z.id].focus);
+  if(S.step===3)return ZONES.every(z=>S.zones[z.id].g1.text);
+  return true;
+}
+function prevStep(){if(S.step>1){S.step--;render();}}
+function nextStep(){if(S.step<6&&canProceed()){S.step++;render();}else if(S.step===6){window.print();}}
+function gotoStep(n){if(n<=S.step||S.step>1){S.step=n;render();}}
+function setTab(t){S.tab=t;render();}
+function loadDemo(){S={...DEMO};render();}
+function resetAll(){if(confirm("לאפס את כל הנתונים?")){S={step:1,tab:"z1",setup:{school:"",year:'תשפ"ו',principal:"",coordinator:"",district:"",grades:"",date:new Date().toLocaleDateString("he-IL"),meetings:"",experience:"",situation:mkCS(),processes:mkCS(),practices:"",insights:mkCS(),challenges:mkCS(),strengths:mkCS()},zones:{z1:mkZone(),z2:mkZone(),z3:mkZone(),z4:mkZone()},cross:[]};render();}}
+
+// ── SETUP CS HELPER ───────────────────────────────────────────────────────────
+function renderSetupCS(field, options, label, full){
+  const val=S.setup[field]||{items:[],other:""};
+  const items=val.items||[];
+  const other=val.other||"";
+  const uid="setup_"+field;
+  window[`_tcs_${uid}`]=function(opt){
+    const v=S.setup[field]||{items:[],other:""};
+    const its=[...(v.items||[])];
+    if(its.includes(opt)){S.setup[field]={...v,items:its.filter(x=>x!==opt),other:opt==="__other__"?"":v.other};}
+    else{S.setup[field]={...v,items:[...its,opt]};}
+    const id=ddId(uid);
+    const newVal=S.setup[field];
+    const newItems=newVal.items||[];
+    const newOther=newVal.other||"";
+    const newSelected=newItems.filter(x=>x!=="__other__");
+    const newShowOther=newItems.includes("__other__");
+    const hasVal=newSelected.length>0||!!newOther;
+    const trigger=document.getElementById(id+"_trigger");
+    if(trigger){
+      const left=trigger.querySelector(".dd-left");
+      if(left){left.innerHTML=hasVal
+        ?newSelected.map(i=>`<span class="dd-tag">${h(i)}</span>`).join("")+(newOther?`<span class="dd-tag dd-tag-other">${h(newOther)}</span>`:"")
+        :`<span class="dd-placeholder">בחרי אפשרויות...</span>`;}
+      trigger.className="dd-trigger "+(hasVal?"has-val ":"")+"open";
+      const countEl=trigger.querySelector(".dd-count");
+      const count=newSelected.length+(newOther?1:0);
+      if(countEl){countEl.textContent=count;countEl.style.display=count>0?"":"none";}
+      else if(count>0){const arrow=trigger.querySelector(".dd-arrow");if(arrow){const c=document.createElement("span");c.className="dd-count";c.textContent=count;trigger.insertBefore(c,arrow);}}
+    }
+    const panel=document.getElementById(id+"_panel");
+    if(panel){
+      panel.querySelectorAll(".dd-item:not(.dd-other-item)").forEach((el,i)=>{
+        const isOn=newItems.includes(options[i]);
+        el.className="dd-item"+(isOn?" on":"");
+        const box=el.querySelector(".dd-box");
+        if(box)box.textContent=isOn?"✓":"";
+      });
+      const otherItem=panel.querySelector(".dd-other-item");
+      if(otherItem){
+        otherItem.className="dd-item dd-other-item"+(newShowOther?" on":"");
+        const ob=otherItem.querySelector(".dd-box");
+        if(ob){ob.textContent=newShowOther?"✓":"";ob.style=newShowOther?"background:var(--pur);border-color:var(--pur);color:#fff":"";}
+      }
+      let inp=panel.querySelector(".dd-inp");
+      if(newShowOther&&!inp){
+        inp=document.createElement("input");inp.className="dd-inp";
+        inp.placeholder="כתבי ניסוח קצר ומדויק...";inp.value=newOther;
+        inp.addEventListener("input",function(){S.setup[field].other=this.value;});
+        inp.addEventListener("click",function(e){e.stopPropagation();});
+        panel.appendChild(inp);
+      } else if(!newShowOther&&inp){inp.remove();}
+    }
+  };
+  window[`_scs_${uid}`]=function(val){S.setup[field]={...(S.setup[field]||{items:[]})};S.setup[field].other=val;};
+  return renderDD(uid,items,other,options,label,full,`_tcs_${uid}`,`_scs_${uid}`);
+}
+function toggleSCS(field,opt){window[`_tcs_setup_${field}`]&&window[`_tcs_setup_${field}`](opt);}
+function setSCSother(field,val){window[`_scs_setup_${field}`]&&window[`_scs_setup_${field}`](val);}
+
+
+// ── STEP 1 ────────────────────────────────────────────────────────────────────
+function renderS1(){
+  const s=S.setup;
+  const exp=parseInt(s.experience);
+  let guidance="";
+  if(exp===1)guidance=`<div class="guidance"><div class="gt">🌱 שנה ראשונה בתפקיד</div><p>הדגש השנה הוא על למידה, מיפוי, היכרות עם בית הספר ובניית תשתיות ושותפויות. עומק גובר על רוחב.</p></div>`;
+  else if(exp===2)guidance=`<div class="guidance"><div class="gt">🌿 שנה שנייה בתפקיד</div><p>הדגש הוא על הרחבה, דיוק והעמקה. כדאי לבחור יעדים שמבוססים על מה שנבנה בשנה הקודמת.</p></div>`;
+  else if(exp>=3)guidance=`<div class="guidance"><div class="gt">🌳 שנה ${exp} בתפקיד</div><p>הדגש הוא על הטמעה, ביסוס, הרחבה וקיימות. שנה מצוינת לחזק תהליכים שהוכיחו עצמם.</p></div>`;
+  return `<div class="page">
+    <div class="ph"><h1>מרחב שיח למנהל/ת ולרכזת הכלה והוגנות— לקראת בניית תוכנית עבודה שנתית</h1>
+    <p>כלי לניהול שיח מקצועי בין מנהל/ת בית הספר לרכזת הכלה והוגנות — כבסיס להגדרת יעדים ובניית תוכנית עבודה שנתית ממוקדת, ישימה ומדידה.</p></div>
+    <div class="card">
+      <div class="ch"><div class="ci" style="background:#eff6ff">🏫</div><div><div class="ct">פרטי מסגרת</div><div class="cs">פרטים בסיסיים</div></div></div>
+      <div class="fg">
+        <div class="fgrp"><label class="flbl">שם בית הספר *</label><input class="finp" placeholder="שם בית הספר" value="${h(s.school)}" oninput="S.setup.school=this.value;refreshTopBar()"></div>
+        <div class="fgrp"><label class="flbl">שנת הלימודים</label><input class="finp" placeholder='תשפ"ו' value="${h(s.year)}" oninput="S.setup.year=this.value;refreshTopBar()"></div>
+        <div class="fgrp"><label class="flbl">שם המנהל/ת *</label><input class="finp" placeholder="שם מלא" value="${h(s.principal)}" oninput="S.setup.principal=this.value"></div>
+        <div class="fgrp"><label class="flbl">שם רכזת ההכלה *</label><input class="finp" placeholder="שם מלא" value="${h(s.coordinator)}" oninput="S.setup.coordinator=this.value"></div>
+        <div class="fgrp"><label class="flbl">מחוז / רשות <span class="opt">(אופציונלי)</span></label><input class="finp" placeholder="מחוז מרכז – רמת גן" value="${h(s.district)}" oninput="S.setup.district=this.value"></div>
+        <div class="fgrp"><label class="flbl">שכבות גיל במיקוד</label><input class="finp" placeholder="א'–ו'" value="${h(s.grades)}" oninput="S.setup.grades=this.value"></div>
+        <div class="fgrp"><label class="flbl">תאריך השיחה</label><input class="finp" placeholder="19/03/2026" value="${h(s.date)}" oninput="S.setup.date=this.value"></div>
+        <div class="fgrp"><label class="flbl">ותק בתפקיד (שנים)</label><input class="finp" placeholder="3" value="${h(s.experience)}" oninput="S.setup.experience=this.value;render()"></div>
+        <div class="fgrp full"><label class="flbl">סדירויות מוסכמות</label><input class="finp" placeholder="פגישה חודשית עם מנהלת, מעקב דו-שבועי..." value="${h(s.meetings)}" oninput="S.setup.meetings=this.value"></div>
+      </div>
+    </div>
+    ${guidance}
+    <div class="card">
+      <div class="ch"><div class="ci" style="background:#f0fdfa">🔍</div><div><div class="ct">תמונת מצב ראשונית</div><div class="cs">בחרו מהרשימות או הוסיפו ניסוח חופשי</div></div></div>
+      <div class="fg">
+        ${renderSetupCS("situation", SETUP_BANKS.situation, "נתונים בית ספריים מרכזיים", true)}
+        ${renderSetupCS("processes", SETUP_BANKS.processes, "תהליכים מקדמי הכלה קיימים — מה כבר עובד?", true)}
+        <div class="fgrp full"><label class="flbl">פרקטיקות מיושמות כיום <span class="opt">(תיאור חופשי)</span></label>
+          <textarea class="finp fta" rows="2" placeholder="פרטי פרקטיקות ספציפיות, שיטות הוראה קיימות..." oninput="S.setup.practices=this.value">${h(s.practices)}</textarea>
+        </div>
+        ${renderSetupCS("insights", SETUP_BANKS.insights, "תובנות מרכזיות", false)}
+        ${renderSetupCS("challenges", SETUP_BANKS.challenges, "אתגרים בולטים", false)}
+        ${renderSetupCS("strengths", SETUP_BANKS.strengths, "חוזקות ומשאבים קיימים", false)}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── STEP 2 ────────────────────────────────────────────────────────────────────
+function renderS2(){
+  return `<div class="page">
+    <div class="ph"><h1>ארבע זירות הפעולה</h1><p>כל ארבע הזירות הן חלק קבוע מהתפקיד. בחרו לכל זירה רמת מיקוד לשנה.</p></div>
+    ${!ZONES.every(z=>S.zones[z.id].focus)?`<div class="alert info">ℹ️ יש לבחור רמת מיקוד לכל ארבע הזירות.</div>`:""}
+    ${ZONES.map(z=>{const zd=S.zones[z.id];return `<div class="zcard ${zd.focus?"sel":""}">
+      <div class="zh"><div class="znum" style="background:${z.color}">${z.num}</div>
+        <div><div class="ztit">${z.title}</div><div class="zdsc">${z.desc}</div></div></div>
+      <div class="zwhy"><strong>למה זה חשוב:</strong> ${z.why}</div>
+      <div class="exlbl">דוגמאות לפעולות</div>
+      <div class="chips">${z.examples.map(e=>`<span class="echip">${e}</span>`).join("")}</div>
+      <div class="focus-lbl">בחרו רמת מיקוד:</div>
+      <div class="focus-row">
+        <button class="fbtn ${zd.focus==="high"?"fh":""}" onclick="setFocus('${z.id}','high')">גבוה<span class="fsub">יעד מרכזי</span></button>
+        <button class="fbtn ${zd.focus==="medium"?"fm":""}" onclick="setFocus('${z.id}','medium')">בינוני<span class="fsub">יעד חשוב</span></button>
+        <button class="fbtn ${zd.focus==="maintain"?"fk":""}" onclick="setFocus('${z.id}','maintain')">תחזוקה<span class="fsub">שמירה על הקיים</span></button>
+      </div></div>`;}).join("")}
+    <div class="cross-card">
+      <div style="font-weight:700;font-size:14px;color:var(--pur);margin-bottom:5px">🔗 רווחים נלווים</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:11px">סמנו תחומים שישתלבו בתוכנית</div>
+      ${CROSS.map(ca=>`<div class="xitem ${S.cross.includes(ca.id)?"active":""}" onclick="toggleCross('${ca.id}')">
+        <span style="font-size:18px">${ca.icon}</span>
+        <div><div style="font-weight:600;font-size:13px">${ca.title}</div><div style="font-size:12px;color:var(--muted)">${ca.desc}</div></div>
+        ${S.cross.includes(ca.id)?`<span style="margin-right:auto;font-size:12px;color:var(--pur);font-weight:700">✓</span>`:""}
+      </div>`).join("")}
+    </div>
+  </div>`;
+}
+function setFocus(zid,f){S.zones[zid].focus=f;render();}
+function toggleCross(id){S.cross=S.cross.includes(id)?S.cross.filter(x=>x!==id):[...S.cross,id];render();}
+
+// ── STEP 3 ────────────────────────────────────────────────────────────────────
+function renderS3(){
+  const zone=ZONES.find(z=>z.id===S.tab);const zd=S.zones[S.tab];
+  return `<div class="page">
+    <div class="ph"><h1>הגדרת יעדים בכל זירה</h1><p>לכל זירה — לפחות יעד אחד (חובה). יעד שני אפשרי.</p></div>
+    ${renderZTabs()}
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div style="width:36px;height:36px;border-radius:9px;background:${zone.color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">${zone.num}</div>
+      <div><div style="font-weight:700;font-size:15px;color:var(--p)">${zone.title}</div>
+        <div style="font-size:12px;color:var(--muted)">רמת מיקוד: ${FOCUS_L[zd.focus]}</div></div>
+    </div>
+    ${renderGoalEditor("g1",zd.g1,S.tab,true)}
+    <div class="divider"></div>
+    ${!zd.g2.enabled
+      ?`<button style="padding:8px 17px;border:2px dashed var(--bdr);border-radius:7px;background:none;cursor:pointer;color:var(--muted);font-size:13px;font-weight:600;width:100%" onclick="toggleG2('${S.tab}',true)">+ הוספת יעד שני (אופציונלי)</button>`
+      :`<div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
+            <span class="gbadge gb-opt">יעד שני — אופציונלי</span>
+            <button style="font-size:12px;color:var(--red);background:none;border:none;cursor:pointer" onclick="toggleG2('${S.tab}',false)">✕ הסרה</button>
+          </div>
+          ${renderGoalEditor("g2",zd.g2,S.tab,false)}
+        </div>`
+    }
+  </div>`;
+}
+function toggleG2(zid,v){S.zones[zid].g2.enabled=v;render();}
+
+function renderGoalEditor(gk,goal,zid,req){
+  const bank=ZONE_BANKS[zid];
+  const names=bank.goalNames;
+  const isOngoing=goal.type==="ongoing";
+  return `<div>
+    ${req?`<span class="gbadge gb-req">יעד חובה</span>`:""}
+    <div class="fgrp" style="margin-bottom:12px">
+      <label class="flbl">ניסוח היעד ${req?"*":""} <span class="flbl-hint">בחרי ניסוח מוכן או כתבי חופשי</span></label>
+      <div class="goal-sug">
+        ${names.map((n,i)=>`<div class="gsug ${goal.text===n?"active":""}" onclick="setGF('${zid}','${gk}','text',${JSON.stringify(n)})">
+          <span class="gsug-ico">📌</span><span>${h(n)}</span></div>`).join("")}
+        <div class="gsug-free" onclick="focusGoalText_${zid}_${gk}()">✏️ ניסוח חופשי</div>
+      </div>
+      <input class="finp" id="gtxt_${zid}_${gk}" placeholder="ניסוח חופשי..." value="${h(goal.text)}" oninput="setGF('${zid}','${gk}','text',this.value);clearActive_${zid}_${gk}()" style="margin-top:5px">
+    </div>
+    <div style="margin-bottom:11px">
+      <label class="flbl" style="display:block;margin-bottom:7px">סוג היעד:</label>
+      <div class="type-btns">
+        <button class="tbtn ${goal.type==="new"?"tnew":""}" onclick="setGF('${zid}','${gk}','type','new')">🆕 יעד חדש</button>
+        <button class="tbtn ${goal.type==="ongoing"?"tong":""}" onclick="setGF('${zid}','${gk}','type','ongoing')">🔄 יעד מתמשך</button>
+      </div>
+    </div>
+    ${isOngoing?`<div class="ongoing-box">
+      <div class="fg">
+        <div class="fgrp"><label class="flbl">שנה של העבודה</label><input class="finp" placeholder="2, 3..." value="${h(goal.ongoingYear)}" oninput="setGF('${zid}','${gk}','ongoingYear',this.value)"></div>
+        <div class="fgrp full">${renderCS(zid,gk,"ongoingDone",SHARED.ongoingDone,"מה כבר הושג עד כה?",false)}</div>
+        <div class="fgrp full">${renderCS(zid,gk,"ongoingAdd",SHARED.ongoingAdd,"מה מבקשים להוסיף / להרחיב השנה?",false)}</div>
+      </div></div>`:""}
+    <div style="margin-bottom:11px">
+      <label class="flbl" style="display:block;margin-bottom:7px">רמת יישום:</label>
+      <div class="scopes">${SCOPES.map(s=>`<button class="schip ${goal.scope?.includes(s)?"active":""}" onclick="toggleScope('${zid}','${gk}','${s}')">${s}</button>`).join("")}</div>
+      ${(goal.scope?.includes("כיתה אחת")||goal.scope?.includes("שכבה")||goal.scope?.includes("קבוצת תלמידים במיקוד"))?`<input class="finp" style="margin-top:5px" placeholder="פרטי: איזו כיתה / שכבה?" value="${h(goal.scopeDetail)}" oninput="setGF('${zid}','${gk}','scopeDetail',this.value)">`:""}
+    </div>
+    <div class="fg">
+      ${renderCS(zid,gk,"currentState",bank.currentState,"מה המצב הקיים כיום?",false)}
+      ${renderCS(zid,gk,"dataBase",bank.dataBase,"על אילו נתונים / תובנות נשען הצורך?",false)}
+      ${renderCS(zid,gk,"desiredState",bank.desiredOutcome,"מהי התוצאה הרצויה?",false)}
+      ${renderCS(zid,gk,"targetResult",SHARED.targetResult,"על מי היעד חל בפועל?",false)}
+    </div>
+  </div>`;
+}
+function setGF(zid,gk,f,v){S.zones[zid][gk][f]=v;if(f==="type"||f==="enabled")render();}
+function toggleScope(zid,gk,s){const sc=S.zones[zid][gk].scope||[];S.zones[zid][gk].scope=sc.includes(s)?sc.filter(x=>x!==s):[...sc,s];render();}
+
+// ── STEP 4 ────────────────────────────────────────────────────────────────────
+function renderS4(){
+  const zone=ZONES.find(z=>z.id===S.tab);const zd=S.zones[S.tab];
+  return `<div class="page">
+    <div class="ph"><h1>פעולות ומתודות עבודה</h1><p>בחרו פעולות מרכזיות ופעולות משלימות לכל יעד.</p></div>
+    ${renderZTabs()}
+    ${renderActEditor("g1",zd.g1,S.tab,"יעד 1",zone)}
+    ${zd.g2.enabled?renderActEditor("g2",zd.g2,S.tab,"יעד 2",zone):""}
+  </div>`;
+}
+function renderActEditor(gk,goal,zid,lbl,zone){
+  const allA=ZONES.find(z=>z.id===zid)?.actions||[];
+  return `<div class="card">
+    <div style="font-size:13px;font-weight:700;color:${zone.color};margin-bottom:13px">${lbl}: ${h(goal.text)||"(ללא ניסוח)"}</div>
+    <div class="alert info" style="margin-bottom:13px">💡 סמנו כל פעולה כ<strong>מרכזית</strong> (ליבת העשייה) או <strong>משלימה</strong> (תומכת).</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div>
+        <div class="at-lbl"><span class="atdot" style="background:var(--p)"></span>פעולות מרכזיות</div>
+        ${allA.map(a=>`<div class="action-item ${goal.coreActions?.includes(a)?"ac":""}" onclick="toggleAct('${zid}','${gk}','${a.replace(/'/g,"\\'")}','core')">
+          <div class="acheck">${goal.coreActions?.includes(a)?"✓":""}</div><span style="font-size:12px;flex:1">${h(a)}</span><span class="atag">מרכזית</span></div>`).join("")}
+        ${(goal.customCore||[]).map(a=>`<div class="action-item ac"><div class="acheck">✓</div><span style="font-size:12px;flex:1">${h(a)}</span><span class="atag">מרכזית</span></div>`).join("")}
+        <div class="cin-row"><input class="finp" id="cc_${zid}_${gk}" placeholder="פעולה מרכזית מותאמת..."><button class="addbtn" onclick="addCustom('${zid}','${gk}','core')">+ הוסף</button></div>
+      </div>
+      <div>
+        <div class="at-lbl"><span class="atdot" style="background:var(--light)"></span>פעולות משלימות</div>
+        ${allA.map(a=>`<div class="action-item ${goal.suppActions?.includes(a)?"as":""}" onclick="toggleAct('${zid}','${gk}','${a.replace(/'/g,"\\'")}','supp')">
+          <div class="acheck">${goal.suppActions?.includes(a)?"✓":""}</div><span style="font-size:12px;flex:1">${h(a)}</span></div>`).join("")}
+        ${(goal.customSupp||[]).map(a=>`<div class="action-item as"><div class="acheck">✓</div><span style="font-size:12px;flex:1">${h(a)}</span></div>`).join("")}
+        <div class="cin-row"><input class="finp" id="cs2_${zid}_${gk}" placeholder="פעולה משלימה..."><button class="addbtn" onclick="addCustom('${zid}','${gk}','supp')">+ הוסף</button></div>
+      </div>
+    </div>
+    <div><label class="flbl" style="display:block;margin-bottom:8px">מתודות עבודה</label>
+      <div class="mchips">${METHODS.map(m=>`<button class="mchip ${goal.methods?.includes(m)?"am":""}" onclick="toggleMethod('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
+    </div>
+  </div>`;
+}
+function toggleAct(zid,gk,a,type){
+  const g=S.zones[zid][gk];const core=[...(g.coreActions||[])],supp=[...(g.suppActions||[])];
+  if(type==="core"){g.coreActions=core.includes(a)?core.filter(x=>x!==a):[...core,a];g.suppActions=supp.filter(x=>x!==a);}
+  else{g.suppActions=supp.includes(a)?supp.filter(x=>x!==a):[...supp,a];g.coreActions=core.filter(x=>x!==a);}
+  render();
+}
+function addCustom(zid,gk,type){
+  const id=type==="core"?`cc_${zid}_${gk}`:`cs2_${zid}_${gk}`;
+  const el=document.getElementById(id);
+  if(el&&el.value.trim()){const g=S.zones[zid][gk];if(type==="core")g.customCore=[...(g.customCore||[]),el.value.trim()];else g.customSupp=[...(g.customSupp||[]),el.value.trim()];render();}
+}
+function toggleMethod(zid,gk,m){const g=S.zones[zid][gk];const ms=g.methods||[];g.methods=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];render();}
+
+// ── STEP 5 ────────────────────────────────────────────────────────────────────
+function renderS5(){
+  const zone=ZONES.find(z=>z.id===S.tab);const zd=S.zones[S.tab];
+  return `<div class="page">
+    <div class="ph"><h1>שותפים, מדדים ונקודות בקרה</h1><p>לכל יעד — מי שותף, מה מודדים, ואיך בודקים.</p></div>
+    ${renderZTabs()}
+    ${renderMetrics("g1",zd.g1,S.tab,"יעד 1",zone)}
+    ${zd.g2.enabled?renderMetrics("g2",zd.g2,S.tab,"יעד 2",zone):""}
+  </div>`;
+}
+function renderMetrics(gk,goal,zid,lbl,zone){
+  const cp=goal.cp||[{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""}];
+  return `<div class="card">
+    <div style="font-size:13px;font-weight:700;color:${zone.color};margin-bottom:16px">${lbl}: ${h(goal.text)||"(ללא ניסוח)"}</div>
+    <div style="margin-bottom:16px">
+      <label class="flbl" style="display:block;margin-bottom:8px">שותפים</label>
+      <div class="mchips" style="margin-bottom:7px">${PARTNERS.map(p=>`<button class="mchip ${goal.partners?.includes(p)?"ap":""}" onclick="togglePart('${zid}','${gk}','${p}')">${p}</button>`).join("")}</div>
+      <div class="cin-row"><input class="finp" id="cp2_${zid}_${gk}" placeholder="שותף נוסף..."><button class="addbtn" onclick="addPart('${zid}','${gk}')">+ הוסף</button></div>
+    </div>
+    <div class="divider"></div>
+    <div style="margin-bottom:16px">
+      <label class="flbl" style="display:block;margin-bottom:8px">מדדי תפוקה</label>
+      ${OUT_M.map(om=>{const isA=om.id in(goal.outputMetrics||{});return `<div class="metric-item ${isA?"on":""}" onclick="${isA?`rmMetric('${zid}','${gk}','${om.id}')`:`addMetric('${zid}','${gk}','${om.id}')`}">
+        <div class="mcheck">${isA?"✓":""}</div>
+        ${isA?`<input type="number" min="0" class="mnum" value="${goal.outputMetrics[om.id]}" onclick="event.stopPropagation()" onchange="setMNum('${zid}','${gk}','${om.id}',this.value)">`:""}
+        <span style="font-size:13px">${om.t}</span></div>`;}).join("")}
+    </div>
+    <div style="margin-bottom:16px">
+      <label class="flbl" style="display:block;margin-bottom:8px">מדדי תוצאה</label>
+      <div class="mchips">${OUT_RES.map(m=>`<button class="mchip ${goal.outcomeMetrics?.includes(m)?"am":""}" onclick="toggleOutc('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
+    </div>
+    <div style="margin-bottom:16px">
+      <label class="flbl" style="display:block;margin-bottom:8px">דרכי הערכה</label>
+      <div class="mchips">${EVAL_M.map(m=>`<button class="mchip ${goal.evalMethods?.includes(m)?"am":""}" onclick="toggleEval('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
+    </div>
+    <div class="divider"></div>
+    <div>
+      <label class="flbl" style="display:block;margin-bottom:11px">נקודות בקרה</label>
+      <div class="cpgrid">${CP_L.map((cpl,i)=>{
+        const c=cp[i]||{};
+        return `<div class="cpcard">
+          <div class="cptit"><span class="cpdot" style="background:${CP_C[i]}"></span>${cpl}</div>
+          <div class="fgrp" style="margin-bottom:6px"><label class="flbl" style="font-size:11px">מה נבדוק</label><textarea class="finp fta" rows="2" style="font-size:12px" placeholder="מה נרצה לבדוק?" oninput="setCp('${zid}','${gk}',${i},'w',this.value)">${h(c.w||"")}</textarea></div>
+          <div class="fgrp" style="margin-bottom:6px"><label class="flbl" style="font-size:11px">אילו נתונים</label><input class="finp" style="font-size:12px" placeholder="נתונים" value="${h(c.d||"")}" oninput="setCp('${zid}','${gk}',${i},'d',this.value)"></div>
+          <div class="fgrp" style="margin-bottom:6px"><label class="flbl" style="font-size:11px">מי ישתתף</label><input class="finp" style="font-size:12px" placeholder="משתתפים" value="${h(c.who||"")}" oninput="setCp('${zid}','${gk}',${i},'who',this.value)"></div>
+          <div class="fgrp"><label class="flbl" style="font-size:11px">החלטות אפשריות</label><textarea class="finp fta" rows="2" style="font-size:12px" placeholder="החלטות" oninput="setCp('${zid}','${gk}',${i},'dec',this.value)">${h(c.dec||"")}</textarea></div>
+        </div>`;
+      }).join("")}</div>
+    </div>
+  </div>`;
+}
+function togglePart(zid,gk,p){const g=S.zones[zid][gk];const ps=g.partners||[];g.partners=ps.includes(p)?ps.filter(x=>x!==p):[...ps,p];render();}
+function addPart(zid,gk){const el=document.getElementById(`cp2_${zid}_${gk}`);if(el&&el.value.trim()){S.zones[zid][gk].partners=[...(S.zones[zid][gk].partners||[]),el.value.trim()];render();}}
+function addMetric(zid,gk,id){const g=S.zones[zid][gk];g.outputMetrics={...g.outputMetrics,[id]:0};render();}
+function rmMetric(zid,gk,id){const g=S.zones[zid][gk];const om={...g.outputMetrics};delete om[id];g.outputMetrics=om;render();}
+function setMNum(zid,gk,id,v){S.zones[zid][gk].outputMetrics[id]=parseInt(v)||0;}
+function toggleOutc(zid,gk,m){const g=S.zones[zid][gk];const ms=g.outcomeMetrics||[];g.outcomeMetrics=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];render();}
+function toggleEval(zid,gk,m){const g=S.zones[zid][gk];const ms=g.evalMethods||[];g.evalMethods=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];render();}
+function setCp(zid,gk,i,f,v){const g=S.zones[zid][gk];const cp=[...(g.cp||[{},{},{}])];cp[i]={...cp[i],[f]:v};g.cp=cp;}
+
+// ── STEP 6 ────────────────────────────────────────────────────────────────────
+function renderS6(){
+  const {setup,zones,cross}=S;
+  function fld(label,val){
+    const txt=typeof val==="string"?val:csText(val);
+    if(!txt) return "";
+    const isMulti=typeof val!=="string"&&(val?.items?.length>1||(val?.items?.length>0&&val?.other));
+    if(isMulti){
+      const parts=[...(val.items||[]).filter(x=>x!=="__other__")];
+      if(val.other)parts.push(val.other);
+      return `<div class="sf"><label>${label}</label><div class="stags">${parts.map(p=>`<span class="tag tt">${h(p)}</span>`).join("")}</div></div>`;
+    }
+    return `<div class="sf"><label>${label}</label><p>${h(txt)}</p></div>`;
+  }
+  return `<div class="page">
+    <div class="ph noprint"><h1>מרחב שיח — תוכנית עבודה שנתית</h1>
+      <p>להלן התוכנית המלאה. ניתן להדפיס או לשמור כ-PDF.</p>
+      <button class="btn-next" style="margin-top:9px" onclick="window.print()">🖨️ הדפסה / PDF</button>
+    </div>
+    <div class="shd">
+      <h2>תוכנית עבודה שנתית — הכלה והוגנות</h2>
+      <p>בית ספר ${h(setup.school)} · ${h(setup.year)}</p>
+      <div class="smeta">
+        ${setup.coordinator?`<div class="smi">👤 ${h(setup.coordinator)}</div>`:""}
+        ${setup.principal?`<div class="smi">🏫 מנהל/ת: ${h(setup.principal)}</div>`:""}
+        ${setup.district?`<div class="smi">📍 ${h(setup.district)}</div>`:""}
+        ${setup.grades?`<div class="smi">🎒 ${h(setup.grades)}</div>`:""}
+        ${setup.date?`<div class="smi">📅 ${h(setup.date)}</div>`:""}
+        ${setup.experience?`<div class="smi">⭐ ותק: ${h(setup.experience)} שנים</div>`:""}
+      </div>
+    </div>
+    ${(csHasValue(setup.situation)||csHasValue(setup.challenges)||csHasValue(setup.strengths))?`<div class="card">
+      <div class="ch" style="margin-bottom:11px"><div class="ci" style="background:#f0fdfa">🔍</div><div class="ct">תמונת מצב ראשונית</div></div>
+      <div class="sgrid">
+        ${csHasValue(setup.situation)?`<div class="sf"><label>נתונים מרכזיים</label><div class="stags">${[...((setup.situation.items||[]).filter(x=>x!=="__other__")),setup.situation.other].filter(Boolean).map(t=>`<span class="tag tt">${h(t)}</span>`).join("")}</div></div>`:""}
+        ${csHasValue(setup.processes)?`<div class="sf"><label>תהליכים קיימים</label><div class="stags">${[...((setup.processes.items||[]).filter(x=>x!=="__other__")),setup.processes.other].filter(Boolean).map(t=>`<span class="tag tt">${h(t)}</span>`).join("")}</div></div>`:""}
+        ${setup.practices?`<div class="sf"><label>פרקטיקות</label><p>${h(setup.practices)}</p></div>`:""}
+        ${csHasValue(setup.insights)?`<div class="sf"><label>תובנות</label><div class="stags">${[...((setup.insights.items||[]).filter(x=>x!=="__other__")),setup.insights.other].filter(Boolean).map(t=>`<span class="tag tpu">${h(t)}</span>`).join("")}</div></div>`:""}
+        ${csHasValue(setup.challenges)?`<div class="sf"><label>אתגרים</label><div class="stags">${[...((setup.challenges.items||[]).filter(x=>x!=="__other__")),setup.challenges.other].filter(Boolean).map(t=>`<span class="tag ts">${h(t)}</span>`).join("")}</div></div>`:""}
+        ${csHasValue(setup.strengths)?`<div class="sf"><label>חוזקות ומשאבים</label><div class="stags">${[...((setup.strengths.items||[]).filter(x=>x!=="__other__")),setup.strengths.other].filter(Boolean).map(t=>`<span class="tag tb">${h(t)}</span>`).join("")}</div></div>`:""}
+        ${setup.meetings?`<div class="sf"><label>סדירויות</label><p>${h(setup.meetings)}</p></div>`:""}
+      </div></div>`:""}
+    ${ZONES.map(zone=>{
+      const zd=zones[zone.id];if(!zd.focus)return "";
+      return `<div class="szone">
+        <div class="szh" style="background:${zone.bg}">
+          <div style="width:32px;height:32px;border-radius:8px;background:${zone.color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">${zone.num}</div>
+          <div style="flex:1;font-weight:700;font-size:13px;color:var(--p)">${zone.title}</div>
+          <span style="padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:${zd.focus==="high"?"#fee2e2":zd.focus==="medium"?"#fef3c7":"#d1fae5"};color:${zd.focus==="high"?"#c53030":zd.focus==="medium"?"#92400e":"#065f46"}">${FOCUS_L[zd.focus]}</span>
+        </div>
+        <div class="szb">
+          ${[["g1","יעד 1"],["g2","יעד 2"]].map(([gk,gl])=>{
+            const g=zd[gk];if(!g||!g.text)return "";if(gk==="g2"&&!g.enabled)return "";
+            const coreA=[...(g.coreActions||[]),...(g.customCore||[])];
+            const suppA=[...(g.suppActions||[]),...(g.customSupp||[])];
+            return `<div class="sgoal">
+              <div class="sgt">${gl}: ${h(g.text)}
+                <span style="margin-right:7px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:${g.type==="new"?"#dbeafe":"#fef3c7"};color:${g.type==="new"?"var(--p)":"#92400e"}">${g.type==="new"?"יעד חדש":"יעד מתמשך"}</span>
+              </div>
+              <div class="sgrid">
+                ${g.scope?.length?`<div class="sf"><label>רמת יישום</label><div class="stags">${g.scope.map(s=>`<span class="tag tt">${s}</span>`).join("")}</div></div>`:""}
+                ${fld("תוצאה רצויה",g.desiredState)}
+                ${fld("מצב קיים",g.currentState)}
+                ${fld("בסיס נתוני",g.dataBase)}
+                ${fld("על מי חל",g.targetResult)}
+                ${g.type==="ongoing"&&csHasValue(g.ongoingDone)?fld("מה הושג",g.ongoingDone):""}
+                ${g.type==="ongoing"&&csHasValue(g.ongoingAdd)?fld("מה מוסיפים",g.ongoingAdd):""}
+              </div>
+              ${coreA.length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">פעולות מרכזיות</label><div class="stags">${coreA.map(a=>`<span class="tag tb">${h(a)}</span>`).join("")}</div></div>`:""}
+              ${suppA.length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">פעולות משלימות</label><div class="stags">${suppA.map(a=>`<span class="tag ts">${h(a)}</span>`).join("")}</div></div>`:""}
+              <div class="sgrid">
+                ${g.methods?.length?`<div class="sf"><label>מתודות</label><div class="stags">${g.methods.map(m=>`<span class="tag tpu">${h(m)}</span>`).join("")}</div></div>`:""}
+                ${g.partners?.length?`<div class="sf"><label>שותפים</label><div class="stags">${g.partners.map(p=>`<span class="tag tt">${h(p)}</span>`).join("")}</div></div>`:""}
+                ${g.outcomeMetrics?.length?`<div class="sf"><label>מדדי תוצאה</label><div class="stags">${g.outcomeMetrics.map(m=>`<span class="tag tb">${h(m)}</span>`).join("")}</div></div>`:""}
+                ${g.evalMethods?.length?`<div class="sf"><label>הערכה</label><div class="stags">${g.evalMethods.map(m=>`<span class="tag ts">${h(m)}</span>`).join("")}</div></div>`:""}
+              </div>
+              ${Object.keys(g.outputMetrics||{}).length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">מדדי תפוקה</label><div class="stags">${Object.entries(g.outputMetrics).map(([id,num])=>{const om=OUT_M.find(o=>o.id===id);return om?`<span class="tag tb">${num} ${om.t}</span>`:""}).join("")}</div></div>`:""}
+              ${g.cp?.some(c=>c.w||c.d)?`<div><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:7px">נקודות בקרה</label>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                ${g.cp.map((c,i)=>c.w||c.d||c.who?`<div style="background:var(--bg);border-radius:7px;padding:10px;border-top:3px solid ${CP_C[i]}">
+                  <div style="font-weight:700;font-size:11px;color:${CP_C[i]};margin-bottom:5px">${CP_L[i]}</div>
+                  ${c.w?`<div style="font-size:11px;margin-bottom:3px"><strong>בודקים:</strong> ${h(c.w)}</div>`:""}
+                  ${c.d?`<div style="font-size:11px;margin-bottom:3px"><strong>נתונים:</strong> ${h(c.d)}</div>`:""}
+                  ${c.who?`<div style="font-size:11px;margin-bottom:3px"><strong>משתתפים:</strong> ${h(c.who)}</div>`:""}
+                  ${c.dec?`<div style="font-size:11px"><strong>החלטות:</strong> ${h(c.dec)}</div>`:""}
+                </div>`:"").join("")}
+              </div></div>`:""}
+            </div>`;
+          }).join("")}
+        </div>
+      </div>`;
+    }).join("")}
+    ${cross.length?`<div class="card">
+      <div class="ch" style="margin-bottom:11px"><div class="ci" style="background:var(--pur2)">🔗</div><div class="ct">רווחים נלווים</div></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${cross.map(id=>{const ca=CROSS.find(c=>c.id===id);return ca?`<div style="padding:8px 14px;background:var(--pur2);border-radius:7px;border:1px solid #c4b5fd"><span style="font-size:14px;margin-left:5px">${ca.icon}</span><strong style="font-size:13px">${ca.title}</strong><span style="font-size:12px;color:var(--muted);margin-right:5px">— ${ca.desc}</span></div>`:"";}).join("")}
+      </div></div>`:""}
+    <div style="text-align:center;padding:16px 0;color:var(--muted);font-size:12px;border-top:1px solid var(--bdr);margin-top:8px">
+      מרחב שיח — מנהל/ת ורכזת הכלה והוגנות · ${h(setup.school)} · ${h(setup.year)}
+    </div>
+  </div>`;
+}
+
+function renderZTabs(){
+  return `<div class="ztabs">${ZONES.map(z=>`
+    <button class="ztab ${S.tab===z.id?"active":""}" style="${S.tab===z.id?"background:"+z.color:""}" onclick="setTab('${z.id}')">
+      ${S.zones[z.id].g1.text?"✓ ":""}${z.num}. ${z.title.split(" ").slice(0,3).join(" ")}...
+    </button>`).join("")}</div>`;
+}
+
+render();
+</script>
+</body>
+</html>
