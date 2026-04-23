@@ -20,7 +20,6 @@ body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--tx);directi
 button,input,textarea,select{font-family:'Heebo',sans-serif;}
 input,textarea,select{direction:rtl;}
 button{cursor:pointer;}
-
 .shell{display:flex;min-height:100vh;}
 .sidebar{width:230px;background:var(--p);color:#fff;position:fixed;top:0;right:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:100;}
 .slogo{padding:18px 14px 12px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:9px;}
@@ -35,9 +34,13 @@ button{cursor:pointer;}
 .snum{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
 .sstep.active .snum{background:var(--t);border-color:var(--t);}
 .sstep.done .snum{background:var(--ok);border-color:var(--ok);}
-.sbot{padding:12px 9px;border-top:1px solid rgba(255,255,255,.12);}
-.dbtn{width:100%;padding:8px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:5px;}
+.sbot{padding:12px 9px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;gap:4px;}
+.dbtn{width:100%;padding:8px;border-radius:7px;border:none;background:rgba(255,255,255,.1);color:#fff;font-size:12px;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
 .dbtn:hover{background:rgba(255,255,255,.18);}
+.dbtn.primary{background:var(--t);}
+.dbtn.primary:hover{background:var(--tl);}
+.dbtn-row{display:flex;gap:4px;}
+.dbtn-row .dbtn{flex:1;font-size:11px;}
 .main{margin-right:230px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
 .topbar{background:#fff;border-bottom:1px solid var(--bdr);padding:11px 26px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 8px rgba(0,0,0,.05);}
 .ttit{font-size:14px;font-weight:700;color:var(--p);}
@@ -46,20 +49,20 @@ button{cursor:pointer;}
 .ptrack{height:5px;background:var(--bdr);border-radius:99px;overflow:hidden;}
 .pfill{height:100%;background:linear-gradient(90deg,var(--t),var(--p));border-radius:99px;transition:width .5s ease;}
 .plbl{font-size:11px;color:var(--muted);margin-top:3px;text-align:center;}
-
+.savestatus{font-size:11px;color:var(--ok);opacity:0;transition:opacity .3s;white-space:nowrap;}
+.savestatus.show{opacity:1;}
 .page{padding:26px;max-width:940px;margin:0 auto;width:100%;}
+.page-wide{max-width:1200px;}
 .ph h1{font-size:22px;font-weight:800;color:var(--p);margin-bottom:5px;}
 .ph p{font-size:13px;color:var(--muted);line-height:1.6;max-width:600px;margin-bottom:22px;}
-
 .card{background:var(--card);border-radius:var(--r);border:1px solid var(--bdr);box-shadow:var(--sh);padding:20px;margin-bottom:16px;}
 .ch{display:flex;align-items:center;gap:11px;margin-bottom:16px;}
 .ci{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
 .ct{font-size:15px;font-weight:700;color:var(--p);}
 .cs{font-size:12px;color:var(--muted);margin-top:2px;}
-
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
 .full{grid-column:1/-1;}
-.fgrp{display:flex;flex-direction:column;gap:5px;}
+.fgrp{display:flex;flex-direction:column;gap:5px;min-width:0;}
 .flbl{font-size:13px;font-weight:600;color:var(--tx);}
 .flbl-hint{font-size:11px;font-weight:400;color:var(--muted);margin-right:5px;}
 .opt{font-weight:400;color:var(--muted);}
@@ -67,26 +70,23 @@ button{cursor:pointer;}
 .finp:focus{outline:none;border-color:var(--t);box-shadow:0 0 0 3px rgba(42,157,143,.12);}
 .fta{resize:vertical;min-height:60px;line-height:1.6;}
 .divider{border:none;border-top:1px solid var(--bdr);margin:18px 0;}
-
-/* ── CheckSelect Dropdown ── */
-.dd-wrap{position:relative;margin-top:5px;}
-.dd-trigger{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:#fff;cursor:pointer;transition:border .2s;user-select:none;}
+/* ── CheckSelect Dropdown — FIXED OVERFLOW ── */
+.dd-wrap{position:relative;margin-top:5px;width:100%;min-width:0;}
+.dd-trigger{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:9px 13px;border:1.5px solid var(--bdr);border-radius:var(--rs);background:#fff;cursor:pointer;transition:border .2s;user-select:none;width:100%;min-height:40px;box-sizing:border-box;}
 .dd-trigger:hover{border-color:var(--t);}
 .dd-trigger.has-val{border-color:var(--t);background:#f7fffe;}
 .dd-trigger.open{border-color:var(--t);border-bottom-left-radius:0;border-bottom-right-radius:0;}
-.dd-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.dd-left{display:flex;align-items:center;flex:1 1 0;min-width:0;overflow:hidden;}
 .dd-placeholder{font-size:13px;color:var(--muted);}
-.dd-tags{display:flex;flex-wrap:wrap;gap:4px;flex:1;}
-.dd-tag{padding:2px 9px;background:var(--mint);border-radius:99px;font-size:12px;color:#065f46;border:1px solid #6ee7b7;white-space:nowrap;}
+.dd-tags{display:flex;flex-wrap:wrap;gap:4px;flex:1 1 0;min-width:0;width:100%;max-width:100%;}
+.dd-tag{padding:2px 9px;background:var(--mint);border-radius:99px;font-size:12px;color:#065f46;border:1px solid #6ee7b7;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;}
 .dd-tag-other{background:var(--pur2);color:#5b21b6;border-color:#c4b5fd;}
-.dd-tag-x{margin-right:4px;opacity:.6;cursor:pointer;font-size:11px;}
-.dd-tag-x:hover{opacity:1;}
-.dd-arrow{font-size:11px;color:var(--muted);flex-shrink:0;margin-right:6px;transition:transform .2s;}
+.dd-arrow{font-size:11px;color:var(--muted);flex-shrink:0;margin-right:6px;margin-top:4px;transition:transform .2s;}
 .dd-trigger.open .dd-arrow{transform:rotate(180deg);}
-.dd-count{font-size:11px;color:var(--t);font-weight:700;background:var(--mint);padding:1px 7px;border-radius:99px;flex-shrink:0;}
-.dd-panel{display:none;position:absolute;top:100%;right:0;left:0;background:#fff;border:1.5px solid var(--t);border-top:none;border-bottom-left-radius:var(--rs);border-bottom-right-radius:var(--rs);z-index:200;box-shadow:0 6px 20px rgba(26,74,122,.12);max-height:280px;overflow-y:auto;}
+.dd-count{font-size:11px;color:var(--t);font-weight:700;background:var(--mint);padding:1px 7px;border-radius:99px;flex-shrink:0;margin-top:2px;}
+.dd-panel{display:none;position:absolute;top:100%;right:0;left:0;background:#fff;border:1.5px solid var(--t);border-top:none;border-bottom-left-radius:var(--rs);border-bottom-right-radius:var(--rs);z-index:200;box-shadow:0 6px 20px rgba(26,74,122,.12);max-height:320px;overflow-y:auto;}
 .dd-panel.open{display:block;}
-.dd-item{display:flex;align-items:center;gap:9px;padding:8px 13px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--bdr);font-size:13px;}
+.dd-item{display:flex;align-items:center;gap:9px;padding:8px 13px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--bdr);font-size:13px;line-height:1.4;}
 .dd-item:last-child{border-bottom:none;}
 .dd-item:hover{background:#f0fdfa;}
 .dd-item.on{background:#e8f8f5;}
@@ -95,20 +95,16 @@ button{cursor:pointer;}
 .dd-other-item.on .dd-box{background:var(--pur);border-color:var(--pur);color:#fff;}
 .dd-inp{margin:8px 12px 10px;border:1.5px dashed var(--t);border-radius:var(--rs);padding:7px 11px;font-size:13px;direction:rtl;width:calc(100% - 24px);background:#fff;}
 .dd-inp:focus{outline:none;}
-.cs-count{font-size:11px;color:var(--muted);font-weight:400;}
-
-/* ── Goal name suggestions ── */
+/* ── Goal suggestions ── */
 .goal-sug{display:flex;flex-direction:column;gap:5px;margin-bottom:9px;}
-.gsug{padding:9px 13px;background:linear-gradient(135deg,#f0fdf4,#ecfeff);border:1px dashed var(--t);border-radius:var(--rs);font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;}
+.gsug{padding:9px 13px;background:linear-gradient(135deg,#f0fdf4,#ecfeff);border:1px dashed var(--t);border-radius:var(--rs);font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;user-select:none;}
 .gsug:hover{background:var(--mint);border-style:solid;}
-.gsug.active{background:var(--mint);border-style:solid;border-color:var(--t);}
+.gsug.active{background:var(--mint);border-style:solid;border-color:var(--t);box-shadow:0 0 0 3px rgba(42,157,143,.12);}
 .gsug-ico{font-size:11px;font-weight:700;color:var(--t);flex-shrink:0;}
 .gsug-free{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--sand);border:1.5px solid var(--sand2);border-radius:var(--rs);cursor:pointer;font-size:13px;color:#7c5c0e;font-weight:600;}
-
 .guidance{background:linear-gradient(135deg,var(--sand),var(--mint));border-radius:var(--r);padding:15px 19px;margin-bottom:16px;border-right:4px solid var(--t);}
 .guidance .gt{font-size:13px;font-weight:700;color:var(--p);margin-bottom:4px;}
 .guidance p{font-size:13px;color:var(--tx);line-height:1.6;}
-
 .zcard{background:var(--card);border-radius:var(--r);border:2px solid var(--bdr);padding:18px;margin-bottom:13px;transition:all .2s;}
 .zcard.sel{border-color:var(--t);box-shadow:0 0 0 3px rgba(42,157,143,.1);}
 .zh{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px;}
@@ -127,15 +123,12 @@ button{cursor:pointer;}
 .fbtn.fm{background:#fffbf0;border-color:#f59e0b;color:#92400e;}
 .fbtn.fk{background:var(--ok2);border-color:#6ee7b7;color:#065f46;}
 .fsub{font-size:10px;font-weight:400;opacity:.7;display:block;margin-top:1px;}
-
 .cross-card{background:var(--pur2);border-radius:var(--r);padding:15px 19px;border:1px solid #c4b5fd;margin-bottom:13px;}
 .xitem{display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:7px;border:2px solid var(--bdr);background:#fff;cursor:pointer;margin-bottom:6px;transition:all .2s;}
 .xitem.active{border-color:var(--pur);background:#f5f3ff;}
-
 .ztabs{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;}
 .ztab{padding:7px 13px;border-radius:7px;border:2px solid var(--bdr);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);}
 .ztab.active{color:#fff;border-color:transparent;}
-
 .gbadge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:700;margin-bottom:11px;}
 .gb-req{background:var(--p);color:#fff;}
 .gb-opt{background:var(--bdr);color:var(--muted);}
@@ -147,7 +140,6 @@ button{cursor:pointer;}
 .scopes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px;}
 .schip{padding:6px 12px;border-radius:7px;border:2px solid var(--bdr);font-size:12px;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);font-weight:500;}
 .schip.active{background:var(--t);border-color:var(--t);color:#fff;font-weight:700;}
-
 .at-lbl{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--p);margin-bottom:7px;padding-bottom:5px;border-bottom:2px solid var(--bdr);}
 .atdot{width:8px;height:8px;border-radius:50%;}
 .action-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--rs);border:1.5px solid var(--bdr);cursor:pointer;transition:all .2s;background:#fff;margin-bottom:5px;}
@@ -162,27 +154,24 @@ button{cursor:pointer;}
 .cin-row{display:flex;gap:6px;margin-top:7px;}
 .addbtn{padding:7px 13px;background:var(--t);color:#fff;border:none;border-radius:var(--rs);font-size:12px;font-weight:600;white-space:nowrap;}
 .addbtn:hover{background:var(--tl);}
-
 .mchips{display:flex;flex-wrap:wrap;gap:6px;}
 .mchip{padding:6px 12px;border-radius:99px;border:2px solid var(--bdr);font-size:12px;cursor:pointer;transition:all .2s;background:#fff;color:var(--muted);}
 .mchip.am{background:var(--pur);border-color:var(--pur);color:#fff;font-weight:600;}
 .mchip.ap{background:var(--t);border-color:var(--t);color:#fff;font-weight:600;}
-
-.metric-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--rs);border:1.5px solid var(--bdr);cursor:pointer;transition:all .2s;background:#fff;margin-bottom:5px;}
-.metric-item:hover{border-color:var(--t);}
-.metric-item.on{border-color:var(--t);background:#f0fdfa;}
-.mcheck{width:16px;height:16px;border-radius:4px;border:2px solid var(--bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s;}
-.on .mcheck{background:var(--t);border-color:var(--t);color:#fff;}
-.mnum{width:50px;padding:3px 6px;border:1.5px solid var(--bdr);border-radius:5px;font-size:13px;text-align:center;}
-
+/* ── Metric selector with X value ── */
+.mline{display:flex;align-items:center;gap:8px;padding:10px 13px;border-radius:var(--rs);border:1.5px solid var(--bdr);background:#fff;margin-bottom:6px;cursor:pointer;transition:all .15s;}
+.mline:hover{border-color:var(--t);}
+.mline.on{border-color:var(--t);background:#f0fdfa;}
+.mline .mchk{width:16px;height:16px;border-radius:4px;border:2px solid var(--bdr);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;}
+.mline.on .mchk{background:var(--t);border-color:var(--t);color:#fff;}
+.mline .mtx{flex:1;font-size:13px;line-height:1.5;display:flex;flex-wrap:wrap;align-items:center;gap:3px;}
+.mxin{width:55px;padding:2px 6px;border:1.5px solid var(--t);border-radius:5px;font-size:13px;text-align:center;background:#fff;font-weight:700;color:var(--p);}
 .cpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;}
 .cpcard{background:var(--bg);border-radius:var(--rs);padding:13px;border:1.5px solid var(--bdr);}
 .cptit{font-size:12px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
 .cpdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-
 .alert{padding:10px 14px;border-radius:var(--rs);margin-bottom:11px;font-size:13px;display:flex;gap:7px;align-items:flex-start;}
 .alert.info{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;}
-
 .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 26px;background:#fff;border-top:1px solid var(--bdr);position:sticky;bottom:0;}
 .btn-back{padding:10px 20px;border-radius:var(--rs);border:2px solid var(--bdr);font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--muted);transition:all .2s;}
 .btn-back:hover{border-color:var(--p);color:var(--p);}
@@ -190,13 +179,28 @@ button{cursor:pointer;}
 .btn-next{padding:10px 24px;border-radius:var(--rs);border:none;font-size:14px;font-weight:700;cursor:pointer;background:var(--p);color:#fff;transition:all .2s;}
 .btn-next:hover{background:var(--pl);}
 .btn-next:disabled{opacity:.4;cursor:not-allowed;}
-
-/* ── SUMMARY ── */
+/* ── SUMMARY / TABLE ── */
 .shd{background:linear-gradient(135deg,var(--p) 0%,var(--t) 100%);color:#fff;border-radius:var(--r);padding:24px 28px;margin-bottom:20px;}
 .shd h2{font-size:21px;font-weight:800;margin-bottom:3px;}
 .shd p{opacity:.85;font-size:14px;}
 .smeta{display:flex;flex-wrap:wrap;gap:14px;margin-top:13px;}
 .smi{display:flex;align-items:center;gap:5px;font-size:13px;}
+.view-tabs{display:flex;gap:5px;margin-bottom:16px;}
+.vtab{padding:7px 15px;border-radius:7px;border:2px solid var(--bdr);background:#fff;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;}
+.vtab.active{background:var(--p);border-color:var(--p);color:#fff;}
+.ptbl-wrap{background:#fff;border-radius:var(--r);border:1px solid var(--bdr);overflow-x:auto;margin-bottom:16px;box-shadow:var(--sh);}
+.ptbl{width:100%;border-collapse:collapse;min-width:900px;font-size:12px;}
+.ptbl th{background:var(--p);color:#fff;padding:10px 8px;text-align:right;font-size:12px;font-weight:700;border-left:1px solid rgba(255,255,255,.15);position:sticky;top:0;z-index:5;}
+.ptbl td{padding:10px 8px;border-bottom:1px solid var(--bdr);border-left:1px solid var(--bdr);vertical-align:top;line-height:1.5;background:#fff;}
+.ptbl tr:nth-child(even) td{background:#fafbfd;}
+.ptbl .zcell{font-weight:700;color:var(--p);white-space:nowrap;border-right:4px solid;}
+.ptbl .gcell{font-weight:600;min-width:180px;}
+.ptbl .note-cell{min-width:160px;}
+.ptbl ul{list-style:none;padding:0;margin:0;}
+.ptbl ul li{padding:2px 0;font-size:11px;}
+.ptbl ul li::before{content:"• ";color:var(--t);font-weight:700;}
+.note-txt{width:100%;min-height:60px;border:1.5px dashed var(--bdr);border-radius:5px;padding:6px;font-size:11px;font-family:'Heebo',sans-serif;direction:rtl;background:#fff9e6;resize:vertical;}
+.note-txt:focus{outline:none;border-color:var(--warn);background:#fff;}
 .szone{background:var(--card);border-radius:var(--r);border:1px solid var(--bdr);margin-bottom:16px;overflow:hidden;}
 .szh{padding:13px 19px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bdr);}
 .szb{padding:17px 19px;}
@@ -212,11 +216,23 @@ button{cursor:pointer;}
 .tt{background:var(--mint);color:#065f46;}
 .tpu{background:var(--pur2);color:#5b21b6;}
 .ts{background:var(--sand);color:#7c5c0e;}
-
+/* ── Modal ── */
+.modal-bk{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center;}
+.modal-bk.open{display:flex;}
+.modal{background:#fff;border-radius:var(--r);padding:24px;max-width:480px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,.2);}
+.modal h3{font-size:16px;font-weight:700;color:var(--p);margin-bottom:8px;}
+.modal p{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.modal-act{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;}
+.modal-btn{padding:8px 16px;border-radius:var(--rs);border:2px solid var(--bdr);background:#fff;font-size:13px;font-weight:600;cursor:pointer;}
+.modal-btn.primary{background:var(--p);border-color:var(--p);color:#fff;}
+.modal-btn.danger{background:var(--red);border-color:var(--red);color:#fff;}
 @media print{
   .sidebar,.topbar,.navbar,.noprint{display:none!important;}
   .main{margin-right:0;}
   .page{padding:14px;max-width:100%;}
+  .ptbl-wrap{overflow:visible;box-shadow:none;}
+  .ptbl{font-size:10px;min-width:auto;}
+  .note-txt{border-color:var(--bdr);background:#fff;}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 }
 @media(max-width:700px){
@@ -235,14 +251,30 @@ button{cursor:pointer;}
     </div>
     <nav class="snav" id="snav"></nav>
     <div class="sbot">
+      <div class="dbtn-row">
+        <button class="dbtn primary" onclick="saveNow()" title="שמירה בדפדפן">💾 שמור</button>
+        <button class="dbtn" onclick="confirmReload()" title="טעינה מהדפדפן">📂 טען</button>
+      </div>
+      <div class="dbtn-row">
+        <button class="dbtn" onclick="exportJSON()" title="הורדת קובץ JSON">⬇️ ייצוא</button>
+        <button class="dbtn" onclick="document.getElementById('impFile').click()" title="העלאת קובץ JSON">⬆️ ייבוא</button>
+      </div>
+      <input type="file" id="impFile" accept=".json" style="display:none" onchange="importJSON(event)">
       <button class="dbtn" onclick="loadDemo()">📋 טעינת דוגמה</button>
-      <button class="dbtn" onclick="resetAll()">🔄 איפוס</button>
+      <button class="dbtn" onclick="confirmReset()">🔄 איפוס</button>
     </div>
   </aside>
   <main class="main">
     <div class="topbar">
-      <div><div class="ttit" id="toptitle"></div><div class="tsch" id="topschool"></div></div>
-      <div class="pwrap"><div class="ptrack"><div class="pfill" id="pfill"></div></div><div class="plbl" id="plbl"></div></div>
+      <div>
+        <div class="ttit" id="toptitle"></div>
+        <div class="tsch" id="topschool"></div>
+      </div>
+      <div class="pwrap">
+        <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+        <div class="plbl" id="plbl"></div>
+      </div>
+      <div class="savestatus" id="saveStatus">✓ נשמר</div>
     </div>
     <div id="content" style="flex:1;"></div>
     <div class="navbar noprint">
@@ -252,9 +284,22 @@ button{cursor:pointer;}
     </div>
   </main>
 </div>
+<!-- Modal -->
+<div class="modal-bk" id="modalBk">
+  <div class="modal">
+    <h3 id="modalTit"></h3>
+    <p id="modalMsg"></p>
+    <div class="modal-act">
+      <button class="modal-btn" onclick="closeModal()">ביטול</button>
+      <button class="modal-btn primary" id="modalOk">אישור</button>
+    </div>
+  </div>
+</div>
 
 <script>
-// ── ANSWER BANKS ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// BANKS & DATA
+// ═══════════════════════════════════════════════════════════════════════════════
 const SHARED = {
   desiredState: [
     "תהליך עבודה סדור, ברור ועקבי",
@@ -333,8 +378,18 @@ const SHARED = {
   ]
 };
 
+// Per-zone banks — goals, current state, data base, desired outcomes, AND metrics
 const ZONE_BANKS = {
   z1: {
+    goalNames: [
+      "הטמעת תהליך מיפוי הוליסטי סדור בבית הספר",
+      "חיזוק השימוש בנתוני מיפוי לבניית מענים",
+      "בניית שגרת עבודה פדגוגית מבוססת נתונים",
+      "פיתוח מפת מענים בית ספרית מרובדת (MTSS)",
+      "חיזוק הקשר בין נתונים לבין תוכניות התערבות",
+      "ביסוס מעקב רבעוני אחר תלמידים במיקוד",
+      "הרחבת השימוש בנתונים לצורך קבלת החלטות"
+    ],
     currentState: [
       "קיימים מיפויים, אך הם אינם משמשים באופן עקבי לבניית מענים",
       "הנתונים נאספים אך אינם מנותחים באופן שיטתי",
@@ -359,15 +414,6 @@ const ZONE_BANKS = {
       "פערים בין שכבות / כיתות",
       "תובנות מישיבות פדגוגיות"
     ],
-    goalNames: [
-      "הטמעת תהליך מיפוי הוליסטי סדור בבית הספר",
-      "חיזוק השימוש בנתוני מיפוי לבניית מענים",
-      "בניית שגרת עבודה פדגוגית מבוססת נתונים",
-      "פיתוח מפת מענים בית ספרית מרובדת (MTSS)",
-      "חיזוק הקשר בין נתונים לבין תוכניות התערבות",
-      "ביסוס מעקב רבעוני אחר תלמידים במיקוד",
-      "הרחבת השימוש בנתונים לצורך קבלת החלטות בשכבה"
-    ],
     desiredOutcome: [
       "מיפוי מלא ועדכני לכלל התלמידים / לקבוצת היעד",
       "לכל תלמיד במיקוד קיימת תוכנית התערבות מבוססת נתונים",
@@ -377,9 +423,46 @@ const ZONE_BANKS = {
       "הצוות יודע לקרוא נתונים ולתרגם אותם לפעולה",
       "תוכניות ההתערבות מתעדכנות לאורך השנה",
       "יש שיפור בדיוק ניצול המשאבים והמענים"
+    ],
+    // Metrics per zone (X = placeholder)
+    outputMetrics: [
+      "לפחות X% ממחנכי הכיתות מבצעים מיפוי הוליסטי",
+      "מתקיימים לפחות X מפגשי הדרכה",
+      "מתקיימים לפחות X ישיבות פדגוגיות מבוססות נתונים",
+      "מפת מענים מרובדת (MTSS) בנויה ונגישה לצוות",
+      "לפחות X% מהתוכניות מבוססות על נתוני מיפוי",
+      "מתקיימים לפחות X ישיבות מעקב ובקרה אחר תלמידים במיקוד",
+      "לפחות X% מהתלמידים במיקוד נמצאים במעקב סדור",
+      "לפחות X ישיבות כוללות ניתוח נתונים לצורך קבלת החלטות"
+    ],
+    outcomeMetrics: [
+      "X% מהמורים מדווחים על שיפור בהיכרות התלמיד השלם",
+      "X% מהמורים מדווחים על שיפור בדיוק המענים",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה",
+      "X% מהתלמידים מדווחים על תחושת שייכות גבוהה",
+      "X% מהתלמידים מדווחים על תחושת ביטחון גבוהה",
+      "X% מהמורים מדווחים על עלייה בהשתתפות פעילה של תלמידים בשיעור",
+      "עלייה מדידה בהשתתפות תלמידים בשיעור (מדידה בתצפיות מובנות)",
+      "X% מהמורים מדווחים על שימוש עקבי בשפה מקצועית ומכילה בשיח הצוותי",
+      "ניכרת שפה מכילה בשיח הצוותי (תצפיות, שיחות משוב)",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה לנהל כיתה הטרוגנית",
+      "שיפור בדיוק ניצול המשאבים לפי רבדי ה-MTSS",
+      "שיפור מדיד בהתקדמות תלמידים במיקוד"
+    ],
+    evalMethods: [
+      "מעקב נתוני מיפוי","ניתוח מסמכים ותוכניות עבודה","בדיקת תוכניות עבודה/התערבות",
+      "דיון בצוות/הנהלה","שאלוני מורים","שאלוני תלמידים","תצפיות","שיחות משוב","משוב מהורים","איסוף ייצוגים ועדויות"
     ]
   },
   z2: {
+    goalNames: [
+      "הטמעת פרקטיקות UDL",
+      "חיזוק יכולת הצוות לתכנן הוראה מותאמת פרט",
+      "ביסוס שפה מקצועית משותפת סביב UDL",
+      "פיתוח שימוש עקבי במחוון לשיעור מותאם",
+      "הרחבת הגיוון בדרכי הוראה, ייצוג וביטוי",
+      "חיזוק המענה לכיתה הטרוגנית באמצעות פרקטיקות UDL"
+    ],
     currentState: [
       "הצוות מכיר חלק מהעקרונות אך היישום אינו עקבי",
       "יש פרקטיקות טובות בכיתות מסוימות בלבד",
@@ -392,23 +475,10 @@ const ZONE_BANKS = {
       "התחום החל להתפתח ונדרש כעת להעמיקו"
     ],
     dataBase: [
-      "תצפיות בכיתות",
-      "משוב מהמורים",
-      "קושי במענה לשונות בכיתה הטרוגנית",
-      "פערים במעורבות תלמידים",
-      "פערים בהשתתפות בלמידה",
-      "קושי בהתאמת דרכי הוראה והערכה",
-      "צורך בגיוון דרכי ייצוג / ביטוי / השתתפות",
-      "צורך בהנגשת הלמידה לקבוצות מגוונות",
-      "תובנות מישיבות צוות / הנהלה"
-    ],
-    goalNames: [
-      "הטמעת פרקטיקות UDL בשכבת יעד",
-      "חיזוק היכולת של הצוות לתכנן הוראה מותאמת פרט",
-      "ביסוס שפה מקצועית משותפת סביב UDL",
-      "פיתוח שימוש עקבי במחוון לשיעור מותאם",
-      "הרחבת הגיוון בדרכי הוראה, ייצוג וביטוי",
-      "חיזוק המענה לכיתה הטרוגנית באמצעות פרקטיקות UDL"
+      "תצפיות בכיתות","משוב מהמורים","קושי במענה לשונות בכיתה הטרוגנית",
+      "פערים במעורבות תלמידים","פערים בהשתתפות בלמידה",
+      "קושי בהתאמת דרכי הוראה והערכה","צורך בגיוון דרכי ייצוג / ביטוי / השתתפות",
+      "צורך בהנגשת הלמידה לקבוצות מגוונות","תובנות מישיבות צוות / הנהלה"
     ],
     desiredOutcome: [
       "הצוות משלב פרקטיקות UDL באופן עקבי",
@@ -418,9 +488,43 @@ const ZONE_BANKS = {
       "ניכרת התאמה טובה יותר לשונות בכיתה",
       "הצוות משתמש בשפה מקצועית משותפת",
       "היישום הורחב לשכבות / כיתות נוספות"
+    ],
+    outputMetrics: [
+      "לפחות X פרקטיקות UDL מיושמות",
+      "לפחות X% מהמורים מיישמים לפחות פרקטיקה אחת באופן עקבי",
+      "מתקיימים לפחות X מפגשי הדרכה/ליווי בתכנון שיעור מותאם",
+      "לפחות X מורים מקבלים ליווי אישי",
+      "מתקיימים לפחות X מפגשים לבניית שפה מקצועית משותפת",
+      "מתקיימים לפחות X מפגשי הדגמה עם מחוון UDL",
+      "לפחות X% מהמורים מכירים את המחוון ועושים בו שימוש",
+      "מתקיימים לפחות X תצפיות ושיחות משוב בכיתות"
+    ],
+    outcomeMetrics: [
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה לתכנן הוראה מותאמת",
+      "X% מהמורים משתמשים בשפה מקצועית UDL בשיח הצוותי",
+      'X% מהמורים מדווחים על צמצום ניכר בזמן המע"מ',
+      "X% מהתלמידים מדווחים על תחושת שייכות גבוהה",
+      "X% מהתלמידים מדווחים על תחושת ביטחון גבוהה",
+      "X% מהמורים מדווחים על עלייה בהשתתפות פעילה של תלמידים בשיעור",
+      "עלייה מדידה בהשתתפות תלמידים בשיעור (מדידה בתצפיות מובנות)",
+      "X% מהמורים מדווחים על שימוש עקבי בשפה מקצועית ומכילה בשיח הצוותי",
+      "ניכרת שפה מכילה בשיח הצוותי (תצפיות, שיחות משוב)",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה לנהל כיתה הטרוגנית"
+    ],
+    evalMethods: [
+      "תצפיות","שאלוני מורים","בדיקת מערכי שיעור","שיחות משוב",
+      "שאלוני תלמידים","איסוף ייצוגים ועדויות","משוב מהורים"
     ]
   },
   z3: {
+    goalNames: [
+      "בניית שגרת עבודה סדורה לתלמידים במיקוד",
+      "פיתוח פורמט אחיד לתוכניות התערבות",
+      "חיזוק איכות התוכניות האישיות/הכיתתיות",
+      "חיזוק המעקב אחר יישום התוכניות",
+      "שיפור שיתוף הפעולה בין הצוותים סביב תלמידים במיקוד",
+      "הרחבת בניית התוכניות לשכבת יעד"
+    ],
     currentState: [
       "תלמידים במיקוד מאותרים, אך לא לכולם יש תוכנית סדורה",
       "קיימות תוכניות, אך הן אינן אחידות במבנה ובאיכות",
@@ -433,23 +537,10 @@ const ZONE_BANKS = {
       "התהליך קיים בחלק מהכיתות בלבד"
     ],
     dataBase: [
-      "נתוני מיפוי של תלמידים במיקוד",
-      "שיחות עם מחנכות ומורים",
-      "מידע רגשי / חברתי / התנהגותי",
-      "מידע לימודי",
-      "משוב מהורים",
-      "מסקנות של צוות רב-מקצועי",
-      "זיהוי קושי במעקב אחר יישום התוכניות",
-      "פערים באיכות התוכניות שנבנו",
-      "צורך בבניית פורמט אחיד"
-    ],
-    goalNames: [
-      "בניית שגרת עבודה סדורה לתלמידים במיקוד",
-      "פיתוח פורמט אחיד לתוכניות התערבות",
-      "חיזוק איכות התוכניות האישיות / הכיתתיות",
-      "חיזוק המעקב אחר יישום התוכניות",
-      "שיפור שיתוף הפעולה בין הצוותים סביב תלמידים במיקוד",
-      "הרחבת בניית התוכניות לשכבת יעד"
+      "נתוני מיפוי של תלמידים במיקוד","שיחות עם מחנכות ומורים",
+      "מידע רגשי / חברתי / התנהגותי","מידע לימודי","משוב מהורים",
+      "מסקנות של צוות רב-מקצועי","זיהוי קושי במעקב אחר יישום התוכניות",
+      "פערים באיכות התוכניות שנבנו","צורך בבניית פורמט אחיד"
     ],
     desiredOutcome: [
       "לכל תלמיד במיקוד קיימת תוכנית התערבות סדורה",
@@ -459,9 +550,44 @@ const ZONE_BANKS = {
       "יש שיפור בדיוק המענים לתלמידים במיקוד",
       "קיים שיתוף פעולה רציף עם הורים / שותפים",
       "התוכניות מתעדכנות לפי התקדמות התלמיד"
+    ],
+    outputMetrics: [
+      "מתקיימת שגרת עבודה מוגדרת ומתועדת לתלמידים במיקוד",
+      "פורמט אחיד לתוכנית התערבות פותח ואושר",
+      "לפחות X% מהמורים מודרכים ומוכשרים לשימוש בפורמט",
+      "לפחות X% מהתוכניות כוללות מטרות, יעדים ומדדי הצלחה",
+      "מתקיימים לפחות X צמתי בקרה מתועדים",
+      "מתקיימות לפחות X ישיבות צוות רב-מקצועי",
+      "לפחות X% מהתלמידים במיקוד מלווים עם תוכנית התערבות"
+    ],
+    outcomeMetrics: [
+      "X% מהתלמידים במיקוד מדווחים על תחושת ביטחון גבוהה",
+      "לפחות X% מהתוכניות כתובות לפי פורמט אחיד שפותח",
+      "X% מהמורים מדווחים שהתוכניות מדויקות ואפקטיביות יותר",
+      "לפחות X% מהתוכניות מעודכנות בהתאם לצמתי בקרה",
+      "שיפור מדיד בהתקדמות תלמידים במיקוד",
+      "X% מהמורים מדווחים על שיפור בשיתוף הפעולה הצוותי",
+      "X% מהמורים מדווחים על שיפור בהיכרות התלמיד השלם",
+      "X% מהמורים מדווחים על שיפור בדיוק המענים",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה",
+      "X% מהתלמידים מדווחים על תחושת שייכות גבוהה",
+      "ניכרת שפה מכילה בשיח הצוותי (תצפיות, שיחות משוב)",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה לנהל כיתה הטרוגנית"
+    ],
+    evalMethods: [
+      "בדיקת תוכניות התערבות","מעקב נתוני מיפוי","שאלוני מורים",
+      "שאלוני תלמידים","דיון בצוות/הנהלה","ניתוח מסמכים",
+      "איסוף ייצוגים ועדויות","שיחות משוב","משוב מהורים"
     ]
   },
   z4: {
+    goalNames: [
+      "הרחבת השימוש במרחבי למידה מגוונים",
+      "פיתוח מודלים גמישים ללמידה במרחבים שונים",
+      "התאמת המרחב לצורכי מגוון תלמידים",
+      "חיזוק הקשר בין מרחב למידה לפדגוגיה מכילה",
+      "קידום פיילוט של למידה במרחב חלופי"
+    ],
     currentState: [
       "המרחבים הקיימים אינם מנוצלים באופן גמיש",
       "השימוש במרחבים מגוונים מתקיים באופן נקודתי בלבד",
@@ -473,21 +599,10 @@ const ZONE_BANKS = {
       "נעשה שימוש חלקי במרחבים חלופיים"
     ],
     dataBase: [
-      "תצפיות בכיתות ובמרחבים",
-      "משוב מהמורים",
-      "משוב מתלמידים",
-      "צורך בגיוון דרכי למידה והשתתפות",
-      "זיהוי קושי של תלמידים במרחב הקיים",
-      "רצון להגדיל מעורבות ושותפות בלמידה",
-      "פער בין פוטנציאל המרחבים לשימוש בפועל",
+      "תצפיות בכיתות ובמרחבים","משוב מהמורים","משוב מתלמידים",
+      "צורך בגיוון דרכי למידה והשתתפות","זיהוי קושי של תלמידים במרחב הקיים",
+      "רצון להגדיל מעורבות ושותפות בלמידה","פער בין פוטנציאל המרחבים לשימוש בפועל",
       "תובנות מהנהלה / צוות"
-    ],
-    goalNames: [
-      "הרחבת השימוש במרחבי למידה מגוונים בשכבת יעד",
-      "פיתוח מודלים גמישים ללמידה במרחבים שונים",
-      "התאמת המרחב לצורכי תלמידים מגוונים",
-      "חיזוק הקשר בין מרחב למידה לפדגוגיה מכילה",
-      "קידום פיילוט של למידה במרחב חלופי"
     ],
     desiredOutcome: [
       "נעשה שימוש מגוון ומתוכנן במרחבי למידה",
@@ -496,11 +611,32 @@ const ZONE_BANKS = {
       "המורים משלבים מרחבים שונים כחלק מההוראה",
       "פותחו מודלים גמישים ללמידה",
       "בוצעו התאמות במרחב בהתאם לצרכים שעלו"
+    ],
+    outputMetrics: [
+      "מתוכננים לפחות X מרחבי למידה מגוונים",
+      "לפחות X% מהשיעורים עושים שימוש במרחבים מגוונים",
+      "מפותחים לפחות X מודלים גמישים ללמידה",
+      "לפחות X מהמרחבים מותאמים למגוון הלומדים",
+      "פיילוט אחד לפחות במרחב חלופי מבוצע ומתועד"
+    ],
+    outcomeMetrics: [
+      "X% מהמורים מדווחים על שיפור במעורבות תלמידים",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה לניצול מרחבים שונים ללמידה לפי מודלים גמישים",
+      "X% מהתלמידים מדווחים על תחושת שייכות גבוהה",
+      "X% מהמורים מדווחים על תחושת מסוגלות גבוהה לשילוב בין מרחב למידה לפדגוגיה מכילה",
+      "עלייה מדידה בהשתתפות ומעורבות תלמידים (תצפיות)",
+      'X% מהמורים מדווחים על צמצום ניכר בזמן המע"מ',
+      "X% מהתלמידים מדווחים על תחושת ביטחון גבוהה",
+      "X% מהמורים מדווחים על עלייה בהשתתפות פעילה של תלמידים בשיעור",
+      "X% מהמורים מדווחים על שיפור בשיתוף הפעולה הצוותי"
+    ],
+    evalMethods: [
+      "תצפיות","שאלוני תלמידים","שאלוני מורים","איסוף ייצוגים ועדויות",
+      "ניתוח מסמכים","שיחות משוב","משוב מהורים"
     ]
   }
 };
 
-// ── SETUP BANKS ──────────────────────────────────────────────────────────────
 const SETUP_BANKS = {
   situation: [
     "עד 100 תלמידים",
@@ -517,9 +653,11 @@ const SETUP_BANKS = {
     "עד 10% תלמידים במיקוד",
     "11–20% תלמידים במיקוד",
     "מעל 20% תלמידים במיקוד",
-    "אחוזי הצלחה גבוהים (מעל 80%)",
-    "אחוזי הצלחה בינוניים (60–80%)",
-    "אחוזי הצלחה נמוכים (מתחת ל-60%)"
+    // Tnufa-anchored achievement levels (replaces old generic percentages)
+    "הישגים לימודיים גבוהים — רוב התלמידים ברמות 4–5 בתנופה",
+    "הישגים לימודיים בינוניים — רוב התלמידים ברמות 3–4 בתנופה",
+    "הישגים לימודיים נמוכים — רוב התלמידים ברמות 1–2 בתנופה",
+    "טרם בוצעו מבחני תנופה השנה"
   ],
   processes: [
     "מיפוי הוליסטי שנתי מתבצע באופן סדיר",
@@ -583,7 +721,6 @@ const SETUP_BANKS = {
   ]
 };
 
-// ── CORE DATA ────────────────────────────────────────────────────────────────
 const ZONES = [
   {id:"z1",num:1,color:"#e53e3e",bg:"#fff5f5",title:"עבודה מבוססת נתונים לקידום התלמידים",desc:"מיפוי הוליסטי, ניתוח נתונים, בניית תוכניות התערבות ומפות מענים",why:"נתונים הם הבסיס לכל תכנון מכיל. זיהוי מוקדם ומדויק מאפשר מענה רלוונטי ואפקטיבי לכל תלמיד.",examples:["מיפוי הוליסטי","ישיבות נתונים","MTSS","התערבות"],
    actions:["מיפוי הוליסטי לכלל תלמידי בית הספר","מיפוי הוליסטי לשכבת יעד","ניתוח נתונים עם ההנהלה","הצגת נתונים לצוות החינוכי","קיום ישיבות פדגוגיות מבוססות נתונים","קיום ישיבות צוות רב-מקצועי","בניית מפת MTSS בית ספרית","בניית מפת MTSS כיתתית","בניית תוכניות התערבות כיתתיות","בניית תוכניות התערבות אישיות","מעקב אחר התקדמות ועדכון מענים"]},
@@ -594,19 +731,32 @@ const ZONES = [
   {id:"z4",num:4,color:"#2a9d8f",bg:"#f0fdfa",title:"שימוש במרחבי למידה מגוונים לקידום פדגוגיה מכילה",desc:"מיפוי מרחבים, תכנון שימוש גמיש, שילוב למידה מגוונת",why:"הסביבה הפיזית משפיעה על תחושת השייכות, ההשתתפות והמעורבות של כלל התלמידים.",examples:["מיפוי מרחבים","שימוש גמיש","חברותות","פיילוט"],
    actions:["מיפוי מרחבי למידה קיימים","זיהוי חסמים במרחב הקיים","תכנון שימוש גמיש במרחבים","שילוב למידה בקבוצות ובחברותות","התאמת המרחב לצורכי תלמידים","תכנון פיילוט במרחב מסוים","תצפית על השפעת המרחב","איסוף משוב מהצוות ומהתלמידים"]}
 ];
-const CROSS=[{id:"ca1",icon:"🤝",title:"קידום יחסי קרבה ואכפתיות",desc:"מרחב בטוח, הקשבה, שיח אישי"},{id:"ca2",icon:"💬",title:"ביסוס שפה מכילה",desc:"עדכון שפה, גיוון ייצוגים"},{id:"ca3",icon:"💪",title:"חיזוק תחושת המסוגלות של הצוות",desc:"הכשרות, ליווי, הצלחות קטנות"}];
+
+const CROSS=[
+  {id:"ca1",icon:"🤝",title:"קידום יחסי קרבה ואכפתיות",desc:"מרחב בטוח, הקשבה, שיח אישי"},
+  {id:"ca2",icon:"💬",title:"ביסוס שפה מכילה",desc:"עדכון שפה, גיוון ייצוגים"},
+  {id:"ca3",icon:"💪",title:"חיזוק תחושת המסוגלות של הצוות",desc:"הכשרות, ליווי, הצלחות קטנות"}
+];
 const SCOPES=["בית ספרי","שכבה","מספר כיתות","כיתה אחת","קבוצת תלמידים במיקוד","צוות מסוים"];
 const METHODS=["קהילת היוועצות","חקר פרקטיקה","חשיפה והדגמה במליאת חדר המורים","ליווי קבוע של מורות ומורים","מודלינג","ישיבת צוות","ישיבת הנהלה","תצפית ומשוב","צפיית עמיתים","מפגש רב-מקצועי","למידת עמיתים","אחר"];
 const PARTNERS=["מנהל/ת בית ספר","מדריכת הכלה","רכזת הערכה ומדידה","רכזת תקשוב","רכזת פדגוגית","יועצת","סגן/ית מנהל/ת","מחנכות ומחנכי כיתה","מורים מקצועיים","מורת שילוב","פסיכולוגית","הורים","צוות רב-מקצועי"];
-const OUT_M=[{id:"om1",t:"מפגשי עבודה"},{id:"om2",t:"מורים השתתפו"},{id:"om3",t:"תוכניות התערבות"},{id:"om4",t:"ישיבות מבוססות נתונים"},{id:"om5",t:"כיתות / שכבות"},{id:"om6",t:"פרקטיקות יושמו"}];
-const OUT_RES=["עלייה במסוגלות הצוות","עלייה בתחושת שייכות תלמידים","שיפור בתחושת ביטחון","שיפור בהיכרות התלמיד השלם","שיפור בהשתתפות","שיפור בשפה מכילה","שיפור בניהול כיתה הטרוגנית","שיפור בדיוק המענים"];
-const EVAL_M=["תצפיות","שאלוני מורים","שאלוני תלמידים","משוב מהורים","ניתוח מסמכים","מעקב נתוני מיפוי","בדיקת תוכניות עבודה / התערבות","בדיקת מערכי שיעור","איסוף ייצוגים ועדויות","שיחות משוב","דיון בצוות / הנהלה"];
 const CP_L=["תחילת שנה","אמצע שנה","סוף שנה"];
 const CP_C=["#10b981","#f59e0b","#6366f1"];
 const FOCUS_L={high:"גבוה",medium:"בינוני",maintain:"תחזוקה"};
-const STEPS=[{id:1,l:"פרטי מסגרת",i:"🏫"},{id:2,l:"ארבע הזירות",i:"🎯"},{id:3,l:"הגדרת יעדים",i:"📋"},{id:4,l:"פעולות ומתודות",i:"⚙️"},{id:5,l:"שותפים ומדדים",i:"📊"},{id:6,l:"תוכנית עבודה",i:"📄"}];
 
-// ── STATE ────────────────────────────────────────────────────────────────────
+// UPDATED sidebar labels
+const STEPS=[
+  {id:1,l:"פרטי המסגרת",i:"🏫"},
+  {id:2,l:"זירות פעולה למיקוד",i:"🎯"},
+  {id:3,l:"הגדרת יעדים",i:"📋"},
+  {id:4,l:"פעולות ומתודות",i:"⚙️"},
+  {id:5,l:"שותפים ומדדים",i:"📊"},
+  {id:6,l:"תוכנית עבודה",i:"📄"}
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════════════
 function mkCS(){return{items:[],other:""};}
 function mkGoal(){return{
   text:"",type:"new",scope:[],scopeDetail:"",
@@ -615,30 +765,38 @@ function mkGoal(){return{
   currentState:mkCS(),dataBase:mkCS(),
   desiredState:mkCS(),targetResult:mkCS(),
   coreActions:[],suppActions:[],customCore:[],customSupp:[],
-  methods:[],partners:[],outputMetrics:{},outcomeMetrics:[],evalMethods:[],
-  cp:[{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""}]
+  methods:[],partners:[],
+  // NEW per-zone metrics structure: array of {text, x} where x is the value for "X" placeholder
+  outputMetrics:[],customOutput:[],
+  outcomeMetrics:[],customOutcome:[],
+  evalMethods:[],
+  cp:[{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""}],
+  notes:"" // NEW: free-text notes field for the goal
 };}
-function mkZone(){return{focus:"",g1:mkGoal(),g2:{...mkGoal(),enabled:false}};}
+function mkZone(){return{focus:"",g1:mkGoal(),g2:Object.assign(mkGoal(),{enabled:false})};}
 
-let S={
-  step:1,tab:"z1",
+function defaultState(){return{
+  step:1,tab:"z1",view:"table",
   setup:{school:"",year:'תשפ"ו',principal:"",coordinator:"",district:"",grades:"",date:new Date().toLocaleDateString("he-IL"),meetings:"",experience:"",
     situation:mkCS(),processes:mkCS(),practices:"",insights:mkCS(),challenges:mkCS(),strengths:mkCS()},
-  zones:{z1:mkZone(),z2:mkZone(),z3:mkZone(),z4:mkZone()},cross:[]
-};
+  zones:{z1:mkZone(),z2:mkZone(),z3:mkZone(),z4:mkZone()},cross:[],
+  planNotes:"" // overall plan notes
+};}
+
+let S = defaultState();
 
 const DEMO={
-  step:1,tab:"z1",
+  step:1,tab:"z1",view:"table",
   setup:{school:"בית ספר שוהם",year:'תשפ"ו',principal:"מירית כהן",coordinator:"תמר לוי",district:"מחוז מרכז – רמת גן",grades:"א'–ו'",date:"18/03/2026",meetings:"פגישה חודשית עם מנהלת + מעקב ב-Teams",experience:"3",
-    situation:{items:["167 — 101–200 תלמידים","6–12% תלמידים עם צרכים מיוחדים","11–20% תלמידים במיקוד","נתוני מיפוי קיימים ומעודכנים"],other:""},
+    situation:{items:["101–200 תלמידים","6–12% תלמידים עם צרכים מיוחדים","11–20% תלמידים במיקוד","נתוני מיפוי קיימים ומעודכנים","הישגים לימודיים בינוניים — רוב התלמידים ברמות 3–4 בתנופה"],other:""},
     processes:{items:["מיפוי הוליסטי שנתי מתבצע באופן סדיר","ועדות השמה מתקיימות לפי לוח זמנים","שימוש בכלי עוגן / עוגן-פלוס"],other:"למידה שיתופית חלקית"},
     practices:"שיעורים בגישת 'פתיחה לכולם', ישיבות שכבה חודשיות",
-    insights:{items:["הצוות מוכן לשינוי ופתוח ללמידה","יש צורך בכלים פרקטיים יותר מאשר לתיאוריה","יש הצלחות מקומיות שאפשר להרחיב"],other:""},
+    insights:{items:["הצוות מוכן לשינוי ופתוח ללמידה","הצוות זקוק לכלים פרקטיים יותר מאשר לתיאוריה","יש הצלחות מקומיות שאפשר להרחיב"],other:""},
     challenges:{items:["שחיקת הצוות החינוכי","מורים זוטרים רבים / תחלופה גבוהה","מרחבי למידה לא גמישים"],other:""},
     strengths:{items:["מנהל/ת מחויב/ת לקידום הכלה","יועצת בעלת ניסיון ומעורבות","תקציב להשתלמויות ולמידה מקצועית"],other:""}},
   zones:{
     z1:{focus:"high",
-      g1:{...mkGoal(),text:"הטמעת תהליך מיפוי הוליסטי סדור בבית הספר",type:"new",scope:["בית ספרי"],
+      g1:Object.assign(mkGoal(),{text:"הטמעת תהליך מיפוי הוליסטי סדור בבית הספר",type:"new",scope:["בית ספרי"],
         currentState:{items:["קיימים מיפויים, אך הם אינם משמשים באופן עקבי לבניית מענים","יש שימוש חלקי בנתונים לצורך קבלת החלטות"],other:""},
         dataBase:{items:["ממצאי עוגן / עוגן-פלוס","פער בין נתוני מיפוי לבין המענים בפועל"],other:""},
         desiredState:{items:["קיים שימוש עקבי בנתונים לצורך בניית מענים","תוכניות ההתערבות מתעדכנות לאורך השנה"],other:""},
@@ -647,27 +805,27 @@ const DEMO={
         suppActions:["ניתוח נתונים עם ההנהלה"],
         methods:["ישיבת הנהלה","ישיבת צוות"],
         partners:["מנהל/ת בית ספר","יועצת","מחנכות ומחנכי כיתה"],
-        outputMetrics:{om1:6,om3:9},outcomeMetrics:["שיפור בדיוק המענים"],evalMethods:["מעקב נתוני מיפוי"],customCore:[],customSupp:[],
-        cp:[{w:"האם המיפוי הושלם",d:"רשימת תלמידים",who:"רכזת+מנהלת",dec:"עדכון סדרי עדיפויות"},{w:"מצב MTSS",d:"כמות תוכניות",who:"צוות מורים",dec:"הוספת מענים"},{w:"שיפור בזיהוי",d:"השוואה לתחילת שנה",who:"הנהלה+רכזת",dec:"תכנון שנה הבאה"}]},
-      g2:{...mkGoal(),enabled:true,text:"ביסוס מעקב רבעוני אחר תלמידים במיקוד",type:"ongoing",ongoingYear:"2",
-        ongoingDone:{items:["התקיימו מפגשי למידה / ליווי ראשונים","נאספו נתונים ראשוניים"],other:""},
-        ongoingAdd:{items:["חיזוק המעקב והבקרה","ביסוס רצף עבודה שנתי"],other:""},
-        scope:["שכבה"],coreActions:["קיום ישיבות פדגוגיות מבוססות נתונים"],
-        currentState:mkCS(),dataBase:mkCS(),desiredState:mkCS(),targetResult:mkCS(),
-        methods:["ישיבת צוות"],customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[],evalMethods:[]}},
+        outputMetrics:[{text:"לפחות X% ממחנכי הכיתות מבצעים מיפוי הוליסטי",x:"80"},{text:"מתקיימים לפחות X ישיבות פדגוגיות מבוססות נתונים",x:"6"}],
+        outcomeMetrics:[{text:"X% מהמורים מדווחים על שיפור בדיוק המענים",x:"70"}],
+        evalMethods:["מעקב נתוני מיפוי","ניתוח מסמכים ותוכניות עבודה"],
+        notes:"חשוב שהמנהלת תוביל עם מסר ברור בפתיחת השנה.",
+        cp:[{w:"האם המיפוי הושלם",d:"רשימת תלמידים",who:"רכזת+מנהלת",dec:"עדכון סדרי עדיפויות"},{w:"מצב MTSS",d:"כמות תוכניות",who:"צוות מורים",dec:"הוספת מענים"},{w:"שיפור בזיהוי",d:"השוואה לתחילת שנה",who:"הנהלה+רכזת",dec:"תכנון שנה הבאה"}]}),
+      g2:Object.assign(mkGoal(),{enabled:false})},
     z2:{focus:"medium",
-      g1:{...mkGoal(),text:"הטמעת פרקטיקות UDL מוסכמות בקרב מורי השכבות הבינוניות",type:"new",scope:["שכבה"],
-        currentState:{items:["הצוות מכיר חלק מהעקרונות אך היישום אינו עקבי","יש פרקטיקות טובות בכיתות מסוימות בלבד"],other:""},
+      g1:Object.assign(mkGoal(),{text:"הטמעת פרקטיקות UDL",type:"new",scope:["שכבה"],
+        currentState:{items:["הצוות מכיר חלק מהעקרונות אך היישום אינו עקבי"],other:""},
         dataBase:{items:["תצפיות בכיתות","קושי במענה לשונות בכיתה הטרוגנית"],other:""},
         desiredState:{items:["הצוות משלב פרקטיקות UDL באופן עקבי"],other:""},
         targetResult:{items:["מחנכות שכבה מסוימת","מורים מקצועיים"],other:""},
         coreActions:["בחירת פרקטיקות עם המנהל/ת","קיום קהילת היוועצות / חקר פרקטיקה"],
         suppActions:["איסוף ייצוגים ועדויות"],methods:["קהילת היוועצות","מודלינג"],
-        partners:["מנהל/ת בית ספר","רכזת פדגוגית"],evalMethods:["תצפיות"],
-        customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[]},
-      g2:{...mkGoal(),enabled:false}},
+        partners:["מנהל/ת בית ספר","רכזת פדגוגית"],
+        outputMetrics:[{text:"לפחות X פרקטיקות UDL מיושמות",x:"3"}],
+        outcomeMetrics:[{text:"X% מהמורים מדווחים על תחושת מסוגלות גבוהה לתכנן הוראה מותאמת",x:"70"}],
+        evalMethods:["תצפיות"],notes:""}),
+      g2:Object.assign(mkGoal(),{enabled:false})},
     z3:{focus:"high",
-      g1:{...mkGoal(),text:"בניית שגרת עבודה סדורה לתלמידים במיקוד",type:"ongoing",ongoingYear:"2",
+      g1:Object.assign(mkGoal(),{text:"בניית שגרת עבודה סדורה לתלמידים במיקוד",type:"ongoing",ongoingYear:"2",
         ongoingDone:{items:["בוצע פיילוט ראשוני","היעד יושם במספר כיתות / שכבה אחת"],other:""},
         ongoingAdd:{items:["הרחבת היישום לשכבות נוספות","חיזוק המעקב והבקרה"],other:""},
         scope:["בית ספרי"],
@@ -677,43 +835,139 @@ const DEMO={
         targetResult:{items:["תלמידים במיקוד"],other:""},
         coreActions:["בניית תוכנית עבודה לתלמיד","מעקב אחר התקדמות"],
         methods:["מפגש רב-מקצועי"],partners:["מורת שילוב","פסיכולוגית"],
-        evalMethods:["ניתוח מסמכים"],customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[]},
-      g2:{...mkGoal(),enabled:false}},
+        outputMetrics:[{text:"לפחות X% מהתלמידים במיקוד מלווים עם תוכנית התערבות",x:"90"}],
+        outcomeMetrics:[{text:"שיפור מדיד בהתקדמות תלמידים במיקוד",x:""}],
+        evalMethods:["ניתוח מסמכים"],notes:"לשקול להתחיל משכבת ד' ולהרחיב להמשך."}),
+      g2:Object.assign(mkGoal(),{enabled:false})},
     z4:{focus:"maintain",
-      g1:{...mkGoal(),text:"שמירה על שימוש גמיש במרחבי למידה קיימים",type:"ongoing",ongoingYear:"1",
+      g1:Object.assign(mkGoal(),{text:"הרחבת השימוש במרחבי למידה מגוונים",type:"ongoing",ongoingYear:"1",
         ongoingDone:{items:["בוצע פיילוט ראשוני"],other:""},
         ongoingAdd:{items:["דיוק הכלים הקיימים"],other:""},
         scope:["בית ספרי"],
         currentState:{items:["נעשה שימוש חלקי במרחבים חלופיים"],other:""},
         dataBase:mkCS(),desiredState:mkCS(),targetResult:{items:["כלל מחנכות בית הספר"],other:""},
         coreActions:["מיפוי מרחבי למידה קיימים"],methods:["תצפית ומשוב"],
-        partners:["מחנכות ומחנכי כיתה"],evalMethods:["תצפיות"],
-        customCore:[],customSupp:[],outputMetrics:{},outcomeMetrics:[]},
-      g2:{...mkGoal(),enabled:false}}
-  },cross:["ca1","ca2"]
+        partners:["מחנכות ומחנכי כיתה"],
+        outputMetrics:[{text:"מתוכננים לפחות X מרחבי למידה מגוונים",x:"4"}],
+        outcomeMetrics:[],evalMethods:["תצפיות"],notes:""}),
+      g2:Object.assign(mkGoal(),{enabled:false})}
+  },cross:["ca1","ca2"],planNotes:"תוכנית ראשונית — לעדכן לאחר ישיבת פתיחה עם ההנהלה."
 };
 
-// ── HELPERS ──────────────────────────────────────────────────────────────────
-function h(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+// ═══════════════════════════════════════════════════════════════════════════════
+// SAVE / LOAD (localStorage + JSON import/export)
+// ═══════════════════════════════════════════════════════════════════════════════
+const LS_KEY = "merchav_siach_state_v2";
+let saveTimer = null;
+
+function showSaveStatus(txt, ok){
+  const el = document.getElementById("saveStatus");
+  if(!el) return;
+  el.textContent = txt || "✓ נשמר";
+  el.style.color = ok === false ? "var(--red)" : "var(--ok)";
+  el.classList.add("show");
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>el.classList.remove("show"), 1500);
+}
+function saveToLS(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){ console.warn("LS save failed", e); }
+}
+let autoSaveTimer=null;
+function autoSave(){
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(()=>{ saveToLS(); }, 500);
+}
+function saveNow(){ saveToLS(); showSaveStatus("✓ נשמר בדפדפן"); }
+function loadFromLS(){
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return false;
+    const obj = JSON.parse(raw);
+    if(obj && obj.setup && obj.zones){ S = obj; return true; }
+  } catch(e){ console.warn("LS load failed", e); }
+  return false;
+}
+function confirmReload(){
+  openModal("טעינת תוכנית שמורה", "לטעון את התוכנית השמורה האחרונה מהדפדפן? שינויים לא-שמורים יימחקו.", ()=>{
+    if(loadFromLS()){ render(); showSaveStatus("✓ נטען"); }
+    else { showSaveStatus("⚠ אין תוכנית שמורה", false); }
+  });
+}
+function confirmReset(){
+  openModal("איפוס התוכנית", "לאפס את כל הנתונים? (גם השמירה בדפדפן תימחק)", ()=>{
+    localStorage.removeItem(LS_KEY);
+    S = defaultState();
+    render();
+    showSaveStatus("✓ אופס");
+  }, true);
+}
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const school = (S.setup.school||"תוכנית").replace(/[^\u0590-\u05FFa-zA-Z0-9_-]/g,"_");
+  a.href = url;
+  a.download = `merchav_siach_${school}_${S.setup.year||""}.json`;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url); a.remove();}, 100);
+  showSaveStatus("⬇ הורד");
+}
+function importJSON(evt){
+  const file = evt.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      const obj = JSON.parse(e.target.result);
+      if(obj && obj.setup && obj.zones){ S = obj; saveToLS(); render(); showSaveStatus("✓ יובא"); }
+      else { alert("קובץ לא תקין — חסרים שדות נדרשים."); }
+    } catch(err){ alert("שגיאה בקריאת הקובץ: "+err.message); }
+  };
+  reader.readAsText(file, "utf-8");
+  evt.target.value = ""; // reset so same file can be re-uploaded
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════════════════════
+function openModal(title, msg, onOk, danger){
+  document.getElementById("modalTit").textContent = title;
+  document.getElementById("modalMsg").textContent = msg;
+  const ok = document.getElementById("modalOk");
+  ok.className = "modal-btn " + (danger ? "danger" : "primary");
+  ok.onclick = function(){ closeModal(); if(onOk) onOk(); };
+  document.getElementById("modalBk").classList.add("open");
+}
+function closeModal(){ document.getElementById("modalBk").classList.remove("open"); }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════════════════
+function h(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 function csText(v){
   if(!v) return "";
   if(typeof v==="string") return v;
-  const parts=[...(v.items||[])];
+  const parts=[...(v.items||[]).filter(x=>x!=="__other__")];
   if(v.other) parts.push(v.other);
   return parts.join(" | ");
 }
 function csHasValue(v){if(!v) return false;if(typeof v==="string") return !!v;return (v.items&&v.items.length>0)||!!v.other;}
+function csList(v){
+  if(!v) return [];
+  if(typeof v==="string") return v?[v]:[];
+  const arr=[...(v.items||[]).filter(x=>x!=="__other__")];
+  if(v.other) arr.push(v.other);
+  return arr;
+}
 
-// ── DROPDOWN CHECKSELECT ──────────────────────────────────────────────────────
-// Track open dropdowns by DOM ID — no re-render needed for open/close
+// ═══════════════════════════════════════════════════════════════════════════════
+// DROPDOWN (CheckSelect)
+// ═══════════════════════════════════════════════════════════════════════════════
 function ddId(prefix){return "dd_"+prefix.replace(/[^a-z0-9]/gi,"_");}
-
 function toggleDD(id){
   const panel=document.getElementById(id+"_panel");
   const trigger=document.getElementById(id+"_trigger");
   if(!panel||!trigger)return;
   const isOpen=panel.classList.contains("open");
-  // Close all other dropdowns first
   document.querySelectorAll(".dd-panel.open").forEach(p=>{
     p.classList.remove("open");
     const t=document.getElementById(p.id.replace("_panel","_trigger"));
@@ -721,8 +975,6 @@ function toggleDD(id){
   });
   if(!isOpen){panel.classList.add("open");trigger.classList.add("open");}
 }
-
-// Close dropdowns when clicking outside
 document.addEventListener("click",function(e){
   if(!e.target.closest(".dd-wrap")){
     document.querySelectorAll(".dd-panel.open").forEach(p=>{
@@ -733,234 +985,215 @@ document.addEventListener("click",function(e){
   }
 });
 
-function renderDD(uid, items, other, options, label, full, onToggleItem, onSetOther){
-  const selected=items.filter(x=>x!=="__other__");
-  const showOther=items.includes("__other__");
-  const hasVal=selected.length>0||!!other;
-  const id=ddId(uid);
-  return `<div class="fgrp${full?" full":""}">
-    <label class="flbl">${label}</label>
-    <div class="dd-wrap" onclick="event.stopPropagation()">
+function renderDDBody(uid, items, other, options){
+  const selected = items.filter(x=>x!=="__other__");
+  const showOther = items.includes("__other__");
+  const hasVal = selected.length>0 || !!other;
+  const id = ddId(uid);
+  return `<div class="dd-wrap" onclick="event.stopPropagation()">
       <div class="dd-trigger ${hasVal?"has-val":""}" id="${id}_trigger" onclick="toggleDD('${id}')">
         <div class="dd-left">
           ${hasVal
-            ?`<div class="dd-tags">
-                ${selected.map(i=>`<span class="dd-tag">${h(i)}</span>`).join("")}
-                ${other?`<span class="dd-tag dd-tag-other">${h(other)}</span>`:""}
-              </div>`
-            :`<span class="dd-placeholder">בחרי אפשרויות...</span>`
+            ? `<div class="dd-tags">
+                 ${selected.map(i=>`<span class="dd-tag" title="${h(i)}">${h(i)}</span>`).join("")}
+                 ${other?`<span class="dd-tag dd-tag-other" title="${h(other)}">${h(other)}</span>`:""}
+               </div>`
+            : `<span class="dd-placeholder">בחרי אפשרויות...</span>`
           }
         </div>
         ${hasVal?`<span class="dd-count">${selected.length+(other?1:0)}</span>`:""}
         <span class="dd-arrow">▾</span>
       </div>
       <div class="dd-panel" id="${id}_panel">
-        ${options.map(opt=>`
-          <div class="dd-item ${items.includes(opt)?"on":""}" onclick="${onToggleItem}('${opt.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">
+        ${options.map((opt,i)=>`
+          <div class="dd-item ${items.includes(opt)?"on":""}" data-idx="${i}" onclick="__ddToggle('${uid}',${i})">
             <span class="dd-box">${items.includes(opt)?"✓":""}</span>
             <span>${h(opt)}</span>
           </div>`).join("")}
-        <div class="dd-item dd-other-item ${showOther?"on":""}" onclick="${onToggleItem}('__other__')">
+        <div class="dd-item dd-other-item ${showOther?"on":""}" onclick="__ddToggleOther('${uid}')">
           <span class="dd-box" style="${showOther?"background:var(--pur);border-color:var(--pur);color:#fff":""}">✎</span>
           <span style="color:${showOther?"var(--pur)":"var(--muted)"}">אחר — ניסוח חופשי</span>
         </div>
-        ${showOther?`<input class="dd-inp" placeholder="כתבי ניסוח קצר ומדויק..." value="${h(other)}" oninput="${onSetOther}(this.value)" onclick="event.stopPropagation()">`:""}
+        ${showOther?`<input class="dd-inp" placeholder="כתבי ניסוח קצר ומדויק..." value="${h(other)}" oninput="__ddSetOther('${uid}',this.value)" onclick="event.stopPropagation()">`:""}
       </div>
-    </div>
+    </div>`;
+}
+
+// Registry for dropdown callbacks
+const _ddRegistry = {};
+function __ddToggle(uid, optIdx){
+  const reg = _ddRegistry[uid]; if(!reg) return;
+  const opt = reg.options[optIdx];
+  const v = reg.get() || {items:[],other:""};
+  const its = [...(v.items||[])];
+  let newVal;
+  if(its.includes(opt)){ newVal = {...v, items: its.filter(x=>x!==opt)}; }
+  else { newVal = {...v, items:[...its, opt]}; }
+  reg.set(newVal);
+  _ddRefresh(uid);
+  autoSave();
+}
+function __ddToggleOther(uid){
+  const reg = _ddRegistry[uid]; if(!reg) return;
+  const v = reg.get() || {items:[],other:""};
+  const its = [...(v.items||[])];
+  let newVal;
+  if(its.includes("__other__")){ newVal = {...v, items: its.filter(x=>x!=="__other__"), other:""}; }
+  else { newVal = {...v, items:[...its, "__other__"]}; }
+  reg.set(newVal);
+  _ddRefresh(uid);
+  autoSave();
+}
+function __ddSetOther(uid, val){
+  const reg = _ddRegistry[uid]; if(!reg) return;
+  const v = reg.get() || {items:[],other:""};
+  reg.set({...v, other: val});
+  autoSave();
+}
+function _ddRefresh(uid){
+  const reg = _ddRegistry[uid]; if(!reg) return;
+  const v = reg.get() || {items:[],other:""};
+  const items = v.items || [];
+  const other = v.other || "";
+  const selected = items.filter(x=>x!=="__other__");
+  const showOther = items.includes("__other__");
+  const hasVal = selected.length>0 || !!other;
+  const id = ddId(uid);
+  const trigger = document.getElementById(id+"_trigger");
+  if(trigger){
+    const left = trigger.querySelector(".dd-left");
+    if(left){
+      left.innerHTML = hasVal
+        ? `<div class="dd-tags">${selected.map(i=>`<span class="dd-tag" title="${h(i)}">${h(i)}</span>`).join("")}${other?`<span class="dd-tag dd-tag-other" title="${h(other)}">${h(other)}</span>`:""}</div>`
+        : `<span class="dd-placeholder">בחרי אפשרויות...</span>`;
+    }
+    trigger.classList.toggle("has-val", hasVal);
+    // update count
+    let countEl = trigger.querySelector(".dd-count");
+    const count = selected.length + (other?1:0);
+    if(countEl){ countEl.textContent = count; countEl.style.display = count>0 ? "" : "none"; }
+    else if(count>0){
+      const arrow = trigger.querySelector(".dd-arrow");
+      if(arrow){ const c=document.createElement("span"); c.className="dd-count"; c.textContent=count; trigger.insertBefore(c,arrow); }
+    }
+  }
+  const panel = document.getElementById(id+"_panel");
+  if(panel){
+    panel.querySelectorAll(".dd-item:not(.dd-other-item)").forEach((el,i)=>{
+      const isOn = items.includes(reg.options[i]);
+      el.classList.toggle("on", isOn);
+      const box = el.querySelector(".dd-box");
+      if(box) box.textContent = isOn?"✓":"";
+    });
+    const otherItem = panel.querySelector(".dd-other-item");
+    if(otherItem){
+      otherItem.classList.toggle("on", showOther);
+      const ob = otherItem.querySelector(".dd-box");
+      if(ob){ ob.textContent = showOther?"✓":"✎"; ob.style = showOther ? "background:var(--pur);border-color:var(--pur);color:#fff" : ""; }
+    }
+    let inp = panel.querySelector(".dd-inp");
+    if(showOther && !inp){
+      inp = document.createElement("input"); inp.className="dd-inp";
+      inp.placeholder="כתבי ניסוח קצר ומדויק..."; inp.value = other;
+      inp.addEventListener("input", function(){ __ddSetOther(uid, this.value); });
+      inp.addEventListener("click", function(e){ e.stopPropagation(); });
+      panel.appendChild(inp);
+    } else if(!showOther && inp){ inp.remove(); }
+  }
+}
+
+function renderDDField(uid, options, label, full, getter, setter){
+  _ddRegistry[uid] = { options, get: getter, set: setter };
+  const v = getter() || {items:[],other:""};
+  return `<div class="fgrp${full?" full":""}">
+    <label class="flbl">${label}</label>
+    ${renderDDBody(uid, v.items||[], v.other||"", options)}
   </div>`;
 }
 
-function renderCS(zid,gk,field,options,label,full){
-  const val=S.zones[zid][gk][field]||{items:[],other:""};
-  const items=val.items||[];
-  const other=val.other||"";
-  const uid=`${zid}_${gk}_${field}`;
-  // Register inline handlers via global function map
-  window[`_tcs_${uid}`]=function(opt){
-    const g=S.zones[zid][gk];
-    const v=g[field]||{items:[],other:""};
-    const its=[...(v.items||[])];
-    if(its.includes(opt)){g[field]={...v,items:its.filter(x=>x!==opt),other:opt==="__other__"?"":v.other};}
-    else{g[field]={...v,items:[...its,opt]};}
-    // Re-render only the trigger+panel, not the whole page
-    const id=ddId(uid);
-    const newVal=g[field];
-    const newItems=newVal.items||[];
-    const newOther=newVal.other||"";
-    const newSelected=newItems.filter(x=>x!=="__other__");
-    const newShowOther=newItems.includes("__other__");
-    const hasVal=newSelected.length>0||!!newOther;
-    // Update trigger display
-    const trigger=document.getElementById(id+"_trigger");
-    if(trigger){
-      const left=trigger.querySelector(".dd-left");
-      if(left){left.innerHTML=hasVal
-        ?newSelected.map(i=>`<span class="dd-tag">${h(i)}</span>`).join("")+(newOther?`<span class="dd-tag dd-tag-other">${h(newOther)}</span>`:"")
-        :`<span class="dd-placeholder">בחרי אפשרויות...</span>`;}
-      trigger.className="dd-trigger "+(hasVal?"has-val ":"")+"open";
-      const countEl=trigger.querySelector(".dd-count");
-      const count=newSelected.length+(newOther?1:0);
-      if(countEl){countEl.textContent=count;countEl.style.display=count>0?"":"none";}
-      else if(count>0){const arrow=trigger.querySelector(".dd-arrow");if(arrow){const c=document.createElement("span");c.className="dd-count";c.textContent=count;trigger.insertBefore(c,arrow);}}
-    }
-    // Update panel items
-    const panel=document.getElementById(id+"_panel");
-    if(panel){
-      panel.querySelectorAll(".dd-item:not(.dd-other-item)").forEach((el,i)=>{
-        const isOn=newItems.includes(options[i]);
-        el.className="dd-item"+(isOn?" on":"");
-        const box=el.querySelector(".dd-box");
-        if(box)box.textContent=isOn?"✓":"";
-      });
-      const otherItem=panel.querySelector(".dd-other-item");
-      if(otherItem){
-        otherItem.className="dd-item dd-other-item"+(newShowOther?" on":"");
-        const ob=otherItem.querySelector(".dd-box");
-        if(ob){ob.textContent=newShowOther?"✓":"";ob.style=newShowOther?"background:var(--pur);border-color:var(--pur);color:#fff":"";}
-      }
-      let inp=panel.querySelector(".dd-inp");
-      if(newShowOther&&!inp){
-        inp=document.createElement("input");inp.className="dd-inp";
-        inp.placeholder="כתבי ניסוח קצר ומדויק...";inp.value=newOther;
-        inp.addEventListener("input",function(){window[`_scs_${uid}`](this.value);});
-        inp.addEventListener("click",function(e){e.stopPropagation();});
-        panel.appendChild(inp);
-      } else if(!newShowOther&&inp){inp.remove();}
-    }
-  };
-  window[`_scs_${uid}`]=function(val){
-    S.zones[zid][gk][field]={...(S.zones[zid][gk][field]||{items:[]})};
-    S.zones[zid][gk][field].other=val;
-  };
-  return renderDD(uid,items,other,options,label,full,`_tcs_${uid}`,`_scs_${uid}`);
+// Helpers to render fields backed by S
+function renderCS(zid, gk, field, options, label, full){
+  const uid = `${zid}_${gk}_${field}`;
+  return renderDDField(uid, options, label, full,
+    ()=>S.zones[zid][gk][field],
+    (v)=>{ S.zones[zid][gk][field] = v; }
+  );
 }
-function toggleCS(zid,gk,field,opt){window[`_tcs_${zid}_${gk}_${field}`]&&window[`_tcs_${zid}_${gk}_${field}`](opt);}
-function setCSother(zid,gk,field,val){window[`_scs_${zid}_${gk}_${field}`]&&window[`_scs_${zid}_${gk}_${field}`](val);}
+function renderSetupCS(field, options, label, full){
+  const uid = "setup_"+field;
+  return renderDDField(uid, options, label, full,
+    ()=>S.setup[field],
+    (v)=>{ S.setup[field] = v; }
+  );
+}
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════════════════════
 function render(){
-  renderSidebar();refreshTopBar();
-  const c=document.getElementById("content");
-  if(S.step===1)c.innerHTML=renderS1();
-  else if(S.step===2)c.innerHTML=renderS2();
-  else if(S.step===3)c.innerHTML=renderS3();
-  else if(S.step===4)c.innerHTML=renderS4();
-  else if(S.step===5)c.innerHTML=renderS5();
-  else c.innerHTML=renderS6();
+  renderSidebar(); refreshTopBar();
+  const c = document.getElementById("content");
+  if(S.step===1) c.innerHTML = renderS1();
+  else if(S.step===2) c.innerHTML = renderS2();
+  else if(S.step===3) c.innerHTML = renderS3();
+  else if(S.step===4) c.innerHTML = renderS4();
+  else if(S.step===5) c.innerHTML = renderS5();
+  else c.innerHTML = renderS6();
   updateNav();
+  autoSave();
 }
 function renderSidebar(){
-  document.getElementById("snav").innerHTML=STEPS.map(s=>`
+  document.getElementById("snav").innerHTML = STEPS.map(s=>`
     <div class="sstep ${S.step===s.id?"active":""} ${S.step>s.id?"done":""}" onclick="gotoStep(${s.id})">
       <div class="snum">${S.step>s.id?"✓":s.id}</div><span>${s.l}</span>
     </div>`).join("");
 }
 function refreshTopBar(){
-  document.getElementById("toptitle").textContent=STEPS[S.step-1].i+" "+STEPS[S.step-1].l;
-  document.getElementById("topschool").textContent=S.setup.school?(S.setup.school+" · "+S.setup.year):"";
-  document.getElementById("pfill").style.width=((S.step-1)/5*100)+"%";
-  document.getElementById("plbl").textContent="שלב "+S.step+" מתוך 6";
+  document.getElementById("toptitle").textContent = STEPS[S.step-1].i+" "+STEPS[S.step-1].l;
+  document.getElementById("topschool").textContent = S.setup.school ? (S.setup.school+" · "+S.setup.year) : "";
+  document.getElementById("pfill").style.width = ((S.step-1)/5*100)+"%";
+  document.getElementById("plbl").textContent = "שלב "+S.step+" מתוך 6";
 }
 function updateNav(){
-  document.getElementById("btnBack").disabled=S.step===1;
-  const ok=canProceed();
-  const next=document.getElementById("btnNext");
-  const msg=document.getElementById("navMsg");
-  if(S.step<6){next.textContent="הבא ←";next.disabled=!ok;msg.textContent=!ok?"⚠️ יש להשלים שדות חובה":"";}
-  else{next.textContent="🖨️ הדפסה";next.disabled=false;msg.textContent="";}
+  document.getElementById("btnBack").disabled = S.step===1;
+  const next = document.getElementById("btnNext");
+  const msg = document.getElementById("navMsg");
+  if(S.step<6){ next.textContent="הבא ←"; next.disabled=false; msg.textContent=""; }
+  else { next.textContent="🖨️ הדפסה"; next.disabled=false; msg.textContent=""; }
 }
-function canProceed(){return true;}
-function prevStep(){if(S.step>1){S.step--;render();}}
-function nextStep(){if(S.step<6&&canProceed()){S.step++;render();}else if(S.step===6){window.print();}}
-function gotoStep(n){if(n<=S.step||S.step>1){S.step=n;render();}}
-function setTab(t){S.tab=t;render();}
-function loadDemo(){S={...DEMO};render();}
-function resetAll(){if(confirm("לאפס את כל הנתונים?")){S={step:1,tab:"z1",setup:{school:"",year:'תשפ"ו',principal:"",coordinator:"",district:"",grades:"",date:new Date().toLocaleDateString("he-IL"),meetings:"",experience:"",situation:mkCS(),processes:mkCS(),practices:"",insights:mkCS(),challenges:mkCS(),strengths:mkCS()},zones:{z1:mkZone(),z2:mkZone(),z3:mkZone(),z4:mkZone()},cross:[]};render();}}
+function prevStep(){ if(S.step>1){ S.step--; render(); } }
+function nextStep(){ if(S.step<6){ S.step++; render(); } else if(S.step===6){ window.print(); } }
+// FIXED: sidebar navigation — always navigate
+function gotoStep(n){ S.step = n; render(); }
+function setTab(t){ S.tab = t; render(); }
+function setView(v){ S.view = v; render(); }
+function loadDemo(){ S = JSON.parse(JSON.stringify(DEMO)); saveToLS(); render(); showSaveStatus("✓ דוגמה נטענה"); }
 
-// ── SETUP CS HELPER ───────────────────────────────────────────────────────────
-function renderSetupCS(field, options, label, full){
-  const val=S.setup[field]||{items:[],other:""};
-  const items=val.items||[];
-  const other=val.other||"";
-  const uid="setup_"+field;
-  window[`_tcs_${uid}`]=function(opt){
-    const v=S.setup[field]||{items:[],other:""};
-    const its=[...(v.items||[])];
-    if(its.includes(opt)){S.setup[field]={...v,items:its.filter(x=>x!==opt),other:opt==="__other__"?"":v.other};}
-    else{S.setup[field]={...v,items:[...its,opt]};}
-    const id=ddId(uid);
-    const newVal=S.setup[field];
-    const newItems=newVal.items||[];
-    const newOther=newVal.other||"";
-    const newSelected=newItems.filter(x=>x!=="__other__");
-    const newShowOther=newItems.includes("__other__");
-    const hasVal=newSelected.length>0||!!newOther;
-    const trigger=document.getElementById(id+"_trigger");
-    if(trigger){
-      const left=trigger.querySelector(".dd-left");
-      if(left){left.innerHTML=hasVal
-        ?newSelected.map(i=>`<span class="dd-tag">${h(i)}</span>`).join("")+(newOther?`<span class="dd-tag dd-tag-other">${h(newOther)}</span>`:"")
-        :`<span class="dd-placeholder">בחרי אפשרויות...</span>`;}
-      trigger.className="dd-trigger "+(hasVal?"has-val ":"")+"open";
-      const countEl=trigger.querySelector(".dd-count");
-      const count=newSelected.length+(newOther?1:0);
-      if(countEl){countEl.textContent=count;countEl.style.display=count>0?"":"none";}
-      else if(count>0){const arrow=trigger.querySelector(".dd-arrow");if(arrow){const c=document.createElement("span");c.className="dd-count";c.textContent=count;trigger.insertBefore(c,arrow);}}
-    }
-    const panel=document.getElementById(id+"_panel");
-    if(panel){
-      panel.querySelectorAll(".dd-item:not(.dd-other-item)").forEach((el,i)=>{
-        const isOn=newItems.includes(options[i]);
-        el.className="dd-item"+(isOn?" on":"");
-        const box=el.querySelector(".dd-box");
-        if(box)box.textContent=isOn?"✓":"";
-      });
-      const otherItem=panel.querySelector(".dd-other-item");
-      if(otherItem){
-        otherItem.className="dd-item dd-other-item"+(newShowOther?" on":"");
-        const ob=otherItem.querySelector(".dd-box");
-        if(ob){ob.textContent=newShowOther?"✓":"";ob.style=newShowOther?"background:var(--pur);border-color:var(--pur);color:#fff":"";}
-      }
-      let inp=panel.querySelector(".dd-inp");
-      if(newShowOther&&!inp){
-        inp=document.createElement("input");inp.className="dd-inp";
-        inp.placeholder="כתבי ניסוח קצר ומדויק...";inp.value=newOther;
-        inp.addEventListener("input",function(){S.setup[field].other=this.value;});
-        inp.addEventListener("click",function(e){e.stopPropagation();});
-        panel.appendChild(inp);
-      } else if(!newShowOther&&inp){inp.remove();}
-    }
-  };
-  window[`_scs_${uid}`]=function(val){S.setup[field]={...(S.setup[field]||{items:[]})};S.setup[field].other=val;};
-  return renderDD(uid,items,other,options,label,full,`_tcs_${uid}`,`_scs_${uid}`);
-}
-function toggleSCS(field,opt){window[`_tcs_setup_${field}`]&&window[`_tcs_setup_${field}`](opt);}
-function setSCSother(field,val){window[`_scs_setup_${field}`]&&window[`_scs_setup_${field}`](val);}
-
-
-// ── STEP 1 ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STEP 1
+// ═══════════════════════════════════════════════════════════════════════════════
 function renderS1(){
-  const s=S.setup;
-  const exp=parseInt(s.experience);
+  const s = S.setup;
+  const exp = parseInt(s.experience);
   let guidance="";
-  if(exp===1)guidance=`<div class="guidance"><div class="gt">🌱 שנה ראשונה בתפקיד</div><p>הדגש השנה הוא על למידה, מיפוי, היכרות עם בית הספר ובניית תשתיות ושותפויות. עומק גובר על רוחב.</p></div>`;
-  else if(exp===2)guidance=`<div class="guidance"><div class="gt">🌿 שנה שנייה בתפקיד</div><p>הדגש הוא על הרחבה, דיוק והעמקה. כדאי לבחור יעדים שמבוססים על מה שנבנה בשנה הקודמת.</p></div>`;
-  else if(exp>=3)guidance=`<div class="guidance"><div class="gt">🌳 שנה ${exp} בתפקיד</div><p>הדגש הוא על הטמעה, ביסוס, הרחבה וקיימות. שנה מצוינת לחזק תהליכים שהוכיחו עצמם.</p></div>`;
+  if(exp===1) guidance=`<div class="guidance"><div class="gt">🌱 שנה ראשונה בתפקיד</div><p>הדגש השנה הוא על למידה, מיפוי, היכרות עם בית הספר ובניית תשתיות ושותפויות. עומק גובר על רוחב.</p></div>`;
+  else if(exp===2) guidance=`<div class="guidance"><div class="gt">🌿 שנה שנייה בתפקיד</div><p>הדגש הוא על הרחבה, דיוק והעמקה. כדאי לבחור יעדים שמבוססים על מה שנבנה בשנה הקודמת.</p></div>`;
+  else if(exp>=3) guidance=`<div class="guidance"><div class="gt">🌳 שנה ${exp} בתפקיד</div><p>הדגש הוא על הטמעה, ביסוס, הרחבה וקיימות. שנה מצוינת לחזק תהליכים שהוכיחו עצמם.</p></div>`;
   return `<div class="page">
     <div class="ph"><h1>מרחב שיח — בניית תוכנית עבודה שנתית</h1>
     <p>כלי לניהול שיח מקצועי בין מנהל/ת בית הספר לרכזת ההכלה וההוגנות — כבסיס להגדרת יעדים משותפים ובניית תוכנית עבודה שנתית ממוקדת, ישימה ומדידה.</p></div>
     <div class="card">
-      <div class="ch"><div class="ci" style="background:#eff6ff">🏫</div><div><div class="ct">פרטי מסגרת</div><div class="cs">פרטים בסיסיים</div></div></div>
+      <div class="ch"><div class="ci" style="background:#eff6ff">🏫</div><div><div class="ct">פרטי המסגרת</div><div class="cs">פרטים בסיסיים</div></div></div>
       <div class="fg">
-        <div class="fgrp"><label class="flbl">שם בית הספר *</label><input class="finp" placeholder="שם בית הספר" value="${h(s.school)}" oninput="S.setup.school=this.value;refreshTopBar()"></div>
-        <div class="fgrp"><label class="flbl">שנת הלימודים</label><input class="finp" placeholder='תשפ"ו' value="${h(s.year)}" oninput="S.setup.year=this.value;refreshTopBar()"></div>
-        <div class="fgrp"><label class="flbl">שם המנהל/ת *</label><input class="finp" placeholder="שם מלא" value="${h(s.principal)}" oninput="S.setup.principal=this.value"></div>
-        <div class="fgrp"><label class="flbl">שם רכזת ההכלה *</label><input class="finp" placeholder="שם מלא" value="${h(s.coordinator)}" oninput="S.setup.coordinator=this.value"></div>
-        <div class="fgrp"><label class="flbl">מחוז / רשות <span class="opt">(אופציונלי)</span></label><input class="finp" placeholder="מחוז מרכז – רמת גן" value="${h(s.district)}" oninput="S.setup.district=this.value"></div>
-        <div class="fgrp"><label class="flbl">שכבות גיל במיקוד</label><input class="finp" placeholder="א'–ו'" value="${h(s.grades)}" oninput="S.setup.grades=this.value"></div>
-        <div class="fgrp"><label class="flbl">תאריך השיחה</label><input class="finp" placeholder="19/03/2026" value="${h(s.date)}" oninput="S.setup.date=this.value"></div>
+        <div class="fgrp"><label class="flbl">שם בית הספר *</label><input class="finp" placeholder="שם בית הספר" value="${h(s.school)}" oninput="S.setup.school=this.value;refreshTopBar();autoSave()"></div>
+        <div class="fgrp"><label class="flbl">שנת הלימודים</label><input class="finp" placeholder='תשפ"ו' value="${h(s.year)}" oninput="S.setup.year=this.value;refreshTopBar();autoSave()"></div>
+        <div class="fgrp"><label class="flbl">שם המנהל/ת *</label><input class="finp" placeholder="שם מלא" value="${h(s.principal)}" oninput="S.setup.principal=this.value;autoSave()"></div>
+        <div class="fgrp"><label class="flbl">שם רכזת ההכלה *</label><input class="finp" placeholder="שם מלא" value="${h(s.coordinator)}" oninput="S.setup.coordinator=this.value;autoSave()"></div>
+        <div class="fgrp"><label class="flbl">מחוז / רשות <span class="opt">(אופציונלי)</span></label><input class="finp" placeholder="מחוז מרכז – רמת גן" value="${h(s.district)}" oninput="S.setup.district=this.value;autoSave()"></div>
+        <div class="fgrp"><label class="flbl">שכבות גיל במיקוד</label><input class="finp" placeholder="א'–ו'" value="${h(s.grades)}" oninput="S.setup.grades=this.value;autoSave()"></div>
+        <div class="fgrp"><label class="flbl">תאריך השיחה</label><input class="finp" placeholder="19/03/2026" value="${h(s.date)}" oninput="S.setup.date=this.value;autoSave()"></div>
         <div class="fgrp"><label class="flbl">ותק בתפקיד (שנים)</label><input class="finp" placeholder="3" value="${h(s.experience)}" oninput="S.setup.experience=this.value;render()"></div>
-        <div class="fgrp full"><label class="flbl">סדירויות מוסכמות</label><input class="finp" placeholder="פגישה חודשית עם מנהלת, מעקב דו-שבועי..." value="${h(s.meetings)}" oninput="S.setup.meetings=this.value"></div>
+        <div class="fgrp full"><label class="flbl">סדירויות מוסכמות</label><input class="finp" placeholder="פגישה חודשית עם מנהלת, מעקב דו-שבועי..." value="${h(s.meetings)}" oninput="S.setup.meetings=this.value;autoSave()"></div>
       </div>
     </div>
     ${guidance}
@@ -970,7 +1203,7 @@ function renderS1(){
         ${renderSetupCS("situation", SETUP_BANKS.situation, "נתונים בית ספריים מרכזיים", true)}
         ${renderSetupCS("processes", SETUP_BANKS.processes, "תהליכים מקדמי הכלה קיימים — מה כבר עובד?", true)}
         <div class="fgrp full"><label class="flbl">פרקטיקות מיושמות כיום <span class="opt">(תיאור חופשי)</span></label>
-          <textarea class="finp fta" rows="2" placeholder="פרטי פרקטיקות ספציפיות, שיטות הוראה קיימות..." oninput="S.setup.practices=this.value">${h(s.practices)}</textarea>
+          <textarea class="finp fta" rows="2" placeholder="פרטי פרקטיקות ספציפיות, שיטות הוראה קיימות..." oninput="S.setup.practices=this.value;autoSave()">${h(s.practices)}</textarea>
         </div>
         ${renderSetupCS("insights", SETUP_BANKS.insights, "תובנות מרכזיות", false)}
         ${renderSetupCS("challenges", SETUP_BANKS.challenges, "אתגרים בולטים", false)}
@@ -980,10 +1213,12 @@ function renderS1(){
   </div>`;
 }
 
-// ── STEP 2 ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STEP 2
+// ═══════════════════════════════════════════════════════════════════════════════
 function renderS2(){
   return `<div class="page">
-    <div class="ph"><h1>ארבע זירות הפעולה</h1><p>כל ארבע הזירות הן חלק קבוע מהתפקיד. בחרו לכל זירה רמת מיקוד לשנה.</p></div>
+    <div class="ph"><h1>זירות פעולה למיקוד</h1><p>כל ארבע הזירות הן חלק קבוע מהתפקיד. בחרו לכל זירה רמת מיקוד לשנה.</p></div>
     ${!ZONES.every(z=>S.zones[z.id].focus)?`<div class="alert info">ℹ️ יש לבחור רמת מיקוד לכל ארבע הזירות.</div>`:""}
     ${ZONES.map(z=>{const zd=S.zones[z.id];return `<div class="zcard ${zd.focus?"sel":""}">
       <div class="zh"><div class="znum" style="background:${z.color}">${z.num}</div>
@@ -999,7 +1234,7 @@ function renderS2(){
       </div></div>`;}).join("")}
     <div class="cross-card">
       <div style="font-weight:700;font-size:14px;color:var(--pur);margin-bottom:5px">🔗 רווחים נלווים</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:11px">סמנו תחומים שישתלבו בתוכנית</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:11px">סמנו תחומים שיתווספו כרווח נלווה לתוכנית</div>
       ${CROSS.map(ca=>`<div class="xitem ${S.cross.includes(ca.id)?"active":""}" onclick="toggleCross('${ca.id}')">
         <span style="font-size:18px">${ca.icon}</span>
         <div><div style="font-weight:600;font-size:13px">${ca.title}</div><div style="font-size:12px;color:var(--muted)">${ca.desc}</div></div>
@@ -1011,16 +1246,19 @@ function renderS2(){
 function setFocus(zid,f){S.zones[zid].focus=f;render();}
 function toggleCross(id){S.cross=S.cross.includes(id)?S.cross.filter(x=>x!==id):[...S.cross,id];render();}
 
-// ── STEP 3 ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STEP 3 — FIXED goal-name click bug (uses index into bank, not inline JSON.stringify)
+// ═══════════════════════════════════════════════════════════════════════════════
 function renderS3(){
-  const zone=ZONES.find(z=>z.id===S.tab);const zd=S.zones[S.tab];
+  const zone=ZONES.find(z=>z.id===S.tab);
+  const zd=S.zones[S.tab];
   return `<div class="page">
     <div class="ph"><h1>הגדרת יעדים בכל זירה</h1><p>לכל זירה — לפחות יעד אחד (חובה). יעד שני אפשרי.</p></div>
     ${renderZTabs()}
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
       <div style="width:36px;height:36px;border-radius:9px;background:${zone.color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">${zone.num}</div>
       <div><div style="font-weight:700;font-size:15px;color:var(--p)">${zone.title}</div>
-        <div style="font-size:12px;color:var(--muted)">רמת מיקוד: ${FOCUS_L[zd.focus]}</div></div>
+        <div style="font-size:12px;color:var(--muted)">רמת מיקוד: ${FOCUS_L[zd.focus]||"(לא נבחרה)"}</div></div>
     </div>
     ${renderGoalEditor("g1",zd.g1,S.tab,true)}
     <div class="divider"></div>
@@ -1038,6 +1276,15 @@ function renderS3(){
 }
 function toggleG2(zid,v){S.zones[zid].g2.enabled=v;render();}
 
+// FIXED: pickGoalName uses the bank index instead of inlining the name into an onclick attribute
+function pickGoalName(zid, gk, idx){
+  const names = ZONE_BANKS[zid].goalNames;
+  if(idx >= 0 && idx < names.length){
+    S.zones[zid][gk].text = names[idx];
+    render();
+  }
+}
+
 function renderGoalEditor(gk,goal,zid,req){
   const bank=ZONE_BANKS[zid];
   const names=bank.goalNames;
@@ -1047,11 +1294,10 @@ function renderGoalEditor(gk,goal,zid,req){
     <div class="fgrp" style="margin-bottom:12px">
       <label class="flbl">ניסוח היעד ${req?"*":""} <span class="flbl-hint">בחרי ניסוח מוכן או כתבי חופשי</span></label>
       <div class="goal-sug">
-        ${names.map((n,i)=>`<div class="gsug ${goal.text===n?"active":""}" onclick="setGF('${zid}','${gk}','text',${JSON.stringify(n)})">
+        ${names.map((n,i)=>`<div class="gsug ${goal.text===n?"active":""}" onclick="pickGoalName('${zid}','${gk}',${i})">
           <span class="gsug-ico">📌</span><span>${h(n)}</span></div>`).join("")}
-        <div class="gsug-free" onclick="focusGoalText_${zid}_${gk}()">✏️ ניסוח חופשי</div>
       </div>
-      <input class="finp" id="gtxt_${zid}_${gk}" placeholder="ניסוח חופשי..." value="${h(goal.text)}" oninput="setGF('${zid}','${gk}','text',this.value);clearActive_${zid}_${gk}()" style="margin-top:5px">
+      <input class="finp" id="gtxt_${zid}_${gk}" placeholder="או: ניסוח חופשי..." value="${h(goal.text)}" oninput="S.zones['${zid}']['${gk}'].text=this.value;autoSave()">
     </div>
     <div style="margin-bottom:11px">
       <label class="flbl" style="display:block;margin-bottom:7px">סוג היעד:</label>
@@ -1068,8 +1314,8 @@ function renderGoalEditor(gk,goal,zid,req){
       </div></div>`:""}
     <div style="margin-bottom:11px">
       <label class="flbl" style="display:block;margin-bottom:7px">רמת יישום:</label>
-      <div class="scopes">${SCOPES.map(s=>`<button class="schip ${goal.scope?.includes(s)?"active":""}" onclick="toggleScope('${zid}','${gk}','${s}')">${s}</button>`).join("")}</div>
-      ${(goal.scope?.includes("כיתה אחת")||goal.scope?.includes("שכבה")||goal.scope?.includes("קבוצת תלמידים במיקוד"))?`<input class="finp" style="margin-top:5px" placeholder="פרטי: איזו כיתה / שכבה?" value="${h(goal.scopeDetail)}" oninput="setGF('${zid}','${gk}','scopeDetail',this.value)">`:""}
+      <div class="scopes">${SCOPES.map(s=>`<button class="schip ${goal.scope&&goal.scope.includes(s)?"active":""}" onclick="toggleScope('${zid}','${gk}','${s}')">${s}</button>`).join("")}</div>
+      ${(goal.scope&&(goal.scope.includes("כיתה אחת")||goal.scope.includes("שכבה")||goal.scope.includes("קבוצת תלמידים במיקוד")))?`<input class="finp" style="margin-top:5px" placeholder="פרטי: איזו כיתה / שכבה?" value="${h(goal.scopeDetail)}" oninput="setGF('${zid}','${gk}','scopeDetail',this.value)">`:""}
     </div>
     <div class="fg">
       ${renderCS(zid,gk,"currentState",bank.currentState,"מה המצב הקיים כיום?",false)}
@@ -1079,10 +1325,12 @@ function renderGoalEditor(gk,goal,zid,req){
     </div>
   </div>`;
 }
-function setGF(zid,gk,f,v){S.zones[zid][gk][f]=v;if(f==="type"||f==="enabled")render();}
+function setGF(zid,gk,f,v){S.zones[zid][gk][f]=v;if(f==="type"||f==="enabled")render();else autoSave();}
 function toggleScope(zid,gk,s){const sc=S.zones[zid][gk].scope||[];S.zones[zid][gk].scope=sc.includes(s)?sc.filter(x=>x!==s):[...sc,s];render();}
 
-// ── STEP 4 ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STEP 4
+// ═══════════════════════════════════════════════════════════════════════════════
 function renderS4(){
   const zone=ZONES.find(z=>z.id===S.tab);const zd=S.zones[S.tab];
   return `<div class="page">
@@ -1093,33 +1341,36 @@ function renderS4(){
   </div>`;
 }
 function renderActEditor(gk,goal,zid,lbl,zone){
-  const allA=ZONES.find(z=>z.id===zid)?.actions||[];
+  const allA=ZONES.find(z=>z.id===zid).actions||[];
   return `<div class="card">
     <div style="font-size:13px;font-weight:700;color:${zone.color};margin-bottom:13px">${lbl}: ${h(goal.text)||"(ללא ניסוח)"}</div>
     <div class="alert info" style="margin-bottom:13px">💡 סמנו כל פעולה כ<strong>מרכזית</strong> (ליבת העשייה) או <strong>משלימה</strong> (תומכת).</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
       <div>
         <div class="at-lbl"><span class="atdot" style="background:var(--p)"></span>פעולות מרכזיות</div>
-        ${allA.map(a=>`<div class="action-item ${goal.coreActions?.includes(a)?"ac":""}" onclick="toggleAct('${zid}','${gk}','${a.replace(/'/g,"\\'")}','core')">
-          <div class="acheck">${goal.coreActions?.includes(a)?"✓":""}</div><span style="font-size:12px;flex:1">${h(a)}</span><span class="atag">מרכזית</span></div>`).join("")}
-        ${(goal.customCore||[]).map(a=>`<div class="action-item ac"><div class="acheck">✓</div><span style="font-size:12px;flex:1">${h(a)}</span><span class="atag">מרכזית</span></div>`).join("")}
+        ${allA.map((a,i)=>`<div class="action-item ${(goal.coreActions||[]).includes(a)?"ac":""}" onclick="toggleAct('${zid}','${gk}',${i},'core')">
+          <div class="acheck">${(goal.coreActions||[]).includes(a)?"✓":""}</div><span style="font-size:12px;flex:1">${h(a)}</span><span class="atag">מרכזית</span></div>`).join("")}
+        ${(goal.customCore||[]).map((a,i)=>`<div class="action-item ac" onclick="removeCustomAct('${zid}','${gk}','core',${i})" title="לחצי להסרה"><div class="acheck">✓</div><span style="font-size:12px;flex:1">${h(a)}</span><span class="atag">מרכזית</span></div>`).join("")}
         <div class="cin-row"><input class="finp" id="cc_${zid}_${gk}" placeholder="פעולה מרכזית מותאמת..."><button class="addbtn" onclick="addCustom('${zid}','${gk}','core')">+ הוסף</button></div>
       </div>
       <div>
         <div class="at-lbl"><span class="atdot" style="background:var(--light)"></span>פעולות משלימות</div>
-        ${allA.map(a=>`<div class="action-item ${goal.suppActions?.includes(a)?"as":""}" onclick="toggleAct('${zid}','${gk}','${a.replace(/'/g,"\\'")}','supp')">
-          <div class="acheck">${goal.suppActions?.includes(a)?"✓":""}</div><span style="font-size:12px;flex:1">${h(a)}</span></div>`).join("")}
-        ${(goal.customSupp||[]).map(a=>`<div class="action-item as"><div class="acheck">✓</div><span style="font-size:12px;flex:1">${h(a)}</span></div>`).join("")}
+        ${allA.map((a,i)=>`<div class="action-item ${(goal.suppActions||[]).includes(a)?"as":""}" onclick="toggleAct('${zid}','${gk}',${i},'supp')">
+          <div class="acheck">${(goal.suppActions||[]).includes(a)?"✓":""}</div><span style="font-size:12px;flex:1">${h(a)}</span></div>`).join("")}
+        ${(goal.customSupp||[]).map((a,i)=>`<div class="action-item as" onclick="removeCustomAct('${zid}','${gk}','supp',${i})" title="לחצי להסרה"><div class="acheck">✓</div><span style="font-size:12px;flex:1">${h(a)}</span></div>`).join("")}
         <div class="cin-row"><input class="finp" id="cs2_${zid}_${gk}" placeholder="פעולה משלימה..."><button class="addbtn" onclick="addCustom('${zid}','${gk}','supp')">+ הוסף</button></div>
       </div>
     </div>
     <div><label class="flbl" style="display:block;margin-bottom:8px">מתודות עבודה</label>
-      <div class="mchips">${METHODS.map(m=>`<button class="mchip ${goal.methods?.includes(m)?"am":""}" onclick="toggleMethod('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
+      <div class="mchips">${METHODS.map(m=>`<button class="mchip ${(goal.methods||[]).includes(m)?"am":""}" onclick="toggleMethod('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
     </div>
   </div>`;
 }
-function toggleAct(zid,gk,a,type){
-  const g=S.zones[zid][gk];const core=[...(g.coreActions||[])],supp=[...(g.suppActions||[])];
+function toggleAct(zid,gk,actIdx,type){
+  const actions = ZONES.find(z=>z.id===zid).actions;
+  const a = actions[actIdx];
+  const g=S.zones[zid][gk];
+  const core=[...(g.coreActions||[])],supp=[...(g.suppActions||[])];
   if(type==="core"){g.coreActions=core.includes(a)?core.filter(x=>x!==a):[...core,a];g.suppActions=supp.filter(x=>x!==a);}
   else{g.suppActions=supp.includes(a)?supp.filter(x=>x!==a):[...supp,a];g.coreActions=core.filter(x=>x!==a);}
   render();
@@ -1129,42 +1380,120 @@ function addCustom(zid,gk,type){
   const el=document.getElementById(id);
   if(el&&el.value.trim()){const g=S.zones[zid][gk];if(type==="core")g.customCore=[...(g.customCore||[]),el.value.trim()];else g.customSupp=[...(g.customSupp||[]),el.value.trim()];render();}
 }
+function removeCustomAct(zid,gk,type,i){
+  const g=S.zones[zid][gk];
+  if(type==="core") g.customCore = (g.customCore||[]).filter((_,idx)=>idx!==i);
+  else g.customSupp = (g.customSupp||[]).filter((_,idx)=>idx!==i);
+  render();
+}
 function toggleMethod(zid,gk,m){const g=S.zones[zid][gk];const ms=g.methods||[];g.methods=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];render();}
 
-// ── STEP 5 ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STEP 5 — per-zone metrics with X placeholder
+// ═══════════════════════════════════════════════════════════════════════════════
 function renderS5(){
   const zone=ZONES.find(z=>z.id===S.tab);const zd=S.zones[S.tab];
   return `<div class="page">
-    <div class="ph"><h1>שותפים, מדדים ונקודות בקרה</h1><p>לכל יעד — מי שותף, מה מודדים, ואיך בודקים.</p></div>
+    <div class="ph"><h1>שותפים, מדדים ונקודות בקרה</h1><p>לכל יעד — מי שותף, מה מודדים, ואיך בודקים. כל מדד כמותי מנוסח כ"לפחות X…" — X הוא המינימום שאליו ניתן להתחייב.</p></div>
     ${renderZTabs()}
     ${renderMetrics("g1",zd.g1,S.tab,"יעד 1",zone)}
     ${zd.g2.enabled?renderMetrics("g2",zd.g2,S.tab,"יעד 2",zone):""}
   </div>`;
 }
+
+// Parses a metric string, returning array of chunks where "X" tokens become inputs
+function renderMetricLine(zid, gk, listKey, metricIdx, itemValue){
+  const g = S.zones[zid][gk];
+  const arr = g[listKey] || [];
+  const existing = arr.find(m => m.text === itemValue);
+  const isOn = !!existing;
+  const xVal = existing ? (existing.x||"") : "";
+  // Render text with X replaced by input if on
+  const parts = itemValue.split(/\bX\b/);
+  const rendered = parts.map((p,i)=>{
+    if(i===0) return h(p);
+    if(isOn){
+      // Put input before this part
+      return `<input class="mxin" type="text" value="${h(xVal)}" onclick="event.stopPropagation()" oninput="setMetricX('${zid}','${gk}','${listKey}',${metricIdx},this.value)" placeholder="X"> ${h(p)}`;
+    } else {
+      return `<strong style="color:var(--t)">X</strong>${h(p)}`;
+    }
+  }).join("");
+  return `<div class="mline ${isOn?"on":""}" onclick="toggleMetric('${zid}','${gk}','${listKey}',${metricIdx})">
+    <span class="mchk">${isOn?"✓":""}</span>
+    <span class="mtx">${rendered}</span>
+  </div>`;
+}
+
+function toggleMetric(zid, gk, listKey, metricIdx){
+  const zoneId = zid;
+  // Map listKey to bank source
+  let bank;
+  if(listKey==="outputMetrics") bank = ZONE_BANKS[zoneId].outputMetrics;
+  else if(listKey==="outcomeMetrics") bank = ZONE_BANKS[zoneId].outcomeMetrics;
+  else return;
+  const text = bank[metricIdx];
+  const g = S.zones[zid][gk];
+  const arr = [...(g[listKey]||[])];
+  const existingIdx = arr.findIndex(m=>m.text===text);
+  if(existingIdx>=0){ arr.splice(existingIdx,1); }
+  else { arr.push({text, x:""}); }
+  g[listKey] = arr;
+  render();
+}
+function setMetricX(zid, gk, listKey, metricIdx, val){
+  let bank;
+  if(listKey==="outputMetrics") bank = ZONE_BANKS[zid].outputMetrics;
+  else if(listKey==="outcomeMetrics") bank = ZONE_BANKS[zid].outcomeMetrics;
+  else return;
+  const text = bank[metricIdx];
+  const g = S.zones[zid][gk];
+  const arr = [...(g[listKey]||[])];
+  const idx = arr.findIndex(m=>m.text===text);
+  if(idx>=0){ arr[idx] = {...arr[idx], x:val}; g[listKey]=arr; autoSave(); }
+}
+function addCustomMetric(zid, gk, listKey){
+  const el = document.getElementById(`cm_${zid}_${gk}_${listKey}`);
+  if(!el || !el.value.trim()) return;
+  const g = S.zones[zid][gk];
+  const key = listKey==="outputMetrics" ? "customOutput" : "customOutcome";
+  g[key] = [...(g[key]||[]), el.value.trim()];
+  el.value="";
+  render();
+}
+function removeCustomMetric(zid, gk, listKey, i){
+  const g = S.zones[zid][gk];
+  const key = listKey==="outputMetrics" ? "customOutput" : "customOutcome";
+  g[key] = (g[key]||[]).filter((_,idx)=>idx!==i);
+  render();
+}
+
 function renderMetrics(gk,goal,zid,lbl,zone){
+  const bank = ZONE_BANKS[zid];
   const cp=goal.cp||[{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""},{w:"",d:"",who:"",dec:""}];
   return `<div class="card">
     <div style="font-size:13px;font-weight:700;color:${zone.color};margin-bottom:16px">${lbl}: ${h(goal.text)||"(ללא ניסוח)"}</div>
     <div style="margin-bottom:16px">
       <label class="flbl" style="display:block;margin-bottom:8px">שותפים</label>
-      <div class="mchips" style="margin-bottom:7px">${PARTNERS.map(p=>`<button class="mchip ${goal.partners?.includes(p)?"ap":""}" onclick="togglePart('${zid}','${gk}','${p}')">${p}</button>`).join("")}</div>
+      <div class="mchips" style="margin-bottom:7px">${PARTNERS.map(p=>`<button class="mchip ${(goal.partners||[]).includes(p)?"ap":""}" onclick="togglePart('${zid}','${gk}','${p}')">${p}</button>`).join("")}</div>
       <div class="cin-row"><input class="finp" id="cp2_${zid}_${gk}" placeholder="שותף נוסף..."><button class="addbtn" onclick="addPart('${zid}','${gk}')">+ הוסף</button></div>
     </div>
     <div class="divider"></div>
     <div style="margin-bottom:16px">
-      <label class="flbl" style="display:block;margin-bottom:8px">מדדי תפוקה</label>
-      ${OUT_M.map(om=>{const isA=om.id in(goal.outputMetrics||{});return `<div class="metric-item ${isA?"on":""}" onclick="${isA?`rmMetric('${zid}','${gk}','${om.id}')`:`addMetric('${zid}','${gk}','${om.id}')`}">
-        <div class="mcheck">${isA?"✓":""}</div>
-        ${isA?`<input type="number" min="0" class="mnum" value="${goal.outputMetrics[om.id]}" onclick="event.stopPropagation()" onchange="setMNum('${zid}','${gk}','${om.id}',this.value)">`:""}
-        <span style="font-size:13px">${om.t}</span></div>`;}).join("")}
+      <label class="flbl" style="display:block;margin-bottom:8px">📊 מדדי תפוקה (כמותיים — "לפחות X…")</label>
+      ${bank.outputMetrics.map((m,i)=>renderMetricLine(zid,gk,"outputMetrics",i,m)).join("")}
+      ${(goal.customOutput||[]).map((m,i)=>`<div class="mline on" onclick="removeCustomMetric('${zid}','${gk}','outputMetrics',${i})" title="לחצי להסרה"><span class="mchk">✓</span><span class="mtx">${h(m)} <em style="color:var(--muted);font-size:11px;margin-right:6px">(מותאם)</em></span></div>`).join("")}
+      <div class="cin-row"><input class="finp" id="cm_${zid}_${gk}_outputMetrics" placeholder="מדד תפוקה מותאם..."><button class="addbtn" onclick="addCustomMetric('${zid}','${gk}','outputMetrics')">+ הוסף</button></div>
     </div>
     <div style="margin-bottom:16px">
-      <label class="flbl" style="display:block;margin-bottom:8px">מדדי תוצאה</label>
-      <div class="mchips">${OUT_RES.map(m=>`<button class="mchip ${goal.outcomeMetrics?.includes(m)?"am":""}" onclick="toggleOutc('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
+      <label class="flbl" style="display:block;margin-bottom:8px">🎯 מדדי תוצאה (איכותיים — "X% מהמורים/תלמידים…")</label>
+      ${bank.outcomeMetrics.map((m,i)=>renderMetricLine(zid,gk,"outcomeMetrics",i,m)).join("")}
+      ${(goal.customOutcome||[]).map((m,i)=>`<div class="mline on" onclick="removeCustomMetric('${zid}','${gk}','outcomeMetrics',${i})" title="לחצי להסרה"><span class="mchk">✓</span><span class="mtx">${h(m)} <em style="color:var(--muted);font-size:11px;margin-right:6px">(מותאם)</em></span></div>`).join("")}
+      <div class="cin-row"><input class="finp" id="cm_${zid}_${gk}_outcomeMetrics" placeholder="מדד תוצאה מותאם..."><button class="addbtn" onclick="addCustomMetric('${zid}','${gk}','outcomeMetrics')">+ הוסף</button></div>
     </div>
     <div style="margin-bottom:16px">
-      <label class="flbl" style="display:block;margin-bottom:8px">דרכי הערכה</label>
-      <div class="mchips">${EVAL_M.map(m=>`<button class="mchip ${goal.evalMethods?.includes(m)?"am":""}" onclick="toggleEval('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
+      <label class="flbl" style="display:block;margin-bottom:8px">🔎 דרכי הערכה</label>
+      <div class="mchips">${bank.evalMethods.map(m=>`<button class="mchip ${(goal.evalMethods||[]).includes(m)?"am":""}" onclick="toggleEval('${zid}','${gk}','${m}')">${m}</button>`).join("")}</div>
     </div>
     <div class="divider"></div>
     <div>
@@ -1180,35 +1509,59 @@ function renderMetrics(gk,goal,zid,lbl,zone){
         </div>`;
       }).join("")}</div>
     </div>
+    <div class="divider"></div>
+    <div>
+      <label class="flbl" style="display:block;margin-bottom:6px">📝 הערות חופשיות ליעד <span class="opt">(יישמר ויופיע בתוכנית)</span></label>
+      <textarea class="finp fta" rows="2" placeholder="תובנות, החלטות, דגשים לזכור..." oninput="S.zones['${zid}']['${gk}'].notes=this.value;autoSave()">${h(goal.notes||"")}</textarea>
+    </div>
   </div>`;
 }
 function togglePart(zid,gk,p){const g=S.zones[zid][gk];const ps=g.partners||[];g.partners=ps.includes(p)?ps.filter(x=>x!==p):[...ps,p];render();}
 function addPart(zid,gk){const el=document.getElementById(`cp2_${zid}_${gk}`);if(el&&el.value.trim()){S.zones[zid][gk].partners=[...(S.zones[zid][gk].partners||[]),el.value.trim()];render();}}
-function addMetric(zid,gk,id){const g=S.zones[zid][gk];g.outputMetrics={...g.outputMetrics,[id]:0};render();}
-function rmMetric(zid,gk,id){const g=S.zones[zid][gk];const om={...g.outputMetrics};delete om[id];g.outputMetrics=om;render();}
-function setMNum(zid,gk,id,v){S.zones[zid][gk].outputMetrics[id]=parseInt(v)||0;}
-function toggleOutc(zid,gk,m){const g=S.zones[zid][gk];const ms=g.outcomeMetrics||[];g.outcomeMetrics=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];render();}
 function toggleEval(zid,gk,m){const g=S.zones[zid][gk];const ms=g.evalMethods||[];g.evalMethods=ms.includes(m)?ms.filter(x=>x!==m):[...ms,m];render();}
-function setCp(zid,gk,i,f,v){const g=S.zones[zid][gk];const cp=[...(g.cp||[{},{},{}])];cp[i]={...cp[i],[f]:v};g.cp=cp;}
+function setCp(zid,gk,i,f,v){const g=S.zones[zid][gk];const cp=[...(g.cp||[{},{},{}])];cp[i]={...cp[i],[f]:v};g.cp=cp;autoSave();}
 
-// ── STEP 6 ────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// STEP 6 — Tabular work plan + card view toggle, with editable notes
+// ═══════════════════════════════════════════════════════════════════════════════
+function fillMetricX(textWithX, x){
+  if(!x) return textWithX;
+  return textWithX.replace(/\bX\b/g, x);
+}
+function metricList(arr){
+  if(!arr || !arr.length) return [];
+  return arr.map(m => fillMetricX(m.text, m.x));
+}
+function allGoals(){
+  const out = [];
+  ZONES.forEach(zone => {
+    const zd = S.zones[zone.id];
+    if(!zd.focus) return;
+    ["g1","g2"].forEach((gk,idx) => {
+      const g = zd[gk];
+      if(!g || !g.text) return;
+      if(gk==="g2" && !g.enabled) return;
+      out.push({zone, gk, goal:g, idx});
+    });
+  });
+  return out;
+}
+
 function renderS6(){
-  const {setup,zones,cross}=S;
-  function fld(label,val){
-    const txt=typeof val==="string"?val:csText(val);
-    if(!txt) return "";
-    const isMulti=typeof val!=="string"&&(val?.items?.length>1||(val?.items?.length>0&&val?.other));
-    if(isMulti){
-      const parts=[...(val.items||[]).filter(x=>x!=="__other__")];
-      if(val.other)parts.push(val.other);
-      return `<div class="sf"><label>${label}</label><div class="stags">${parts.map(p=>`<span class="tag tt">${h(p)}</span>`).join("")}</div></div>`;
-    }
-    return `<div class="sf"><label>${label}</label><p>${h(txt)}</p></div>`;
-  }
-  return `<div class="page">
-    <div class="ph noprint"><h1>מרחב שיח — תוכנית עבודה שנתית</h1>
-      <p>להלן התוכנית המלאה. ניתן להדפיס או לשמור כ-PDF.</p>
-      <button class="btn-next" style="margin-top:9px" onclick="window.print()">🖨️ הדפסה / PDF</button>
+  const {setup} = S;
+  const goals = allGoals();
+  return `<div class="page page-wide">
+    <div class="ph noprint">
+      <h1>תוכנית עבודה שנתית</h1>
+      <p>טבלה מרוכזת לתוכנית. לחצי על כל שדה הערות למילוי ידני. ניתן להדפיס / לשמור כ-PDF.</p>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn-next" onclick="window.print()">🖨️ הדפסה / PDF</button>
+        <button class="btn-next" style="background:var(--t)" onclick="exportJSON()">⬇️ ייצוא JSON</button>
+        <div class="view-tabs" style="margin-bottom:0">
+          <button class="vtab ${S.view==='table'?'active':''}" onclick="setView('table')">📋 תצוגת טבלה</button>
+          <button class="vtab ${S.view==='cards'?'active':''}" onclick="setView('cards')">🗂 תצוגת כרטיסים</button>
+        </div>
+      </div>
     </div>
     <div class="shd">
       <h2>תוכנית עבודה שנתית — הכלה והוגנות</h2>
@@ -1222,74 +1575,170 @@ function renderS6(){
         ${setup.experience?`<div class="smi">⭐ ותק: ${h(setup.experience)} שנים</div>`:""}
       </div>
     </div>
-    ${(csHasValue(setup.situation)||csHasValue(setup.challenges)||csHasValue(setup.strengths))?`<div class="card">
-      <div class="ch" style="margin-bottom:11px"><div class="ci" style="background:#f0fdfa">🔍</div><div class="ct">תמונת מצב ראשונית</div></div>
-      <div class="sgrid">
-        ${csHasValue(setup.situation)?`<div class="sf"><label>נתונים מרכזיים</label><div class="stags">${[...((setup.situation.items||[]).filter(x=>x!=="__other__")),setup.situation.other].filter(Boolean).map(t=>`<span class="tag tt">${h(t)}</span>`).join("")}</div></div>`:""}
-        ${csHasValue(setup.processes)?`<div class="sf"><label>תהליכים קיימים</label><div class="stags">${[...((setup.processes.items||[]).filter(x=>x!=="__other__")),setup.processes.other].filter(Boolean).map(t=>`<span class="tag tt">${h(t)}</span>`).join("")}</div></div>`:""}
-        ${setup.practices?`<div class="sf"><label>פרקטיקות</label><p>${h(setup.practices)}</p></div>`:""}
-        ${csHasValue(setup.insights)?`<div class="sf"><label>תובנות</label><div class="stags">${[...((setup.insights.items||[]).filter(x=>x!=="__other__")),setup.insights.other].filter(Boolean).map(t=>`<span class="tag tpu">${h(t)}</span>`).join("")}</div></div>`:""}
-        ${csHasValue(setup.challenges)?`<div class="sf"><label>אתגרים</label><div class="stags">${[...((setup.challenges.items||[]).filter(x=>x!=="__other__")),setup.challenges.other].filter(Boolean).map(t=>`<span class="tag ts">${h(t)}</span>`).join("")}</div></div>`:""}
-        ${csHasValue(setup.strengths)?`<div class="sf"><label>חוזקות ומשאבים</label><div class="stags">${[...((setup.strengths.items||[]).filter(x=>x!=="__other__")),setup.strengths.other].filter(Boolean).map(t=>`<span class="tag tb">${h(t)}</span>`).join("")}</div></div>`:""}
-        ${setup.meetings?`<div class="sf"><label>סדירויות</label><p>${h(setup.meetings)}</p></div>`:""}
-      </div></div>`:""}
-    ${ZONES.map(zone=>{
-      const zd=zones[zone.id];if(!zd.focus)return "";
-      return `<div class="szone">
-        <div class="szh" style="background:${zone.bg}">
-          <div style="width:32px;height:32px;border-radius:8px;background:${zone.color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">${zone.num}</div>
-          <div style="flex:1;font-weight:700;font-size:13px;color:var(--p)">${zone.title}</div>
-          <span style="padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:${zd.focus==="high"?"#fee2e2":zd.focus==="medium"?"#fef3c7":"#d1fae5"};color:${zd.focus==="high"?"#c53030":zd.focus==="medium"?"#92400e":"#065f46"}">${FOCUS_L[zd.focus]}</span>
-        </div>
-        <div class="szb">
-          ${[["g1","יעד 1"],["g2","יעד 2"]].map(([gk,gl])=>{
-            const g=zd[gk];if(!g||!g.text)return "";if(gk==="g2"&&!g.enabled)return "";
-            const coreA=[...(g.coreActions||[]),...(g.customCore||[])];
-            const suppA=[...(g.suppActions||[]),...(g.customSupp||[])];
-            return `<div class="sgoal">
-              <div class="sgt">${gl}: ${h(g.text)}
-                <span style="margin-right:7px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:${g.type==="new"?"#dbeafe":"#fef3c7"};color:${g.type==="new"?"var(--p)":"#92400e"}">${g.type==="new"?"יעד חדש":"יעד מתמשך"}</span>
-              </div>
-              <div class="sgrid">
-                ${g.scope?.length?`<div class="sf"><label>רמת יישום</label><div class="stags">${g.scope.map(s=>`<span class="tag tt">${s}</span>`).join("")}</div></div>`:""}
-                ${fld("תוצאה רצויה",g.desiredState)}
-                ${fld("מצב קיים",g.currentState)}
-                ${fld("בסיס נתוני",g.dataBase)}
-                ${fld("על מי חל",g.targetResult)}
-                ${g.type==="ongoing"&&csHasValue(g.ongoingDone)?fld("מה הושג",g.ongoingDone):""}
-                ${g.type==="ongoing"&&csHasValue(g.ongoingAdd)?fld("מה מוסיפים",g.ongoingAdd):""}
-              </div>
-              ${coreA.length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">פעולות מרכזיות</label><div class="stags">${coreA.map(a=>`<span class="tag tb">${h(a)}</span>`).join("")}</div></div>`:""}
-              ${suppA.length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">פעולות משלימות</label><div class="stags">${suppA.map(a=>`<span class="tag ts">${h(a)}</span>`).join("")}</div></div>`:""}
-              <div class="sgrid">
-                ${g.methods?.length?`<div class="sf"><label>מתודות</label><div class="stags">${g.methods.map(m=>`<span class="tag tpu">${h(m)}</span>`).join("")}</div></div>`:""}
-                ${g.partners?.length?`<div class="sf"><label>שותפים</label><div class="stags">${g.partners.map(p=>`<span class="tag tt">${h(p)}</span>`).join("")}</div></div>`:""}
-                ${g.outcomeMetrics?.length?`<div class="sf"><label>מדדי תוצאה</label><div class="stags">${g.outcomeMetrics.map(m=>`<span class="tag tb">${h(m)}</span>`).join("")}</div></div>`:""}
-                ${g.evalMethods?.length?`<div class="sf"><label>הערכה</label><div class="stags">${g.evalMethods.map(m=>`<span class="tag ts">${h(m)}</span>`).join("")}</div></div>`:""}
-              </div>
-              ${Object.keys(g.outputMetrics||{}).length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">מדדי תפוקה</label><div class="stags">${Object.entries(g.outputMetrics).map(([id,num])=>{const om=OUT_M.find(o=>o.id===id);return om?`<span class="tag tb">${num} ${om.t}</span>`:""}).join("")}</div></div>`:""}
-              ${g.cp?.some(c=>c.w||c.d)?`<div><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:7px">נקודות בקרה</label>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-                ${g.cp.map((c,i)=>c.w||c.d||c.who?`<div style="background:var(--bg);border-radius:7px;padding:10px;border-top:3px solid ${CP_C[i]}">
-                  <div style="font-weight:700;font-size:11px;color:${CP_C[i]};margin-bottom:5px">${CP_L[i]}</div>
-                  ${c.w?`<div style="font-size:11px;margin-bottom:3px"><strong>בודקים:</strong> ${h(c.w)}</div>`:""}
-                  ${c.d?`<div style="font-size:11px;margin-bottom:3px"><strong>נתונים:</strong> ${h(c.d)}</div>`:""}
-                  ${c.who?`<div style="font-size:11px;margin-bottom:3px"><strong>משתתפים:</strong> ${h(c.who)}</div>`:""}
-                  ${c.dec?`<div style="font-size:11px"><strong>החלטות:</strong> ${h(c.dec)}</div>`:""}
-                </div>`:"").join("")}
-              </div></div>`:""}
-            </div>`;
-          }).join("")}
-        </div>
-      </div>`;
-    }).join("")}
-    ${cross.length?`<div class="card">
-      <div class="ch" style="margin-bottom:11px"><div class="ci" style="background:var(--pur2)">🔗</div><div class="ct">רווחים נלווים</div></div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px">
-        ${cross.map(id=>{const ca=CROSS.find(c=>c.id===id);return ca?`<div style="padding:8px 14px;background:var(--pur2);border-radius:7px;border:1px solid #c4b5fd"><span style="font-size:14px;margin-left:5px">${ca.icon}</span><strong style="font-size:13px">${ca.title}</strong><span style="font-size:12px;color:var(--muted);margin-right:5px">— ${ca.desc}</span></div>`:"";}).join("")}
-      </div></div>`:""}
+
+    ${renderSetupSummary()}
+
+    ${S.view==='cards' ? renderCardsView(goals) : renderTableView(goals)}
+
+    ${renderCrossSummary()}
+
+    <div class="card">
+      <div class="ch"><div class="ci" style="background:#fffbf0">📝</div><div class="ct">הערות כלליות לתוכנית</div></div>
+      <textarea class="note-txt" style="min-height:120px;font-size:13px" placeholder="הערות כלליות, החלטות, תאריכי ישיבות, דגשים לזכור, נקודות למעקב..." oninput="S.planNotes=this.value;autoSave()">${h(S.planNotes||"")}</textarea>
+    </div>
+
     <div style="text-align:center;padding:16px 0;color:var(--muted);font-size:12px;border-top:1px solid var(--bdr);margin-top:8px">
       מרחב שיח — מנהל/ת ורכזת הכלה והוגנות · ${h(setup.school)} · ${h(setup.year)}
+    </div>
+  </div>`;
+}
+
+function renderTableView(goals){
+  if(goals.length===0){
+    return `<div class="card"><p style="color:var(--muted);text-align:center;padding:20px">עדיין לא הוגדרו יעדים. חזרי לשלבים 2-3 כדי להוסיף.</p></div>`;
+  }
+  return `<div class="ptbl-wrap">
+    <table class="ptbl">
+      <thead>
+        <tr>
+          <th style="width:85px">זירה</th>
+          <th style="width:180px">יעד</th>
+          <th style="width:60px">סוג</th>
+          <th style="width:95px">רמת יישום</th>
+          <th style="width:180px">פעולות מרכזיות</th>
+          <th style="width:130px">מתודות</th>
+          <th style="width:130px">שותפים</th>
+          <th style="width:190px">מדדי תפוקה</th>
+          <th style="width:190px">מדדי תוצאה</th>
+          <th style="width:130px">דרכי הערכה</th>
+          <th style="width:170px">נקודות בקרה</th>
+          <th class="note-cell" style="width:170px">הערות</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${goals.map((row,i)=>renderTableRow(row,i)).join("")}
+      </tbody>
+    </table>
+  </div>`;
+}
+function renderTableRow({zone,gk,goal,idx},rowIdx){
+  const coreA = [...(goal.coreActions||[]),...(goal.customCore||[])];
+  const suppA = [...(goal.suppActions||[]),...(goal.customSupp||[])];
+  const outputList = [...metricList(goal.outputMetrics), ...(goal.customOutput||[])];
+  const outcomeList = [...metricList(goal.outcomeMetrics), ...(goal.customOutcome||[])];
+  const scope = (goal.scope||[]).join(", ") + (goal.scopeDetail?` (${goal.scopeDetail})`:"");
+  const cpText = (goal.cp||[]).map((c,i)=>{
+    if(!c.w && !c.d) return "";
+    return `<li><strong>${CP_L[i]}:</strong> ${h((c.w||"").substring(0,60))}${c.d?` · נתונים: ${h((c.d||"").substring(0,40))}`:""}</li>`;
+  }).filter(Boolean).join("");
+  const zid = zone.id;
+  return `<tr>
+    <td class="zcell" style="border-right-color:${zone.color}"><span style="display:inline-block;width:22px;height:22px;background:${zone.color};color:#fff;border-radius:6px;text-align:center;line-height:22px;font-weight:800;margin-left:4px">${zone.num}</span><br><small>${h(zone.title.split(' ').slice(0,3).join(' '))}...</small></td>
+    <td class="gcell">${h(goal.text)||"<em style='color:var(--muted)'>(ללא ניסוח)</em>"}</td>
+    <td><span style="font-size:10px;padding:2px 6px;border-radius:99px;background:${goal.type==='new'?'#dbeafe':'#fef3c7'};color:${goal.type==='new'?'var(--p)':'#92400e'}">${goal.type==='new'?'חדש':'מתמשך'}</span>${goal.type==='ongoing'&&goal.ongoingYear?`<br><small style="font-size:10px;color:var(--muted)">שנה ${h(goal.ongoingYear)}</small>`:""}</td>
+    <td><small>${h(scope)||"—"}</small></td>
+    <td>${coreA.length?`<ul>${coreA.map(a=>`<li>${h(a)}</li>`).join("")}</ul>`:"<small style='color:var(--muted)'>—</small>"}
+        ${suppA.length?`<div style="margin-top:5px;padding-top:5px;border-top:1px dashed var(--bdr)"><small style="color:var(--muted);font-weight:700">משלימות:</small><ul>${suppA.map(a=>`<li>${h(a)}</li>`).join("")}</ul></div>`:""}</td>
+    <td>${(goal.methods||[]).length?`<ul>${(goal.methods||[]).map(m=>`<li>${h(m)}</li>`).join("")}</ul>`:"<small style='color:var(--muted)'>—</small>"}</td>
+    <td>${(goal.partners||[]).length?`<ul>${(goal.partners||[]).map(p=>`<li>${h(p)}</li>`).join("")}</ul>`:"<small style='color:var(--muted)'>—</small>"}</td>
+    <td>${outputList.length?`<ul>${outputList.map(m=>`<li>${h(m)}</li>`).join("")}</ul>`:"<small style='color:var(--muted)'>—</small>"}</td>
+    <td>${outcomeList.length?`<ul>${outcomeList.map(m=>`<li>${h(m)}</li>`).join("")}</ul>`:"<small style='color:var(--muted)'>—</small>"}</td>
+    <td>${(goal.evalMethods||[]).length?`<ul>${(goal.evalMethods||[]).map(m=>`<li>${h(m)}</li>`).join("")}</ul>`:"<small style='color:var(--muted)'>—</small>"}</td>
+    <td>${cpText?`<ul>${cpText}</ul>`:"<small style='color:var(--muted)'>—</small>"}</td>
+    <td class="note-cell"><textarea class="note-txt" placeholder="הוסיפי הערות ידניות, תזכורות, הבהרות..." oninput="S.zones['${zid}']['${gk}'].notes=this.value;autoSave()">${h(goal.notes||"")}</textarea></td>
+  </tr>`;
+}
+
+function renderCardsView(goals){
+  return ZONES.map(zone=>{
+    const zd = S.zones[zone.id]; if(!zd.focus) return "";
+    return `<div class="szone">
+      <div class="szh" style="background:${zone.bg}">
+        <div style="width:32px;height:32px;border-radius:8px;background:${zone.color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0">${zone.num}</div>
+        <div style="flex:1;font-weight:700;font-size:13px;color:var(--p)">${zone.title}</div>
+        <span style="padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:${zd.focus==='high'?'#fee2e2':zd.focus==='medium'?'#fef3c7':'#d1fae5'};color:${zd.focus==='high'?'#c53030':zd.focus==='medium'?'#92400e':'#065f46'}">${FOCUS_L[zd.focus]}</span>
+      </div>
+      <div class="szb">
+        ${[["g1","יעד 1"],["g2","יעד 2"]].map(([gk,gl])=>{
+          const g=zd[gk]; if(!g||!g.text) return ""; if(gk==="g2"&&!g.enabled) return "";
+          return renderGoalCard(g,gl,zone);
+        }).join("")}
+      </div>
+    </div>`;
+  }).join("");
+}
+function fld(label, val){
+  const txt = typeof val==="string" ? val : csText(val);
+  if(!txt) return "";
+  const list = csList(val);
+  if(Array.isArray(list) && list.length>1){
+    return `<div class="sf"><label>${label}</label><div class="stags">${list.map(p=>`<span class="tag tt">${h(p)}</span>`).join("")}</div></div>`;
+  }
+  return `<div class="sf"><label>${label}</label><p>${h(txt)}</p></div>`;
+}
+function renderGoalCard(g, gl, zone){
+  const coreA=[...(g.coreActions||[]),...(g.customCore||[])];
+  const suppA=[...(g.suppActions||[]),...(g.customSupp||[])];
+  const outputList = [...metricList(g.outputMetrics), ...(g.customOutput||[])];
+  const outcomeList = [...metricList(g.outcomeMetrics), ...(g.customOutcome||[])];
+  return `<div class="sgoal">
+    <div class="sgt">${gl}: ${h(g.text)}
+      <span style="margin-right:7px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:${g.type==='new'?'#dbeafe':'#fef3c7'};color:${g.type==='new'?'var(--p)':'#92400e'}">${g.type==='new'?'יעד חדש':'יעד מתמשך'}</span>
+    </div>
+    <div class="sgrid">
+      ${g.scope&&g.scope.length?`<div class="sf"><label>רמת יישום</label><div class="stags">${g.scope.map(s=>`<span class="tag tt">${s}</span>`).join("")}</div></div>`:""}
+      ${fld("תוצאה רצויה",g.desiredState)}
+      ${fld("מצב קיים",g.currentState)}
+      ${fld("בסיס נתוני",g.dataBase)}
+      ${fld("על מי חל",g.targetResult)}
+      ${g.type==='ongoing'&&csHasValue(g.ongoingDone)?fld("מה הושג",g.ongoingDone):""}
+      ${g.type==='ongoing'&&csHasValue(g.ongoingAdd)?fld("מה מוסיפים",g.ongoingAdd):""}
+    </div>
+    ${coreA.length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">פעולות מרכזיות</label><div class="stags">${coreA.map(a=>`<span class="tag tb">${h(a)}</span>`).join("")}</div></div>`:""}
+    ${suppA.length?`<div style="margin-bottom:8px"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px">פעולות משלימות</label><div class="stags">${suppA.map(a=>`<span class="tag ts">${h(a)}</span>`).join("")}</div></div>`:""}
+    <div class="sgrid">
+      ${g.methods&&g.methods.length?`<div class="sf"><label>מתודות</label><div class="stags">${g.methods.map(m=>`<span class="tag tpu">${h(m)}</span>`).join("")}</div></div>`:""}
+      ${g.partners&&g.partners.length?`<div class="sf"><label>שותפים</label><div class="stags">${g.partners.map(p=>`<span class="tag tt">${h(p)}</span>`).join("")}</div></div>`:""}
+      ${outputList.length?`<div class="sf"><label>📊 מדדי תפוקה</label><div class="stags">${outputList.map(m=>`<span class="tag tb">${h(m)}</span>`).join("")}</div></div>`:""}
+      ${outcomeList.length?`<div class="sf"><label>🎯 מדדי תוצאה</label><div class="stags">${outcomeList.map(m=>`<span class="tag tb">${h(m)}</span>`).join("")}</div></div>`:""}
+      ${g.evalMethods&&g.evalMethods.length?`<div class="sf"><label>🔎 דרכי הערכה</label><div class="stags">${g.evalMethods.map(m=>`<span class="tag ts">${h(m)}</span>`).join("")}</div></div>`:""}
+    </div>
+    ${g.cp&&g.cp.some(c=>c.w||c.d)?`<div><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:7px">נקודות בקרה</label>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      ${g.cp.map((c,i)=>(c.w||c.d||c.who)?`<div style="background:var(--bg);border-radius:7px;padding:10px;border-top:3px solid ${CP_C[i]}">
+        <div style="font-weight:700;font-size:11px;color:${CP_C[i]};margin-bottom:5px">${CP_L[i]}</div>
+        ${c.w?`<div style="font-size:11px;margin-bottom:3px"><strong>בודקים:</strong> ${h(c.w)}</div>`:""}
+        ${c.d?`<div style="font-size:11px;margin-bottom:3px"><strong>נתונים:</strong> ${h(c.d)}</div>`:""}
+        ${c.who?`<div style="font-size:11px;margin-bottom:3px"><strong>משתתפים:</strong> ${h(c.who)}</div>`:""}
+        ${c.dec?`<div style="font-size:11px"><strong>החלטות:</strong> ${h(c.dec)}</div>`:""}
+      </div>`:"").join("")}
+    </div></div>`:""}
+    ${g.notes?`<div style="margin-top:10px;padding:10px;background:#fff9e6;border-right:3px solid var(--warn);border-radius:5px"><small style="color:#7c5c0e;font-weight:700">📝 הערות:</small><div style="font-size:12px;margin-top:3px">${h(g.notes).replace(/\n/g,'<br>')}</div></div>`:""}
+  </div>`;
+}
+
+function renderSetupSummary(){
+  const setup=S.setup;
+  if(!csHasValue(setup.situation)&&!csHasValue(setup.challenges)&&!csHasValue(setup.strengths)) return "";
+  return `<div class="card">
+    <div class="ch" style="margin-bottom:11px"><div class="ci" style="background:#f0fdfa">🔍</div><div class="ct">תמונת מצב ראשונית</div></div>
+    <div class="sgrid">
+      ${csHasValue(setup.situation)?`<div class="sf"><label>נתונים מרכזיים</label><div class="stags">${csList(setup.situation).map(t=>`<span class="tag tt">${h(t)}</span>`).join("")}</div></div>`:""}
+      ${csHasValue(setup.processes)?`<div class="sf"><label>תהליכים קיימים</label><div class="stags">${csList(setup.processes).map(t=>`<span class="tag tt">${h(t)}</span>`).join("")}</div></div>`:""}
+      ${setup.practices?`<div class="sf"><label>פרקטיקות</label><p>${h(setup.practices)}</p></div>`:""}
+      ${csHasValue(setup.insights)?`<div class="sf"><label>תובנות</label><div class="stags">${csList(setup.insights).map(t=>`<span class="tag tpu">${h(t)}</span>`).join("")}</div></div>`:""}
+      ${csHasValue(setup.challenges)?`<div class="sf"><label>אתגרים</label><div class="stags">${csList(setup.challenges).map(t=>`<span class="tag ts">${h(t)}</span>`).join("")}</div></div>`:""}
+      ${csHasValue(setup.strengths)?`<div class="sf"><label>חוזקות ומשאבים</label><div class="stags">${csList(setup.strengths).map(t=>`<span class="tag tb">${h(t)}</span>`).join("")}</div></div>`:""}
+      ${setup.meetings?`<div class="sf"><label>סדירויות</label><p>${h(setup.meetings)}</p></div>`:""}
+    </div>
+  </div>`;
+}
+function renderCrossSummary(){
+  if(!S.cross||!S.cross.length) return "";
+  return `<div class="card">
+    <div class="ch" style="margin-bottom:11px"><div class="ci" style="background:var(--pur2)">🔗</div><div class="ct">רווחים נלווים</div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${S.cross.map(id=>{const ca=CROSS.find(c=>c.id===id);return ca?`<div style="padding:8px 14px;background:var(--pur2);border-radius:7px;border:1px solid #c4b5fd"><span style="font-size:14px;margin-left:5px">${ca.icon}</span><strong style="font-size:13px">${ca.title}</strong><span style="font-size:12px;color:var(--muted);margin-right:5px">— ${ca.desc}</span></div>`:"";}).join("")}
     </div>
   </div>`;
 }
@@ -1301,6 +1750,27 @@ function renderZTabs(){
     </button>`).join("")}</div>`;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// BOOTSTRAP
+// ═══════════════════════════════════════════════════════════════════════════════
+// Try to restore from localStorage on load
+if(loadFromLS()){
+  // restored — ensure backward-compatible structure
+  const zs = S.zones;
+  Object.keys(zs).forEach(zid=>{
+    ["g1","g2"].forEach(gk=>{
+      const g = zs[zid][gk];
+      if(!g) return;
+      if(!Array.isArray(g.outputMetrics)) g.outputMetrics = [];
+      if(!Array.isArray(g.outcomeMetrics)) g.outcomeMetrics = [];
+      if(!Array.isArray(g.customOutput)) g.customOutput = [];
+      if(!Array.isArray(g.customOutcome)) g.customOutcome = [];
+      if(g.notes == null) g.notes = "";
+    });
+  });
+  if(S.planNotes == null) S.planNotes = "";
+  if(!S.view) S.view = "table";
+}
 render();
 </script>
 </body>
